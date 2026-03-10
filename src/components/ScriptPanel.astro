@@ -1,0 +1,51 @@
+---
+import { scriptSections } from "../data/scriptSections";
+
+const section = scriptSections[0];
+---
+
+<section class="flex-1 bg-gray-950 text-white">
+  <div class="border-b border-gray-800 px-8 py-6">
+    <div class="flex items-center justify-between gap-4">
+      <div>
+        <p class="text-sm uppercase tracking-wide text-gray-400">
+          Section {section.id}
+        </p>
+        <h2 class="mt-1 text-3xl font-bold">{section.title}</h2>
+      </div>
+
+      {section.qaRequired && (
+        <div class="rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-2 text-sm font-medium text-amber-300">
+          Verbatim Required
+        </div>
+      )}
+    </div>
+  </div>
+
+  <div class="grid gap-6 p-8 xl:grid-cols-[minmax(0,1fr)_320px]">
+    <div class="rounded-2xl border border-gray-800 bg-gray-900 p-8">
+      <h3 class="mb-6 text-sm font-semibold uppercase tracking-wide text-gray-400">
+        Read Aloud Script
+      </h3>
+
+      <div class="space-y-5 text-lg leading-8 text-gray-100">
+        {section.script.map((line) => (
+          <p>{line}</p>
+        ))}
+      </div>
+    </div>
+
+    <div class="rounded-2xl border border-gray-800 bg-gray-900 p-6">
+      <h3 class="mb-4 text-sm font-semibold uppercase tracking-wide text-gray-400">
+        Prompts
+      </h3>
+
+      <div class="space-y-3">
+        <div>
+          <p class="text-xs uppercase tracking-wide text-gray-500">Goal</p>
+          <p class="mt-1 text-sm text-gray-200">{section.prompt.goal}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

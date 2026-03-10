@@ -1,11 +1,1238 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import TopBar from "../components/TopBar.astro";
+import MetricsBar from "../components/MetricsBar.astro";
+import { scriptSections } from "../data/scriptSections";
+import { rebuttals } from "../data/rebuttals";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const firstSection = scriptSections[0];
+const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 ---
 
 <Layout>
-	<Welcome />
+  <TopBar />
+  <MetricsBar />
+
+  <main class="flex min-h-[calc(100vh-150px)] flex-col lg:flex-row">
+    <aside class="w-full border-r border-gray-800 bg-gray-900 text-white lg:w-72 xl:w-80">
+      <div class="border-b border-gray-800 px-4 py-4">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-semibold">Script Sections</h2>
+            <p class="text-xs text-gray-400">
+              <span id="progress-text">1 / 24</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-3 h-2 overflow-hidden rounded-full bg-gray-800">
+          <div id="progress-bar" class="h-full w-[4%] bg-sky-500"></div>
+        </div>
+      </div>
+
+      <nav id="sidebar-nav" class="max-h-[calc(100vh-230px)] overflow-y-auto p-2">
+        <ul class="space-y-1">
+          {scriptSections.map((section) => (
+            <li>
+              <button
+                class:list={[
+                  "section-button w-full rounded-lg px-3 py-3 text-left text-sm transition",
+                  section.id === firstSection.id ? "sidebar-button-active" : "sidebar-button-idle"
+                ]}
+                data-section-id={section.id}
+                type="button"
+              >
+                <span class="block font-medium">
+                  {section.id}. {section.title}
+                </span>
+
+                {section.qaRequired && (
+                  <span class="mt-1 inline-block text-xs text-amber-400">
+                    Verbatim Required
+                  </span>
+                )}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </aside>
+
+    <section class="flex-1 bg-gray-950 text-white">
+      <div class="border-b border-gray-800 px-8 py-6">
+        <div class="flex flex-col gap-4">
+          <div class="flex flex-wrap items-center gap-3">
+            <button id="start-call-button" type="button" class="btn-green">Start Call</button>
+            <button id="new-call-button" type="button" class="btn-red">New Call</button>
+            <button id="toggle-shortcuts-button" type="button" class="btn">Shortcuts</button>
+            <button id="toggle-objections-button" type="button" class="btn">Objections</button>
+            <button id="open-settings-button" type="button" class="btn">Settings</button>
+
+            <div
+              id="qa-badge"
+              class:list={[
+                "rounded-full border px-4 py-2 text-sm font-medium",
+                firstSection.qaRequired
+                  ? "border-amber-500/40 bg-amber-500/10 text-amber-300"
+                  : "hidden"
+              ]}
+            >
+              Verbatim Required
+            </div>
+          </div>
+
+          <div>
+            <p id="section-number" class="text-sm uppercase tracking-wide text-gray-400">
+              Section {firstSection.id}
+            </p>
+
+            <h2 id="section-title" class="mt-1 text-3xl font-bold">
+              {firstSection.title}
+            </h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid gap-6 p-8 2xl:grid-cols-[minmax(0,1fr)_420px]">
+        <div class="panel p-8">
+          <h3 class="panel-title">Read Aloud Script</h3>
+          <div id="script-lines" class="space-y-5 text-lg leading-8 text-gray-100">
+            {firstSection.script.map((line) => (
+              <p>{line}</p>
+            ))}
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="panel p-6">
+            <h3 class="panel-title">Prompts</h3>
+
+            <div class="space-y-4">
+              <div>
+                <p class="text-xs uppercase tracking-wide text-gray-500">Goal</p>
+                <p id="prompt-goal" class="mt-1 text-sm text-gray-200">
+                  {firstSection.prompt.goal}
+                </p>
+              </div>
+
+              <div>
+                <p class="text-xs uppercase tracking-wide text-gray-500">Notes</p>
+                <div id="prompt-notes" class="mt-2 space-y-2 text-sm text-gray-300">
+                  {(firstSection.prompt.notes || []).map((note) => (
+                    <p>• {note}</p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel p-6">
+            <h3 class="panel-title">Call Notes</h3>
+
+            <textarea
+              id="call-notes"
+              rows="6"
+              placeholder="Type notes here..."
+              class="form-input"
+            ></textarea>
+          </div>
+
+          <div id="relation-helper-panel" class="panel hidden p-6">
+            <h3 class="panel-title">Beneficiary Path</h3>
+
+            <p class="mb-4 text-sm text-gray-300">
+              Select the relationship so the next section is tailored correctly.
+            </p>
+
+            <div class="grid grid-cols-2 gap-3">
+              <button type="button" class="relation-button btn" data-relation-type="spouse">Spouse</button>
+              <button type="button" class="relation-button btn" data-relation-type="child">Child</button>
+              <button type="button" class="relation-button btn" data-relation-type="sibling">Sibling</button>
+              <button type="button" class="relation-button btn" data-relation-type="friend">Friend / Other</button>
+              <button type="button" class="relation-button btn col-span-2" data-relation-type="noone">No One</button>
+            </div>
+
+            <div class="mt-4 rounded-xl border border-gray-800 bg-gray-950 p-4">
+              <p class="text-xs uppercase tracking-wide text-gray-500">Selected Path</p>
+              <div id="relation-helper-content" class="mt-3 space-y-2 text-sm text-gray-300">
+                <p>Select a relationship type to load the prompt guidance.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel p-6">
+            <div class="mb-4 flex items-center justify-between gap-3">
+              <h3 class="panel-title !mb-0">Outcome</h3>
+
+              <div class="flex gap-2">
+                <button id="mark-transfer-button" type="button" class="btn-blue">
+                  Add Transfer
+                </button>
+
+                <button id="mark-sale-button" type="button" class="btn-green">
+                  Add Sale
+                </button>
+              </div>
+            </div>
+
+            <div class="grid gap-3">
+              <button id="outcome-sold-button" type="button" class="btn-green">
+                Sold
+              </button>
+
+              <button id="outcome-callback-button" type="button" class="btn-blue">
+                Callback
+              </button>
+
+              <button id="outcome-not-interested-button" type="button" class="btn">
+                Not Interested
+              </button>
+
+              <button id="outcome-medical-dq-button" type="button" class="btn-red">
+                Medical DQ
+              </button>
+            </div>
+
+            <div class="mt-4 rounded-lg border border-gray-800 bg-gray-950 px-3 py-2 text-sm text-gray-300">
+              Current Outcome:
+              <span id="current-outcome" class="ml-1 font-semibold text-white">None</span>
+            </div>
+          </div>
+
+          <div id="objections-panel" class="panel p-6">
+            <div class="flex items-center justify-between gap-3">
+              <h3 class="panel-title !mb-0">Objection Search</h3>
+              <span class="text-xs text-gray-500">Search rebuttals only</span>
+            </div>
+
+            <div class="mt-4">
+              <input
+                id="objection-search"
+                type="text"
+                placeholder="Search objections by keyword..."
+                class="form-input"
+              />
+            </div>
+
+            <div class="mt-4">
+              <p class="text-xs uppercase tracking-wide text-gray-500">Favorites</p>
+              <div class="mt-3 flex flex-wrap gap-2">
+                {favoriteRebuttals.map((item) => (
+                  <button
+                    type="button"
+                    class="favorite-rebuttal-button rounded-full border border-gray-700 bg-gray-950 px-3 py-1 text-xs text-gray-200 hover:bg-gray-800"
+                    data-rebuttal-id={item.id}
+                  >
+                    {item.title}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <p class="text-xs uppercase tracking-wide text-gray-500">Results</p>
+              <div id="objection-results" class="mt-3 max-h-56 space-y-2 overflow-y-auto">
+                {rebuttals.slice(0, 10).map((item) => (
+                  <button
+                    type="button"
+                    class="rebuttal-result-button block w-full rounded-lg border border-gray-800 bg-gray-950 px-3 py-2 text-left text-sm text-gray-200 hover:bg-gray-800"
+                    data-rebuttal-id={item.id}
+                  >
+                    <div class="font-semibold">{item.title}</div>
+                    <div class="mt-1 text-xs text-gray-400">{item.category}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div class="mt-4 rounded-xl border border-gray-800 bg-gray-950 p-4">
+              <p class="text-xs uppercase tracking-wide text-gray-500">Selected Rebuttal</p>
+              <div id="selected-rebuttal-title" class="mt-3 text-sm font-semibold text-white">
+                Select an objection
+              </div>
+              <div id="selected-rebuttal-body" class="mt-2 whitespace-pre-wrap text-sm leading-6 text-gray-300">
+                Your selected rebuttal will appear here.
+              </div>
+            </div>
+          </div>
+
+          <div id="shortcuts-panel" class="panel hidden p-6">
+            <h3 class="panel-title">Keyboard Shortcuts</h3>
+
+            <div class="space-y-2 text-sm text-gray-200">
+              <div><span class="text-gray-400">Right Arrow</span> → Next section</div>
+              <div><span class="text-gray-400">Left Arrow</span> → Previous section</div>
+              <div><span class="text-gray-400">Ctrl + Enter</span> → Start Call</div>
+              <div><span class="text-gray-400">Ctrl + N</span> → New Call</div>
+              <div><span class="text-gray-400">Ctrl + T</span> → Add Transfer</div>
+              <div><span class="text-gray-400">Ctrl + S</span> → Add Sale</div>
+              <div><span class="text-gray-400">Alt + C</span> → Focus Client Name</div>
+              <div><span class="text-gray-400">Alt + B</span> → Focus Beneficiary</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-800 px-8 py-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="flex gap-3">
+            <button id="back-button" type="button" class="btn">Back</button>
+            <button id="next-button" type="button" class="btn">Next</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div
+    id="settings-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-4"
+  >
+    <div class="w-full max-w-xl rounded-2xl border border-gray-800 bg-gray-900 p-6 text-white shadow-2xl">
+      <div class="flex items-center justify-between gap-3">
+        <h3 class="text-lg font-semibold">Settings</h3>
+        <button id="close-settings-button" type="button" class="btn">Close</button>
+      </div>
+
+      <div class="mt-6 grid gap-4 md:grid-cols-2">
+        <div>
+          <label for="settings-advisor-name" class="form-label">Advisor Name</label>
+          <input id="settings-advisor-name" type="text" class="form-input" />
+        </div>
+
+        <div>
+          <label for="settings-advisor-phone" class="form-label">Advisor Phone</label>
+          <input id="settings-advisor-phone" type="text" class="form-input" />
+        </div>
+
+        <div>
+          <label for="settings-advisor-npn" class="form-label">Advisor NPN</label>
+          <input id="settings-advisor-npn" type="text" class="form-input" />
+        </div>
+
+        <div>
+          <label for="settings-sales-goal" class="form-label">Daily Sales Goal</label>
+          <input id="settings-sales-goal" type="number" class="form-input" />
+        </div>
+
+        <div>
+          <label for="settings-ap-goal" class="form-label">AP Goal</label>
+          <input id="settings-ap-goal" type="number" step="0.01" class="form-input" />
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-end gap-3">
+        <button id="save-settings-button" type="button" class="btn-green">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <script define:vars={{ scriptSections, rebuttals }}>
+    const SETTINGS_STORAGE_KEY = "legacy_dashboard_settings_v2";
+    const STATS_STORAGE_KEY = "legacy_dashboard_stats_v7";
+    const SESSION_STORAGE_KEY = "legacy_dashboard_session_v4";
+
+    function todayKey() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function createDefaultSettings() {
+      return {
+        advisorName: "Nick Arias",
+        advisorPhone: "YOUR_PHONE",
+        advisorNPN: "YOUR_NPN",
+        dailySalesGoal: 8,
+        apGoal: 3000
+      };
+    }
+
+    function createFreshStats() {
+      return {
+        date: todayKey(),
+        totalCalls: 0,
+        transfers: 0,
+        sales: 0,
+        sold: 0,
+        callback: 0,
+        notInterested: 0,
+        medicalDQ: 0,
+        apSubmitted: 0
+      };
+    }
+
+    function createFreshSession() {
+      return {
+        currentSectionId: scriptSections[0]?.id ?? 1,
+        notes: "",
+        outcome: "",
+        clientName: "",
+        clientState: "",
+        beneficiaryName: "",
+        premium: "",
+        draftDate: "",
+        started: false,
+        transferCounted: false,
+        saleCounted: false,
+        saleFromOutcome: false,
+        countedAp: 0,
+        relationType: ""
+      };
+    }
+
+    function loadSettings() {
+      const raw = localStorage.getItem(SETTINGS_STORAGE_KEY);
+
+      if (!raw) return createDefaultSettings();
+
+      try {
+        const parsed = JSON.parse(raw);
+        return {
+          advisorName: String(parsed.advisorName ?? "Nick Arias"),
+          advisorPhone: String(parsed.advisorPhone ?? "YOUR_PHONE"),
+          advisorNPN: String(parsed.advisorNPN ?? "YOUR_NPN"),
+          dailySalesGoal: Number(parsed.dailySalesGoal ?? 8),
+          apGoal: Number(parsed.apGoal ?? 3000)
+        };
+      } catch {
+        return createDefaultSettings();
+      }
+    }
+
+    function loadStats() {
+      const raw = localStorage.getItem(STATS_STORAGE_KEY);
+
+      if (!raw) return createFreshStats();
+
+      try {
+        const parsed = JSON.parse(raw);
+
+        if (!parsed || parsed.date !== todayKey()) {
+          return createFreshStats();
+        }
+
+        return {
+          date: parsed.date ?? todayKey(),
+          totalCalls: Number(parsed.totalCalls ?? 0),
+          transfers: Number(parsed.transfers ?? 0),
+          sales: Number(parsed.sales ?? 0),
+          sold: Number(parsed.sold ?? 0),
+          callback: Number(parsed.callback ?? 0),
+          notInterested: Number(parsed.notInterested ?? 0),
+          medicalDQ: Number(parsed.medicalDQ ?? 0),
+          apSubmitted: Number(parsed.apSubmitted ?? 0)
+        };
+      } catch {
+        return createFreshStats();
+      }
+    }
+
+    function loadSession() {
+      const raw = sessionStorage.getItem(SESSION_STORAGE_KEY);
+
+      if (!raw) return createFreshSession();
+
+      try {
+        const parsed = JSON.parse(raw);
+
+        return {
+          currentSectionId: Number(parsed.currentSectionId ?? (scriptSections[0]?.id ?? 1)),
+          notes: String(parsed.notes ?? ""),
+          outcome: String(parsed.outcome ?? ""),
+          clientName: String(parsed.clientName ?? ""),
+          clientState: String(parsed.clientState ?? ""),
+          beneficiaryName: String(parsed.beneficiaryName ?? ""),
+          premium: String(parsed.premium ?? ""),
+          draftDate: String(parsed.draftDate ?? ""),
+          started: Boolean(parsed.started ?? false),
+          transferCounted: Boolean(parsed.transferCounted ?? false),
+          saleCounted: Boolean(parsed.saleCounted ?? false),
+          saleFromOutcome: Boolean(parsed.saleFromOutcome ?? false),
+          countedAp: Number(parsed.countedAp ?? 0),
+          relationType: String(parsed.relationType ?? "")
+        };
+      } catch {
+        return createFreshSession();
+      }
+    }
+
+    function saveSettings() {
+      localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+    }
+
+    function saveStats() {
+      localStorage.setItem(STATS_STORAGE_KEY, JSON.stringify(stats));
+    }
+
+    function saveSession() {
+      sessionStorage.setItem(
+        SESSION_STORAGE_KEY,
+        JSON.stringify({
+          currentSectionId: currentSection.id,
+          notes: callNotes?.value ?? "",
+          outcome: sessionState.outcome,
+          clientName: clientNameInput?.value ?? "",
+          clientState: clientStateInput?.value ?? "",
+          beneficiaryName: beneficiaryNameInput?.value ?? "",
+          premium: premiumInput?.value ?? "",
+          draftDate: draftDateInput?.value ?? "",
+          started: sessionState.started,
+          transferCounted: sessionState.transferCounted,
+          saleCounted: sessionState.saleCounted,
+          saleFromOutcome: sessionState.saleFromOutcome,
+          countedAp: sessionState.countedAp,
+          relationType: sessionState.relationType
+        })
+      );
+    }
+
+    function formatCurrency(value) {
+      return `$${Number(value || 0).toFixed(2)}`;
+    }
+
+    function parsePremium(value) {
+      const cleaned = String(value || "").replace(/[^0-9.]/g, "");
+      const parsed = Number(cleaned);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function getAnnualPremium() {
+      return parsePremium(premiumInput?.value) * 12;
+    }
+
+    let settings = loadSettings();
+    let stats = loadStats();
+    let sessionState = loadSession();
+
+    let currentSection =
+      scriptSections.find((section) => section.id === sessionState.currentSectionId) ??
+      scriptSections[0];
+
+    let timerSeconds = 0;
+    let timerInterval = null;
+
+    const sectionButtons = document.querySelectorAll(".section-button");
+    const sidebarNav = document.getElementById("sidebar-nav");
+    const relationButtons = document.querySelectorAll(".relation-button");
+    const favoriteRebuttalButtons = document.querySelectorAll(".favorite-rebuttal-button");
+
+    const clientNameInput = document.getElementById("clientName");
+    const clientStateInput = document.getElementById("clientState");
+    const beneficiaryNameInput = document.getElementById("beneficiaryName");
+    const premiumInput = document.getElementById("premiumInput");
+    const draftDateInput = document.getElementById("draftDateInput");
+
+    const callTimer = document.getElementById("call-timer");
+
+    const advisorDisplayName = document.getElementById("advisor-display-name");
+    const advisorDisplayPhone = document.getElementById("advisor-display-phone");
+    const advisorDisplayNpn = document.getElementById("advisor-display-npn");
+
+    const totalCallsEl = document.getElementById("total-calls");
+    const transfersEl = document.getElementById("transfers-count");
+    const salesEl = document.getElementById("sales-count");
+    const closeRateEl = document.getElementById("close-rate");
+    const salesGoalProgressEl = document.getElementById("sales-goal-progress");
+    const salesGoalTargetEl = document.getElementById("sales-goal-target");
+    const apSubmittedEl = document.getElementById("ap-submitted");
+    const apGoalTargetEl = document.getElementById("ap-goal-target");
+
+    const soldCountEl = document.getElementById("sold-count");
+    const callbackCountEl = document.getElementById("callback-count");
+    const notInterestedCountEl = document.getElementById("not-interested-count");
+    const medicalDQCountEl = document.getElementById("medical-dq-count");
+
+    const sectionNumber = document.getElementById("section-number");
+    const sectionTitle = document.getElementById("section-title");
+    const qaBadge = document.getElementById("qa-badge");
+    const scriptLines = document.getElementById("script-lines");
+    const promptGoal = document.getElementById("prompt-goal");
+    const promptNotes = document.getElementById("prompt-notes");
+
+    const progressText = document.getElementById("progress-text");
+    const progressBar = document.getElementById("progress-bar");
+
+    const relationHelperPanel = document.getElementById("relation-helper-panel");
+    const relationHelperContent = document.getElementById("relation-helper-content");
+
+    const currentOutcomeEl = document.getElementById("current-outcome");
+    const callNotes = document.getElementById("call-notes");
+
+    const markTransferButton = document.getElementById("mark-transfer-button");
+    const markSaleButton = document.getElementById("mark-sale-button");
+
+    const outcomeSoldButton = document.getElementById("outcome-sold-button");
+    const outcomeCallbackButton = document.getElementById("outcome-callback-button");
+    const outcomeNotInterestedButton = document.getElementById("outcome-not-interested-button");
+    const outcomeMedicalDQButton = document.getElementById("outcome-medical-dq-button");
+
+    const backButton = document.getElementById("back-button");
+    const nextButton = document.getElementById("next-button");
+    const startCallButton = document.getElementById("start-call-button");
+    const newCallButton = document.getElementById("new-call-button");
+
+    const toggleShortcutsButton = document.getElementById("toggle-shortcuts-button");
+    const toggleObjectionsButton = document.getElementById("toggle-objections-button");
+    const shortcutsPanel = document.getElementById("shortcuts-panel");
+    const objectionsPanel = document.getElementById("objections-panel");
+
+    const objectionSearch = document.getElementById("objection-search");
+    const objectionResults = document.getElementById("objection-results");
+    const selectedRebuttalTitle = document.getElementById("selected-rebuttal-title");
+    const selectedRebuttalBody = document.getElementById("selected-rebuttal-body");
+
+    const settingsModal = document.getElementById("settings-modal");
+    const openSettingsButton = document.getElementById("open-settings-button");
+    const closeSettingsButton = document.getElementById("close-settings-button");
+    const saveSettingsButton = document.getElementById("save-settings-button");
+    const settingsAdvisorName = document.getElementById("settings-advisor-name");
+    const settingsAdvisorPhone = document.getElementById("settings-advisor-phone");
+    const settingsAdvisorNpn = document.getElementById("settings-advisor-npn");
+    const settingsSalesGoal = document.getElementById("settings-sales-goal");
+    const settingsApGoal = document.getElementById("settings-ap-goal");
+
+    if (clientNameInput) clientNameInput.value = sessionState.clientName;
+    if (clientStateInput) clientStateInput.value = sessionState.clientState;
+    if (beneficiaryNameInput) beneficiaryNameInput.value = sessionState.beneficiaryName;
+    if (premiumInput) premiumInput.value = sessionState.premium;
+    if (draftDateInput) draftDateInput.value = sessionState.draftDate;
+    if (callNotes) callNotes.value = sessionState.notes;
+
+    function formatTime(totalSeconds) {
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    }
+
+    function updateTimerDisplay() {
+      if (callTimer) {
+        callTimer.textContent = formatTime(timerSeconds);
+      }
+    }
+
+    function stopTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    function resetTimer() {
+      stopTimer();
+      timerSeconds = 0;
+      updateTimerDisplay();
+    }
+
+    function startTimer() {
+      stopTimer();
+      timerSeconds = 0;
+      updateTimerDisplay();
+
+      timerInterval = window.setInterval(() => {
+        timerSeconds += 1;
+        updateTimerDisplay();
+      }, 1000);
+    }
+
+    function updateSettingsUI() {
+      if (advisorDisplayName) advisorDisplayName.textContent = settings.advisorName;
+      if (advisorDisplayPhone) advisorDisplayPhone.textContent = settings.advisorPhone;
+      if (advisorDisplayNpn) advisorDisplayNpn.textContent = settings.advisorNPN;
+
+      if (salesGoalTargetEl) salesGoalTargetEl.textContent = String(settings.dailySalesGoal);
+      if (apGoalTargetEl) apGoalTargetEl.textContent = formatCurrency(settings.apGoal);
+
+      if (settingsAdvisorName) settingsAdvisorName.value = settings.advisorName;
+      if (settingsAdvisorPhone) settingsAdvisorPhone.value = settings.advisorPhone;
+      if (settingsAdvisorNpn) settingsAdvisorNpn.value = settings.advisorNPN;
+      if (settingsSalesGoal) settingsSalesGoal.value = String(settings.dailySalesGoal);
+      if (settingsApGoal) settingsApGoal.value = String(settings.apGoal);
+    }
+
+    function updateMetrics() {
+      if (totalCallsEl) totalCallsEl.textContent = String(stats.totalCalls);
+      if (transfersEl) transfersEl.textContent = String(stats.transfers);
+      if (salesEl) salesEl.textContent = String(stats.sales);
+      if (salesGoalProgressEl) salesGoalProgressEl.textContent = String(stats.sales);
+      if (apSubmittedEl) apSubmittedEl.textContent = formatCurrency(stats.apSubmitted);
+
+      if (soldCountEl) soldCountEl.textContent = String(stats.sold);
+      if (callbackCountEl) callbackCountEl.textContent = String(stats.callback);
+      if (notInterestedCountEl) notInterestedCountEl.textContent = String(stats.notInterested);
+      if (medicalDQCountEl) medicalDQCountEl.textContent = String(stats.medicalDQ);
+
+      const closeRate =
+        stats.transfers > 0 ? ((stats.sales / stats.transfers) * 100).toFixed(1) : "0";
+
+      if (closeRateEl) closeRateEl.textContent = `${closeRate}%`;
+    }
+
+    function updateOutcomeDisplay() {
+      if (currentOutcomeEl) {
+        currentOutcomeEl.textContent = sessionState.outcome || "None";
+      }
+    }
+
+    function syncCountedApWithPremium() {
+      if (!sessionState.saleCounted) return;
+
+      const newAnnualPremium = getAnnualPremium();
+      const difference = newAnnualPremium - sessionState.countedAp;
+
+      if (difference !== 0) {
+        stats.apSubmitted += difference;
+        sessionState.countedAp = newAnnualPremium;
+        saveStats();
+        saveSession();
+        updateMetrics();
+      }
+    }
+
+    function getTokens() {
+      return {
+        ClientName: clientNameInput?.value.trim() || "Client Name",
+        ClientState: clientStateInput?.value.trim().toUpperCase() || "Client State",
+        BeneficiaryName: beneficiaryNameInput?.value.trim() || "Beneficiary Name",
+        AdvisorName: settings.advisorName || "Advisor Name",
+        AdvisorPhone: settings.advisorPhone || "Advisor Phone",
+        AdvisorNPN: settings.advisorNPN || "Advisor NPN",
+        Premium: premiumInput?.value.trim() || "Premium",
+        DraftDate: draftDateInput?.value.trim() || "Draft Date"
+      };
+    }
+
+    function applyTokens(text, tokens) {
+      return text
+        .replaceAll("[ClientName]", tokens.ClientName)
+        .replaceAll("[ClientState]", tokens.ClientState)
+        .replaceAll("[BeneficiaryName]", tokens.BeneficiaryName)
+        .replaceAll("[AdvisorName]", tokens.AdvisorName)
+        .replaceAll("[AdvisorPhone]", tokens.AdvisorPhone)
+        .replaceAll("[AdvisorNPN]", tokens.AdvisorNPN)
+        .replaceAll("[Premium]", tokens.Premium)
+        .replaceAll("[DraftDate]", tokens.DraftDate);
+    }
+
+    function updateProgress() {
+      const total = scriptSections.length;
+      const currentIndex = scriptSections.findIndex((item) => item.id === currentSection.id);
+      const current = currentIndex + 1;
+      const percent = Math.max(4, (current / total) * 100);
+
+      if (progressText) progressText.textContent = `${current} / ${total}`;
+      if (progressBar) progressBar.style.width = `${percent}%`;
+    }
+
+    function updatePromptNotes(section) {
+      if (!promptNotes) return;
+
+      promptNotes.innerHTML = "";
+
+      const notes = section.prompt?.notes || [];
+
+      if (!notes.length) {
+        const p = document.createElement("p");
+        p.textContent = "No prompt notes for this section.";
+        promptNotes.appendChild(p);
+        return;
+      }
+
+      notes.forEach((note) => {
+        const p = document.createElement("p");
+        p.textContent = `• ${note}`;
+        promptNotes.appendChild(p);
+      });
+    }
+
+    function getFamilySection() {
+      return scriptSections.find((item) => item.id === 6);
+    }
+
+    function updateRelationHelper() {
+      if (!relationHelperPanel || !relationHelperContent) return;
+
+      const shouldShow = currentSection.id === 5 || currentSection.id === 6;
+
+      if (!shouldShow) {
+        relationHelperPanel.classList.add("hidden");
+        return;
+      }
+
+      relationHelperPanel.classList.remove("hidden");
+
+      const familySection = getFamilySection();
+      const relationPrompts = familySection?.prompt?.relationPrompts || {};
+      const selectedKey = sessionState.relationType || "generic";
+      const prompts = relationPrompts[selectedKey] || relationPrompts.generic || [];
+
+      relationHelperContent.innerHTML = "";
+
+      if (!prompts.length) {
+        const p = document.createElement("p");
+        p.textContent = "Select a relationship type to load the prompt guidance.";
+        relationHelperContent.appendChild(p);
+        return;
+      }
+
+      prompts.forEach((line) => {
+        const p = document.createElement("p");
+        p.textContent = `• ${applyTokens(line, getTokens())}`;
+        relationHelperContent.appendChild(p);
+      });
+    }
+
+    function getRenderableScript(section) {
+      const tokens = getTokens();
+
+      if (section.id !== 6) {
+        return section.script.map((line) => applyTokens(line, tokens));
+      }
+
+      const relationPrompts = section.prompt?.relationPrompts || {};
+      const selectedKey = sessionState.relationType || "generic";
+      const selectedLines = relationPrompts[selectedKey] || relationPrompts.generic || [];
+
+      const baseTop = section.script.slice(0, 5);
+      const baseBottom = section.script.slice(5);
+
+      return [...baseTop, ...selectedLines, ...baseBottom].map((line) => applyTokens(line, tokens));
+    }
+
+    function keepActiveSidebarItemVisible() {
+      const activeButton = document.querySelector(".section-button.sidebar-button-active");
+      if (!activeButton || !sidebarNav) return;
+
+      activeButton.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
+    }
+
+    function renderSection(section) {
+      currentSection = section;
+
+      if (sectionNumber) sectionNumber.textContent = `Section ${section.id}`;
+      if (sectionTitle) sectionTitle.textContent = section.title;
+      if (promptGoal) promptGoal.textContent = section.prompt.goal;
+
+      if (qaBadge) {
+        if (section.qaRequired) {
+          qaBadge.classList.remove("hidden");
+        } else {
+          qaBadge.classList.add("hidden");
+        }
+      }
+
+      if (scriptLines) {
+        scriptLines.innerHTML = "";
+
+        getRenderableScript(section).forEach((line) => {
+          const p = document.createElement("p");
+          p.textContent = line;
+          scriptLines.appendChild(p);
+        });
+      }
+
+      sectionButtons.forEach((button) => {
+        const isActive = Number(button.dataset.sectionId) === section.id;
+
+        button.classList.remove("sidebar-button-active", "sidebar-button-idle");
+
+        if (isActive) {
+          button.classList.add("sidebar-button-active");
+        } else {
+          button.classList.add("sidebar-button-idle");
+        }
+      });
+
+      updatePromptNotes(section);
+      updateRelationHelper();
+      updateProgress();
+      keepActiveSidebarItemVisible();
+      saveSession();
+    }
+
+    function goToAdjacentSection(direction) {
+      const currentIndex = scriptSections.findIndex((section) => section.id === currentSection.id);
+      if (currentIndex === -1) return;
+
+      const nextIndex = currentIndex + direction;
+      if (nextIndex < 0 || nextIndex >= scriptSections.length) return;
+
+      renderSection(scriptSections[nextIndex]);
+    }
+
+    function startCall() {
+      if (!sessionState.started) {
+        stats.totalCalls += 1;
+        sessionState.started = true;
+        saveStats();
+        saveSession();
+        updateMetrics();
+      }
+
+      startTimer();
+      clientNameInput?.focus();
+    }
+
+    function clearCallSession() {
+      sessionState = createFreshSession();
+
+      if (clientNameInput) clientNameInput.value = "";
+      if (clientStateInput) clientStateInput.value = "";
+      if (beneficiaryNameInput) beneficiaryNameInput.value = "";
+      if (premiumInput) premiumInput.value = "";
+      if (draftDateInput) draftDateInput.value = "";
+      if (callNotes) callNotes.value = "";
+
+      resetTimer();
+      updateOutcomeDisplay();
+      renderSection(scriptSections[0]);
+      saveSession();
+      clientNameInput?.focus();
+    }
+
+    function addTransfer() {
+      if (sessionState.transferCounted) return;
+
+      stats.transfers += 1;
+      sessionState.transferCounted = true;
+
+      saveStats();
+      saveSession();
+      updateMetrics();
+    }
+
+    function addSale(countFromOutcome = false) {
+      if (sessionState.saleCounted) return;
+
+      const annualPremium = getAnnualPremium();
+
+      stats.sales += 1;
+      stats.apSubmitted += annualPremium;
+
+      sessionState.saleCounted = true;
+      sessionState.saleFromOutcome = countFromOutcome;
+      sessionState.countedAp = annualPremium;
+
+      saveStats();
+      saveSession();
+      updateMetrics();
+    }
+
+    function adjustOutcomeCounts(previousOutcome, nextOutcome) {
+      if (previousOutcome === "Sold") stats.sold = Math.max(0, stats.sold - 1);
+      if (previousOutcome === "Callback") stats.callback = Math.max(0, stats.callback - 1);
+      if (previousOutcome === "Not Interested") stats.notInterested = Math.max(0, stats.notInterested - 1);
+      if (previousOutcome === "Medical DQ") stats.medicalDQ = Math.max(0, stats.medicalDQ - 1);
+
+      if (nextOutcome === "Sold") stats.sold += 1;
+      if (nextOutcome === "Callback") stats.callback += 1;
+      if (nextOutcome === "Not Interested") stats.notInterested += 1;
+      if (nextOutcome === "Medical DQ") stats.medicalDQ += 1;
+    }
+
+    function setOutcome(nextOutcome) {
+      const previousOutcome = sessionState.outcome;
+
+      if (previousOutcome === nextOutcome) return;
+
+      adjustOutcomeCounts(previousOutcome, nextOutcome);
+
+      if (previousOutcome === "Sold" && sessionState.saleFromOutcome) {
+        stats.sales = Math.max(0, stats.sales - 1);
+        stats.apSubmitted = Math.max(0, stats.apSubmitted - sessionState.countedAp);
+        sessionState.saleCounted = false;
+        sessionState.saleFromOutcome = false;
+        sessionState.countedAp = 0;
+      }
+
+      sessionState.outcome = nextOutcome;
+
+      if (nextOutcome === "Sold" && !sessionState.saleCounted) {
+        addSale(true);
+      } else {
+        saveStats();
+        saveSession();
+        updateMetrics();
+      }
+
+      updateOutcomeDisplay();
+    }
+
+    function renderRebuttalList(items) {
+      if (!objectionResults) return;
+
+      objectionResults.innerHTML = "";
+
+      if (!items.length) {
+        const empty = document.createElement("div");
+        empty.className = "rounded-lg border border-gray-800 bg-gray-950 px-3 py-3 text-sm text-gray-400";
+        empty.textContent = "No matching objections found.";
+        objectionResults.appendChild(empty);
+        return;
+      }
+
+      items.forEach((item) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className =
+          "rebuttal-result-button block w-full rounded-lg border border-gray-800 bg-gray-950 px-3 py-2 text-left text-sm text-gray-200 hover:bg-gray-800";
+        button.dataset.rebuttalId = String(item.id);
+
+        const title = document.createElement("div");
+        title.className = "font-semibold";
+        title.textContent = item.title;
+
+        const category = document.createElement("div");
+        category.className = "mt-1 text-xs text-gray-400";
+        category.textContent = item.category;
+
+        button.appendChild(title);
+        button.appendChild(category);
+
+        button.addEventListener("click", () => selectRebuttal(item.id));
+
+        objectionResults.appendChild(button);
+      });
+    }
+
+    function selectRebuttal(rebuttalId) {
+      const rebuttal = rebuttals.find((item) => item.id === Number(rebuttalId));
+      if (!rebuttal) return;
+
+      if (selectedRebuttalTitle) {
+        selectedRebuttalTitle.textContent = rebuttal.title;
+      }
+
+      if (selectedRebuttalBody) {
+        selectedRebuttalBody.textContent = applyTokens(rebuttal.response, getTokens());
+      }
+    }
+
+    function filterRebuttals(query) {
+      const normalized = query.trim().toLowerCase();
+
+      if (!normalized) {
+        renderRebuttalList(rebuttals.slice(0, 10));
+        return;
+      }
+
+      const results = rebuttals.filter((item) => {
+        const haystack = [item.title, item.category, item.response, ...(item.keywords || [])]
+          .join(" ")
+          .toLowerCase();
+
+        return haystack.includes(normalized);
+      });
+
+      renderRebuttalList(results.slice(0, 20));
+    }
+
+    function isTypingInField(target) {
+      if (!(target instanceof HTMLElement)) return false;
+      const tag = target.tagName.toLowerCase();
+      return tag === "input" || tag === "textarea" || target.isContentEditable;
+    }
+
+    function openSettings() {
+      settingsModal?.classList.remove("hidden");
+      settingsModal?.classList.add("flex");
+    }
+
+    function closeSettings() {
+      settingsModal?.classList.add("hidden");
+      settingsModal?.classList.remove("flex");
+    }
+
+    function saveSettingsFromForm() {
+      settings = {
+        advisorName: settingsAdvisorName?.value.trim() || "Nick Arias",
+        advisorPhone: settingsAdvisorPhone?.value.trim() || "YOUR_PHONE",
+        advisorNPN: settingsAdvisorNpn?.value.trim() || "YOUR_NPN",
+        dailySalesGoal: Number(settingsSalesGoal?.value || 8),
+        apGoal: Number(settingsApGoal?.value || 3000)
+      };
+
+      saveSettings();
+      updateSettingsUI();
+      renderSection(currentSection);
+      closeSettings();
+    }
+
+    sectionButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const sectionId = Number(button.dataset.sectionId);
+        const section = scriptSections.find((item) => item.id === sectionId);
+        if (section) renderSection(section);
+      });
+    });
+
+    relationButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        sessionState.relationType = button.dataset.relationType || "generic";
+        updateRelationHelper();
+        if (currentSection.id === 6) {
+          renderSection(currentSection);
+        } else {
+          saveSession();
+        }
+      });
+    });
+
+    favoriteRebuttalButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        selectRebuttal(button.dataset.rebuttalId);
+      });
+    });
+
+    [clientNameInput, clientStateInput, beneficiaryNameInput, draftDateInput].forEach((input) => {
+      input?.addEventListener("input", () => {
+        renderSection(currentSection);
+        saveSession();
+      });
+    });
+
+    premiumInput?.addEventListener("input", () => {
+      syncCountedApWithPremium();
+      renderSection(currentSection);
+      saveSession();
+    });
+
+    callNotes?.addEventListener("input", () => {
+      saveSession();
+    });
+
+    backButton?.addEventListener("click", () => {
+      goToAdjacentSection(-1);
+    });
+
+    nextButton?.addEventListener("click", () => {
+      goToAdjacentSection(1);
+    });
+
+    startCallButton?.addEventListener("click", () => {
+      startCall();
+    });
+
+    newCallButton?.addEventListener("click", () => {
+      clearCallSession();
+    });
+
+    markTransferButton?.addEventListener("click", () => {
+      addTransfer();
+    });
+
+    markSaleButton?.addEventListener("click", () => {
+      addSale(false);
+    });
+
+    outcomeSoldButton?.addEventListener("click", () => {
+      setOutcome("Sold");
+    });
+
+    outcomeCallbackButton?.addEventListener("click", () => {
+      setOutcome("Callback");
+    });
+
+    outcomeNotInterestedButton?.addEventListener("click", () => {
+      setOutcome("Not Interested");
+    });
+
+    outcomeMedicalDQButton?.addEventListener("click", () => {
+      setOutcome("Medical DQ");
+    });
+
+    objectionSearch?.addEventListener("input", () => {
+      filterRebuttals(objectionSearch.value);
+    });
+
+    toggleShortcutsButton?.addEventListener("click", () => {
+      shortcutsPanel?.classList.toggle("hidden");
+    });
+
+    toggleObjectionsButton?.addEventListener("click", () => {
+      objectionsPanel?.classList.toggle("hidden");
+    });
+
+    openSettingsButton?.addEventListener("click", () => {
+      openSettings();
+    });
+
+    closeSettingsButton?.addEventListener("click", () => {
+      closeSettings();
+    });
+
+    saveSettingsButton?.addEventListener("click", () => {
+      saveSettingsFromForm();
+    });
+
+    settingsModal?.addEventListener("click", (event) => {
+      if (event.target === settingsModal) {
+        closeSettings();
+      }
+    });
+
+    window.addEventListener("keydown", (event) => {
+      const typing = isTypingInField(event.target);
+
+      if (event.ctrlKey && event.key === "Enter") {
+        event.preventDefault();
+        startCall();
+        return;
+      }
+
+      if (event.ctrlKey && event.key.toLowerCase() === "n") {
+        event.preventDefault();
+        clearCallSession();
+        return;
+      }
+
+      if (event.ctrlKey && event.key.toLowerCase() === "t") {
+        event.preventDefault();
+        addTransfer();
+        return;
+      }
+
+      if (event.ctrlKey && event.key.toLowerCase() === "s") {
+        event.preventDefault();
+        addSale(false);
+        return;
+      }
+
+      if (event.altKey && event.key.toLowerCase() === "c") {
+        event.preventDefault();
+        clientNameInput?.focus();
+        return;
+      }
+
+      if (event.altKey && event.key.toLowerCase() === "b") {
+        event.preventDefault();
+        beneficiaryNameInput?.focus();
+        return;
+      }
+
+      if (!typing && event.key === "ArrowRight") {
+        event.preventDefault();
+        goToAdjacentSection(1);
+        return;
+      }
+
+      if (!typing && event.key === "ArrowLeft") {
+        event.preventDefault();
+        goToAdjacentSection(-1);
+      }
+    });
+
+    updateSettingsUI();
+    updateTimerDisplay();
+    updateMetrics();
+    updateOutcomeDisplay();
+    renderRebuttalList(rebuttals.slice(0, 10));
+    selectRebuttal(1);
+    renderSection(currentSection);
+  </script>
 </Layout>

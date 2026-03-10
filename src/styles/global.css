@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+  cursor: pointer;
+}
+
+input,
+textarea,
+button,
+select {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid rgb(59 130 246);
+  outline-offset: 2px;
+}
+
+.btn {
+  border-radius: 0.5rem;
+  border: 1px solid rgb(55 65 81);
+  background-color: rgb(17 24 39);
+  padding: 0.6rem 1rem;
+  font-size: 0.875rem;
+  color: white;
+  transition: 150ms ease;
+}
+
+.btn:hover {
+  background-color: rgb(31 41 55);
+}
+
+.btn-green {
+  border-radius: 0.5rem;
+  background-color: rgb(5 150 105);
+  padding: 0.6rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  transition: 150ms ease;
+}
+
+.btn-green:hover {
+  background-color: rgb(16 185 129);
+}
+
+.btn-red {
+  border-radius: 0.5rem;
+  background-color: rgb(225 29 72);
+  padding: 0.6rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  transition: 150ms ease;
+}
+
+.btn-red:hover {
+  background-color: rgb(244 63 94);
+}
+
+.btn-blue {
+  border-radius: 0.5rem;
+  background-color: rgb(2 132 199);
+  padding: 0.6rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  transition: 150ms ease;
+}
+
+.btn-blue:hover {
+  background-color: rgb(14 165 233);
+}
+
+.btn-violet {
+  border-radius: 0.5rem;
+  background-color: rgb(109 40 217);
+  padding: 0.6rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  transition: 150ms ease;
+}
+
+.btn-violet:hover {
+  background-color: rgb(124 58 237);
+}
+
+.metric-pill {
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.panel {
+  border: 1px solid rgb(31 41 55);
+  border-radius: 1rem;
+  background-color: rgb(17 24 39);
+}
+
+.panel-title {
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(156 163 175);
+}
+
+.form-input {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(55 65 81);
+  background-color: rgb(31 41 55);
+  padding: 0.6rem 0.75rem;
+  font-size: 0.875rem;
+  color: white;
+}
+
+.form-input::placeholder {
+  color: rgb(107 114 128);
+}
+
+.form-label {
+  margin-bottom: 0.35rem;
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgb(156 163 175);
+}
+
+.sidebar-button-active {
+  background-color: rgb(55 65 81);
+  color: white;
+}
+
+.sidebar-button-idle {
+  color: rgb(209 213 219);
+}
+
+.sidebar-button-idle:hover {
+  background-color: rgb(31 41 55);
+  color: white;
+}

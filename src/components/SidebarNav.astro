@@ -1,0 +1,42 @@
+---
+import { scriptSections } from "../data/scriptSections";
+
+const currentSectionId = 1;
+---
+
+<aside class="w-full border-r border-gray-800 bg-gray-900 text-white lg:w-72">
+  <div class="border-b border-gray-800 px-4 py-4">
+    <h2 class="text-lg font-semibold">Script Sections</h2>
+  </div>
+
+  <nav class="p-2">
+    <ul class="space-y-1">
+      {scriptSections.map((section) => {
+        const isActive = section.id === currentSectionId;
+
+        return (
+          <li>
+            <button
+              class:list={[
+                "w-full rounded-md px-3 py-3 text-left text-sm transition",
+                isActive
+                  ? "bg-gray-700 text-white"
+                  : "text-gray-300 hover:bg-gray-800 hover:text-white"
+              ]}
+            >
+              <span class="block font-medium">
+                {section.id}. {section.title}
+              </span>
+
+              {section.qaRequired && (
+                <span class="mt-1 inline-block text-xs text-amber-400">
+                  Verbatim Required
+                </span>
+              )}
+            </button>
+          </li>
+        );
+      })}
+    </ul>
+  </nav>
+</aside>
