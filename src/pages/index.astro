@@ -62,8 +62,8 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       <div class="border-b border-gray-800 px-8 py-6">
         <div class="flex flex-col gap-4">
           <div class="flex flex-wrap items-center gap-3">
-            <button id="start-call-button" type="button" class="btn-green">Start Call</button>
-            <button id="new-call-button" type="button" class="btn-red">New Call</button>
+            <button id="new-call-button" type="button" class="btn-blue">New Call</button>
+            <button id="outcome-sold-button" type="button" class="btn-green">Sold</button>
             <button id="toggle-shortcuts-button" type="button" class="btn">Shortcuts</button>
             <button id="toggle-objections-button" type="button" class="btn">Objections</button>
             <button id="open-settings-button" type="button" class="btn">Settings</button>
@@ -93,17 +93,213 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         </div>
       </div>
 
-      <div class="grid gap-6 p-8 2xl:grid-cols-[minmax(0,1fr)_420px]">
-        <div class="panel p-8">
-          <h3 class="panel-title">Read Aloud Script</h3>
-          <div id="script-lines" class="space-y-5 text-lg leading-8 text-gray-100">
-            {firstSection.script.map((line) => (
-              <p>{line}</p>
-            ))}
+      <div class="grid gap-6 p-8 lg:grid-cols-[minmax(0,1fr)_380px]">
+        <div class="space-y-6">
+          <div id="branch-panel" class="panel hidden p-6">
+            <div class="space-y-4">
+              <div>
+                <h3 id="branch-panel-title" class="panel-title !mb-2">Conversation Path</h3>
+                <p id="branch-panel-text" class="text-sm text-gray-300">
+                  Choose the direction that matches the conversation.
+                </p>
+              </div>
+
+              <div id="branch-button-group" class="flex flex-wrap gap-3"></div>
+
+              <div id="branch-helper-box" class="hidden rounded-xl border border-gray-800 bg-gray-950 p-4">
+                <p class="text-xs uppercase tracking-wide text-gray-500">Current Direction</p>
+                <div id="branch-helper-content" class="mt-3 space-y-2 text-sm text-gray-300"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel p-8">
+            <h3 class="panel-title">Read Aloud Script</h3>
+            <div id="script-lines" class="space-y-5 text-lg leading-8 text-gray-100">
+              {firstSection.script.map((line) => (
+                <p>{line}</p>
+              ))}
+            </div>
+          </div>
+
+          <div id="pricing-action-panel" class="panel hidden p-6">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <h3 class="panel-title !mb-2">Pricing Workspace</h3>
+                <p class="text-sm text-gray-300">
+                  Keep pricing, coverage, and rebuttals beside the script while you present numbers.
+                </p>
+              </div>
+            </div>
+
+            <div id="quote-workspace-group" class="mt-5 space-y-3">
+              <div class="space-y-3">
+                <div class="quote-card" data-quote-card="1">
+                  <div class="flex items-center justify-between gap-3">
+                    <label for="quote-option-1" class="form-label !mb-0">Option 1</label>
+                    <button
+                      type="button"
+                      class="quote-chip quote-chip-idle"
+                      data-recommend-quote="1"
+                    >
+                      Recommend
+                    </button>
+                  </div>
+
+                  <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                    <div>
+                      <label for="coverage-option-1" class="form-label">Coverage</label>
+                      <input
+                        id="coverage-option-1"
+                        type="text"
+                        placeholder="10000"
+                        class="form-input"
+                      />
+                    </div>
+
+                    <div>
+                      <label for="quote-option-1" class="form-label">Premium</label>
+                      <input
+                        id="quote-option-1"
+                        type="text"
+                        placeholder="55.00"
+                        class="form-input"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="mt-3 flex justify-end">
+                    <button type="button" class="btn" data-use-quote="1">Use As Premium</button>
+                  </div>
+                </div>
+
+                <div class="quote-card" data-quote-card="2">
+                  <div class="flex items-center justify-between gap-3">
+                    <label for="quote-option-2" class="form-label !mb-0">Option 2</label>
+                    <button
+                      type="button"
+                      class="quote-chip quote-chip-idle"
+                      data-recommend-quote="2"
+                    >
+                      Recommend
+                    </button>
+                  </div>
+
+                  <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                    <div>
+                      <label for="coverage-option-2" class="form-label">Coverage</label>
+                      <input
+                        id="coverage-option-2"
+                        type="text"
+                        placeholder="15000"
+                        class="form-input"
+                      />
+                    </div>
+
+                    <div>
+                      <label for="quote-option-2" class="form-label">Premium</label>
+                      <input
+                        id="quote-option-2"
+                        type="text"
+                        placeholder="69.00"
+                        class="form-input"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="mt-3 flex justify-end">
+                    <button type="button" class="btn" data-use-quote="2">Use As Premium</button>
+                  </div>
+                </div>
+
+                <div class="quote-card" data-quote-card="3">
+                  <div class="flex items-center justify-between gap-3">
+                    <label for="quote-option-3" class="form-label !mb-0">Option 3</label>
+                    <button
+                      type="button"
+                      class="quote-chip quote-chip-idle"
+                      data-recommend-quote="3"
+                    >
+                      Recommend
+                    </button>
+                  </div>
+
+                  <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                    <div>
+                      <label for="coverage-option-3" class="form-label">Coverage</label>
+                      <input
+                        id="coverage-option-3"
+                        type="text"
+                        placeholder="20000"
+                        class="form-input"
+                      />
+                    </div>
+
+                    <div>
+                      <label for="quote-option-3" class="form-label">Premium</label>
+                      <input
+                        id="quote-option-3"
+                        type="text"
+                        placeholder="82.00"
+                        class="form-input"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="mt-3 flex justify-end">
+                    <button type="button" class="btn" data-use-quote="3">Use As Premium</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rounded-xl border border-gray-800 bg-gray-950 p-4">
+                <p class="text-xs uppercase tracking-wide text-gray-500">Recommended Quote</p>
+                <p id="recommended-quote-display" class="mt-2 text-sm text-gray-200">
+                  No recommendation selected yet.
+                </p>
+              </div>
+            </div>
+
+            <div id="pricing-objections-group" class="mt-5">
+              <p class="text-xs uppercase tracking-wide text-gray-500">Quick Objections</p>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <button type="button" class="quick-objection-button" data-rebuttal-id="1">
+                  Can't Afford It
+                </button>
+                <button type="button" class="quick-objection-button" data-rebuttal-id="11">
+                  Need To Think
+                </button>
+                <button type="button" class="quick-objection-button" data-rebuttal-id="16">
+                  Talk To Spouse
+                </button>
+                <button type="button" class="quick-objection-button" data-rebuttal-id="21">
+                  Has Savings
+                </button>
+                <button type="button" class="quick-objection-button" data-rebuttal-id="24">
+                  Family Will Pay
+                </button>
+                <button type="button" class="quick-objection-button" data-rebuttal-id="12">
+                  Call Back Later
+                </button>
+              </div>
+            </div>
+
+            <div class="mt-5 rounded-xl border border-gray-800 bg-gray-950 p-4">
+              <p class="text-xs uppercase tracking-wide text-gray-500">Selected Rebuttal</p>
+              <div id="inline-selected-rebuttal-title" class="mt-3 text-sm font-semibold text-white">
+                Select an objection
+              </div>
+              <div
+                id="inline-selected-rebuttal-body"
+                class="mt-2 whitespace-pre-wrap text-sm leading-6 text-gray-300"
+              >
+                Your selected rebuttal will appear here.
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="space-y-6">
+        <div class="self-start space-y-6 lg:sticky lg:top-6">
           <div class="panel p-6">
             <h3 class="panel-title">Prompts</h3>
 
@@ -119,9 +315,65 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
                 <p class="text-xs uppercase tracking-wide text-gray-500">Notes</p>
                 <div id="prompt-notes" class="mt-2 space-y-2 text-sm text-gray-300">
                   {(firstSection.prompt.notes || []).map((note) => (
-                    <p>• {note}</p>
+                    <p>- {note}</p>
                   ))}
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="sales-workspace-panel" class="panel hidden p-6">
+            <div>
+              <h3 class="panel-title !mb-2">Sales Workspace</h3>
+              <p id="sales-route-summary" class="text-sm text-gray-300">
+                Medical notes, route details, and enrollment fields will appear here when they apply.
+              </p>
+            </div>
+
+            <div id="medical-summary-group" class="mt-5 hidden">
+              <label for="medical-summary-input" class="form-label">Medical Summary</label>
+              <textarea
+                id="medical-summary-input"
+                rows="3"
+                placeholder="Example: COPD, diabetes, metformin, inhaler"
+                class="form-input"
+              ></textarea>
+              <p class="mt-2 text-xs text-gray-500">
+                Use this to summarize conditions and prescriptions for the medical-response bridge.
+              </p>
+            </div>
+
+            <div id="enrollment-workspace-group" class="mt-5 hidden space-y-4">
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label for="policy-number-input" class="form-label">Policy / Certificate #</label>
+                  <input
+                    id="policy-number-input"
+                    type="text"
+                    placeholder="Policy number"
+                    class="form-input"
+                  />
+                </div>
+
+                <div>
+                  <label for="secondary-phone-input" class="form-label">Secondary Phone</label>
+                  <input
+                    id="secondary-phone-input"
+                    type="text"
+                    placeholder="Secondary phone"
+                    class="form-input"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="beneficiary-phone-input" class="form-label">Beneficiary Phone</label>
+                <input
+                  id="beneficiary-phone-input"
+                  type="text"
+                  placeholder="Beneficiary phone"
+                  class="form-input"
+                />
               </div>
             </div>
           </div>
@@ -137,60 +389,9 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
             ></textarea>
           </div>
 
-          <div id="relation-helper-panel" class="panel hidden p-6">
-            <h3 class="panel-title">Beneficiary Path</h3>
-
-            <p class="mb-4 text-sm text-gray-300">
-              Select the relationship so the next section is tailored correctly.
-            </p>
-
-            <div class="grid grid-cols-2 gap-3">
-              <button type="button" class="relation-button btn" data-relation-type="spouse">Spouse</button>
-              <button type="button" class="relation-button btn" data-relation-type="child">Child</button>
-              <button type="button" class="relation-button btn" data-relation-type="sibling">Sibling</button>
-              <button type="button" class="relation-button btn" data-relation-type="friend">Friend / Other</button>
-              <button type="button" class="relation-button btn col-span-2" data-relation-type="noone">No One</button>
-            </div>
-
-            <div class="mt-4 rounded-xl border border-gray-800 bg-gray-950 p-4">
-              <p class="text-xs uppercase tracking-wide text-gray-500">Selected Path</p>
-              <div id="relation-helper-content" class="mt-3 space-y-2 text-sm text-gray-300">
-                <p>Select a relationship type to load the prompt guidance.</p>
-              </div>
-            </div>
-          </div>
-
           <div class="panel p-6">
             <div class="mb-4 flex items-center justify-between gap-3">
               <h3 class="panel-title !mb-0">Outcome</h3>
-
-              <div class="flex gap-2">
-                <button id="mark-transfer-button" type="button" class="btn-blue">
-                  Add Transfer
-                </button>
-
-                <button id="mark-sale-button" type="button" class="btn-green">
-                  Add Sale
-                </button>
-              </div>
-            </div>
-
-            <div class="grid gap-3">
-              <button id="outcome-sold-button" type="button" class="btn-green">
-                Sold
-              </button>
-
-              <button id="outcome-callback-button" type="button" class="btn-blue">
-                Callback
-              </button>
-
-              <button id="outcome-not-interested-button" type="button" class="btn">
-                Not Interested
-              </button>
-
-              <button id="outcome-medical-dq-button" type="button" class="btn-red">
-                Medical DQ
-              </button>
             </div>
 
             <div class="mt-4 rounded-lg border border-gray-800 bg-gray-950 px-3 py-2 text-sm text-gray-300">
@@ -262,10 +463,8 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
             <div class="space-y-2 text-sm text-gray-200">
               <div><span class="text-gray-400">Right Arrow</span> → Next section</div>
               <div><span class="text-gray-400">Left Arrow</span> → Previous section</div>
-              <div><span class="text-gray-400">Ctrl + Enter</span> → Start Call</div>
               <div><span class="text-gray-400">Ctrl + N</span> → New Call</div>
-              <div><span class="text-gray-400">Ctrl + T</span> → Add Transfer</div>
-              <div><span class="text-gray-400">Ctrl + S</span> → Add Sale</div>
+              <div><span class="text-gray-400">Ctrl + S</span> → Sold</div>
               <div><span class="text-gray-400">Alt + C</span> → Focus Client Name</div>
               <div><span class="text-gray-400">Alt + B</span> → Focus Beneficiary</div>
             </div>
@@ -330,7 +529,19 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
   <script define:vars={{ scriptSections, rebuttals }}>
     const SETTINGS_STORAGE_KEY = "legacy_dashboard_settings_v2";
     const STATS_STORAGE_KEY = "legacy_dashboard_stats_v7";
-    const SESSION_STORAGE_KEY = "legacy_dashboard_session_v4";
+    const SESSION_STORAGE_KEY = "legacy_dashboard_session_v5";
+
+    function createEmptyBranchSelections() {
+      return {
+        coverageStatus: "",
+        relationType: "",
+        funeralExperience: "",
+        fundingStatus: "",
+        arrangementPreference: "",
+        medicalReview: "",
+        productOutcome: ""
+      };
+    }
 
     function todayKey() {
       const now = new Date();
@@ -374,12 +585,23 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         beneficiaryName: "",
         premium: "",
         draftDate: "",
+        medicalSummary: "",
+        coverageOption1: "",
+        quoteOption1: "",
+        coverageOption2: "",
+        quoteOption2: "",
+        coverageOption3: "",
+        quoteOption3: "",
+        recommendedQuote: "",
+        policyNumber: "",
+        secondaryPhone: "",
+        beneficiaryPhone: "",
         started: false,
         transferCounted: false,
         saleCounted: false,
         saleFromOutcome: false,
         countedAp: 0,
-        relationType: ""
+        branchSelections: createEmptyBranchSelections()
       };
     }
 
@@ -437,6 +659,10 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
       try {
         const parsed = JSON.parse(raw);
+        const parsedBranchSelections =
+          parsed.branchSelections && typeof parsed.branchSelections === "object"
+            ? parsed.branchSelections
+            : {};
 
         return {
           currentSectionId: Number(parsed.currentSectionId ?? (scriptSections[0]?.id ?? 1)),
@@ -447,12 +673,31 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           beneficiaryName: String(parsed.beneficiaryName ?? ""),
           premium: String(parsed.premium ?? ""),
           draftDate: String(parsed.draftDate ?? ""),
+          medicalSummary: String(parsed.medicalSummary ?? ""),
+          coverageOption1: String(parsed.coverageOption1 ?? ""),
+          quoteOption1: String(parsed.quoteOption1 ?? ""),
+          coverageOption2: String(parsed.coverageOption2 ?? ""),
+          quoteOption2: String(parsed.quoteOption2 ?? ""),
+          coverageOption3: String(parsed.coverageOption3 ?? ""),
+          quoteOption3: String(parsed.quoteOption3 ?? ""),
+          recommendedQuote: String(parsed.recommendedQuote ?? ""),
+          policyNumber: String(parsed.policyNumber ?? ""),
+          secondaryPhone: String(parsed.secondaryPhone ?? ""),
+          beneficiaryPhone: String(parsed.beneficiaryPhone ?? ""),
           started: Boolean(parsed.started ?? false),
           transferCounted: Boolean(parsed.transferCounted ?? false),
           saleCounted: Boolean(parsed.saleCounted ?? false),
           saleFromOutcome: Boolean(parsed.saleFromOutcome ?? false),
           countedAp: Number(parsed.countedAp ?? 0),
-          relationType: String(parsed.relationType ?? "")
+          branchSelections: {
+            coverageStatus: String(parsedBranchSelections.coverageStatus ?? ""),
+            relationType: String(parsedBranchSelections.relationType ?? parsed.relationType ?? ""),
+            funeralExperience: String(parsedBranchSelections.funeralExperience ?? ""),
+            fundingStatus: String(parsedBranchSelections.fundingStatus ?? ""),
+            arrangementPreference: String(parsedBranchSelections.arrangementPreference ?? ""),
+            medicalReview: String(parsedBranchSelections.medicalReview ?? ""),
+            productOutcome: String(parsedBranchSelections.productOutcome ?? "")
+          }
         };
       } catch {
         return createFreshSession();
@@ -479,12 +724,23 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           beneficiaryName: beneficiaryNameInput?.value ?? "",
           premium: premiumInput?.value ?? "",
           draftDate: draftDateInput?.value ?? "",
+          medicalSummary: medicalSummaryInput?.value ?? "",
+          coverageOption1: coverageOption1Input?.value ?? "",
+          quoteOption1: quoteOption1Input?.value ?? "",
+          coverageOption2: coverageOption2Input?.value ?? "",
+          quoteOption2: quoteOption2Input?.value ?? "",
+          coverageOption3: coverageOption3Input?.value ?? "",
+          quoteOption3: quoteOption3Input?.value ?? "",
+          recommendedQuote: sessionState.recommendedQuote,
+          policyNumber: policyNumberInput?.value ?? "",
+          secondaryPhone: secondaryPhoneInput?.value ?? "",
+          beneficiaryPhone: beneficiaryPhoneInput?.value ?? "",
           started: sessionState.started,
           transferCounted: sessionState.transferCounted,
           saleCounted: sessionState.saleCounted,
           saleFromOutcome: sessionState.saleFromOutcome,
           countedAp: sessionState.countedAp,
-          relationType: sessionState.relationType
+          branchSelections: sessionState.branchSelections
         })
       );
     }
@@ -503,6 +759,126 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       return parsePremium(premiumInput?.value) * 12;
     }
 
+    function formatMoneyDisplay(value, fallback = "") {
+      const text = String(value || "").trim();
+      if (!text) return fallback;
+
+      const parsed = Number(text.replace(/[^0-9.]/g, ""));
+      if (!Number.isFinite(parsed) || parsed <= 0) {
+        return text;
+      }
+
+      return formatCurrency(parsed);
+    }
+
+    function formatCoverageDisplay(value, fallback = "") {
+      const text = String(value || "").trim();
+      if (!text) return fallback;
+
+      const parsed = Number(text.replace(/[^0-9.]/g, ""));
+      if (!Number.isFinite(parsed) || parsed <= 0) {
+        return text;
+      }
+
+      return `$${parsed.toLocaleString("en-US", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      })}`;
+    }
+
+    function getClientLastName() {
+      const fullName = clientNameInput?.value.trim() || "";
+      if (!fullName) return "Client";
+
+      const parts = fullName.split(/\s+/).filter(Boolean);
+      return parts.at(-1) || fullName;
+    }
+
+    function getBeneficiaryRelationshipLabel() {
+      const relation = getBranchSelection("relationType");
+
+      if (relation === "spouse") return "spouse";
+      if (relation === "child") return "child";
+      if (relation === "sibling") return "sibling";
+
+      return "beneficiary";
+    }
+
+    function getProductOutcomeMeta() {
+      const productOutcome = getBranchSelection("productOutcome");
+
+      if (productOutcome === "easy-life") {
+        return {
+          label: "EMC Easy Life",
+          carrierName: "EMC National Life",
+          policyLabel: "policy",
+          customerExperiencePhone: "1-866-699-9099"
+        };
+      }
+
+      if (productOutcome === "emc-graded") {
+        return {
+          label: "EMC Graded",
+          carrierName: "EMC National Life",
+          policyLabel: "policy",
+          customerExperiencePhone: "1-866-699-9099"
+        };
+      }
+
+      if (productOutcome === "eternal-legacy") {
+        return {
+          label: "Eternal Legacy",
+          carrierName: "Monitor Life / Foresters Financial",
+          policyLabel: "certificate",
+          customerExperiencePhone: "1-866-699-9099"
+        };
+      }
+
+      return {
+        label: "No Option",
+        carrierName: "Insurance Carrier",
+        policyLabel: "policy",
+        customerExperiencePhone: "1-866-699-9099"
+      };
+    }
+
+    function getQuoteValue(optionNumber) {
+      if (optionNumber === "1") return quoteOption1Input?.value.trim() || "";
+      if (optionNumber === "2") return quoteOption2Input?.value.trim() || "";
+      if (optionNumber === "3") return quoteOption3Input?.value.trim() || "";
+      return "";
+    }
+
+    function getCoverageValue(optionNumber) {
+      if (optionNumber === "1") return coverageOption1Input?.value.trim() || "";
+      if (optionNumber === "2") return coverageOption2Input?.value.trim() || "";
+      if (optionNumber === "3") return coverageOption3Input?.value.trim() || "";
+      return "";
+    }
+
+    function getRecommendedQuoteText() {
+      const recommendedQuote = sessionState.recommendedQuote || "";
+      const quoteValue = getQuoteValue(recommendedQuote);
+      const coverageValue = getCoverageValue(recommendedQuote);
+
+      if (recommendedQuote && quoteValue && coverageValue) {
+        return `Option ${recommendedQuote} at ${formatMoneyDisplay(
+          quoteValue,
+          quoteValue
+        )} for ${formatCoverageDisplay(coverageValue, coverageValue)} in coverage`;
+      }
+
+      if (recommendedQuote && quoteValue) {
+        return `Option ${recommendedQuote} at ${formatMoneyDisplay(quoteValue, quoteValue)}`;
+      }
+
+      if (recommendedQuote) {
+        return `Option ${recommendedQuote}`;
+      }
+
+      return "The middle option";
+    }
+
     let settings = loadSettings();
     let stats = loadStats();
     let sessionState = loadSession();
@@ -516,7 +892,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
     const sectionButtons = document.querySelectorAll(".section-button");
     const sidebarNav = document.getElementById("sidebar-nav");
-    const relationButtons = document.querySelectorAll(".relation-button");
     const favoriteRebuttalButtons = document.querySelectorAll(".favorite-rebuttal-button");
 
     const clientNameInput = document.getElementById("clientName");
@@ -524,6 +899,30 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     const beneficiaryNameInput = document.getElementById("beneficiaryName");
     const premiumInput = document.getElementById("premiumInput");
     const draftDateInput = document.getElementById("draftDateInput");
+    const pricingActionPanel = document.getElementById("pricing-action-panel");
+    const salesWorkspacePanel = document.getElementById("sales-workspace-panel");
+    const salesRouteSummary = document.getElementById("sales-route-summary");
+    const medicalSummaryGroup = document.getElementById("medical-summary-group");
+    const medicalSummaryInput = document.getElementById("medical-summary-input");
+    const quoteWorkspaceGroup = document.getElementById("quote-workspace-group");
+    const coverageOption1Input = document.getElementById("coverage-option-1");
+    const quoteOption1Input = document.getElementById("quote-option-1");
+    const coverageOption2Input = document.getElementById("coverage-option-2");
+    const quoteOption2Input = document.getElementById("quote-option-2");
+    const coverageOption3Input = document.getElementById("coverage-option-3");
+    const quoteOption3Input = document.getElementById("quote-option-3");
+    const recommendedQuoteDisplay = document.getElementById("recommended-quote-display");
+    const recommendQuoteButtons = document.querySelectorAll("[data-recommend-quote]");
+    const useQuoteButtons = document.querySelectorAll("[data-use-quote]");
+    const quoteCards = document.querySelectorAll("[data-quote-card]");
+    const pricingObjectionsGroup = document.getElementById("pricing-objections-group");
+    const quickObjectionButtons = document.querySelectorAll(".quick-objection-button");
+    const inlineSelectedRebuttalTitle = document.getElementById("inline-selected-rebuttal-title");
+    const inlineSelectedRebuttalBody = document.getElementById("inline-selected-rebuttal-body");
+    const enrollmentWorkspaceGroup = document.getElementById("enrollment-workspace-group");
+    const policyNumberInput = document.getElementById("policy-number-input");
+    const secondaryPhoneInput = document.getElementById("secondary-phone-input");
+    const beneficiaryPhoneInput = document.getElementById("beneficiary-phone-input");
 
     const callTimer = document.getElementById("call-timer");
 
@@ -549,14 +948,17 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     const sectionTitle = document.getElementById("section-title");
     const qaBadge = document.getElementById("qa-badge");
     const scriptLines = document.getElementById("script-lines");
+    const branchPanel = document.getElementById("branch-panel");
+    const branchPanelTitle = document.getElementById("branch-panel-title");
+    const branchPanelText = document.getElementById("branch-panel-text");
+    const branchButtonGroup = document.getElementById("branch-button-group");
+    const branchHelperBox = document.getElementById("branch-helper-box");
+    const branchHelperContent = document.getElementById("branch-helper-content");
     const promptGoal = document.getElementById("prompt-goal");
     const promptNotes = document.getElementById("prompt-notes");
 
     const progressText = document.getElementById("progress-text");
     const progressBar = document.getElementById("progress-bar");
-
-    const relationHelperPanel = document.getElementById("relation-helper-panel");
-    const relationHelperContent = document.getElementById("relation-helper-content");
 
     const currentOutcomeEl = document.getElementById("current-outcome");
     const callNotes = document.getElementById("call-notes");
@@ -599,7 +1001,19 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     if (beneficiaryNameInput) beneficiaryNameInput.value = sessionState.beneficiaryName;
     if (premiumInput) premiumInput.value = sessionState.premium;
     if (draftDateInput) draftDateInput.value = sessionState.draftDate;
+    if (medicalSummaryInput) medicalSummaryInput.value = sessionState.medicalSummary;
+    if (coverageOption1Input) coverageOption1Input.value = sessionState.coverageOption1;
+    if (quoteOption1Input) quoteOption1Input.value = sessionState.quoteOption1;
+    if (coverageOption2Input) coverageOption2Input.value = sessionState.coverageOption2;
+    if (quoteOption2Input) quoteOption2Input.value = sessionState.quoteOption2;
+    if (coverageOption3Input) coverageOption3Input.value = sessionState.coverageOption3;
+    if (quoteOption3Input) quoteOption3Input.value = sessionState.quoteOption3;
+    if (policyNumberInput) policyNumberInput.value = sessionState.policyNumber;
+    if (secondaryPhoneInput) secondaryPhoneInput.value = sessionState.secondaryPhone;
+    if (beneficiaryPhoneInput) beneficiaryPhoneInput.value = sessionState.beneficiaryPhone;
     if (callNotes) callNotes.value = sessionState.notes;
+
+    let activeRebuttalId = 1;
 
     function formatTime(totalSeconds) {
       const minutes = Math.floor(totalSeconds / 60);
@@ -627,9 +1041,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     }
 
     function startTimer() {
-      stopTimer();
-      timerSeconds = 0;
-      updateTimerDisplay();
+      if (timerInterval) return;
 
       timerInterval = window.setInterval(() => {
         timerSeconds += 1;
@@ -692,28 +1104,36 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     }
 
     function getTokens() {
+      const productMeta = getProductOutcomeMeta();
+
       return {
         ClientName: clientNameInput?.value.trim() || "Client Name",
+        ClientLastName: getClientLastName(),
         ClientState: clientStateInput?.value.trim().toUpperCase() || "Client State",
         BeneficiaryName: beneficiaryNameInput?.value.trim() || "Beneficiary Name",
+        BeneficiaryRelationship: getBeneficiaryRelationshipLabel(),
         AdvisorName: settings.advisorName || "Advisor Name",
         AdvisorPhone: settings.advisorPhone || "Advisor Phone",
         AdvisorNPN: settings.advisorNPN || "Advisor NPN",
         Premium: premiumInput?.value.trim() || "Premium",
-        DraftDate: draftDateInput?.value.trim() || "Draft Date"
+        DraftDate: draftDateInput?.value.trim() || "Draft Date",
+        MedicalSummary: medicalSummaryInput?.value.trim() || "that medical history",
+        Coverage1: formatCoverageDisplay(coverageOption1Input?.value, "___"),
+        Quote1: formatMoneyDisplay(quoteOption1Input?.value, "___"),
+        Coverage2: formatCoverageDisplay(coverageOption2Input?.value, "___"),
+        Quote2: formatMoneyDisplay(quoteOption2Input?.value, "___"),
+        Coverage3: formatCoverageDisplay(coverageOption3Input?.value, "___"),
+        Quote3: formatMoneyDisplay(quoteOption3Input?.value, "___"),
+        RecommendedQuote: getRecommendedQuoteText(),
+        CarrierName: productMeta.carrierName,
+        PolicyLabel: productMeta.policyLabel,
+        PolicyNumber: policyNumberInput?.value.trim() || "Policy Number",
+        CustomerExperiencePhone: productMeta.customerExperiencePhone
       };
     }
 
     function applyTokens(text, tokens) {
-      return text
-        .replaceAll("[ClientName]", tokens.ClientName)
-        .replaceAll("[ClientState]", tokens.ClientState)
-        .replaceAll("[BeneficiaryName]", tokens.BeneficiaryName)
-        .replaceAll("[AdvisorName]", tokens.AdvisorName)
-        .replaceAll("[AdvisorPhone]", tokens.AdvisorPhone)
-        .replaceAll("[AdvisorNPN]", tokens.AdvisorNPN)
-        .replaceAll("[Premium]", tokens.Premium)
-        .replaceAll("[DraftDate]", tokens.DraftDate);
+      return text.replace(/\[([A-Za-z0-9]+)\]/g, (match, key) => tokens[key] ?? match);
     }
 
     function updateProgress() {
@@ -726,12 +1146,163 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       if (progressBar) progressBar.style.width = `${percent}%`;
     }
 
+    function getBranchConfig(section) {
+      return section.branchControl || null;
+    }
+
+    function getBranchSelection(stateKey) {
+      return sessionState.branchSelections?.[stateKey] || "";
+    }
+
+    function getProductRouteStartSectionId(productOutcome) {
+      if (productOutcome === "easy-life" || productOutcome === "emc-graded") {
+        return 16;
+      }
+
+      if (productOutcome === "eternal-legacy") {
+        return 17;
+      }
+
+      if (productOutcome === "no-option") {
+        return 17;
+      }
+
+      return currentSection.id;
+    }
+
+    function isSectionRelevantForRoute(section) {
+      const productOutcome = getBranchSelection("productOutcome");
+
+      if (!productOutcome) return true;
+
+      if (productOutcome === "easy-life" || productOutcome === "emc-graded") {
+        return section.id !== 18;
+      }
+
+      if (productOutcome === "eternal-legacy") {
+        return section.id !== 16;
+      }
+
+      if (productOutcome === "no-option") {
+        return ![16, 18, 20, 21, 22].includes(section.id);
+      }
+
+      return true;
+    }
+
+    function getSelectedBranchOption(section) {
+      const branch = getBranchConfig(section);
+      if (!branch) return null;
+
+      return branch.options.find((option) => option.value === getBranchSelection(branch.stateKey)) || null;
+    }
+
+    function updateRecommendedQuoteUI() {
+      const recommendedQuote = sessionState.recommendedQuote || "";
+
+      quoteCards.forEach((card) => {
+        const isActive = card instanceof HTMLElement && card.dataset.quoteCard === recommendedQuote;
+        card.classList.toggle("quote-card-active", isActive);
+      });
+
+      recommendQuoteButtons.forEach((button) => {
+        if (!(button instanceof HTMLElement)) return;
+
+        const isActive = button.dataset.recommendQuote === recommendedQuote;
+        button.classList.toggle("quote-chip-active", isActive);
+        button.classList.toggle("quote-chip-idle", !isActive);
+        button.textContent = isActive ? "Recommended" : "Recommend";
+      });
+
+      if (recommendedQuoteDisplay) {
+        recommendedQuoteDisplay.textContent = recommendedQuote
+          ? `${getRecommendedQuoteText()} is marked as the preferred quote.`
+          : "No recommendation selected yet.";
+      }
+    }
+
+    function updateSalesWorkspace(section) {
+      if (
+        !salesWorkspacePanel ||
+        !salesRouteSummary ||
+        !medicalSummaryGroup ||
+        !enrollmentWorkspaceGroup
+      ) {
+        return;
+      }
+
+      const productOutcome = getBranchSelection("productOutcome");
+      const medicalReview = getBranchSelection("medicalReview");
+      const productMeta = getProductOutcomeMeta();
+      const sectionId = section.id;
+      const showWorkspace = sectionId >= 13 && sectionId <= 23;
+
+      if (!showWorkspace) {
+        salesWorkspacePanel.classList.add("hidden");
+        medicalSummaryGroup.classList.add("hidden");
+        enrollmentWorkspaceGroup.classList.add("hidden");
+        return;
+      }
+
+      salesWorkspacePanel.classList.remove("hidden");
+
+      const summaryParts = [];
+
+      if (medicalReview === "medical-history") {
+        summaryParts.push("Medical review: history exists");
+      } else if (medicalReview === "no-history") {
+        summaryParts.push("Medical review: no issues");
+      }
+
+      if (productOutcome) {
+        summaryParts.push(`Product route: ${productMeta.label}`);
+      } else if (sectionId >= 15) {
+        summaryParts.push("Product route: select a route in section 15");
+      }
+
+      if (premiumInput?.value.trim()) {
+        summaryParts.push(`Current premium: ${formatMoneyDisplay(premiumInput.value, premiumInput.value)}`);
+      }
+
+      salesRouteSummary.textContent =
+        summaryParts.join(" | ") ||
+        "Medical notes, route details, and enrollment fields will appear here when they apply.";
+
+      const showMedicalSummary = sectionId >= 13 && sectionId <= 19;
+      const showEnrollment = sectionId >= 22 && sectionId <= 23 && productOutcome !== "no-option";
+
+      medicalSummaryGroup.classList.toggle("hidden", !showMedicalSummary);
+      enrollmentWorkspaceGroup.classList.toggle("hidden", !showEnrollment);
+    }
+
+    function updatePricingActionPanel(section) {
+      if (!pricingActionPanel || !quoteWorkspaceGroup || !pricingObjectionsGroup) {
+        return;
+      }
+
+      const productOutcome = getBranchSelection("productOutcome");
+      const sectionId = section.id;
+      const showPanel = sectionId >= 20 && sectionId <= 21 && productOutcome !== "no-option";
+
+      pricingActionPanel.classList.toggle("hidden", !showPanel);
+      quoteWorkspaceGroup.classList.toggle("hidden", !showPanel);
+      pricingObjectionsGroup.classList.toggle("hidden", !showPanel);
+
+      updateRecommendedQuoteUI();
+    }
+
+    function getPromptNotesList(section) {
+      const selectedOption = getSelectedBranchOption(section);
+
+      return [...(section.prompt?.notes || []), ...(selectedOption?.promptNotes || [])];
+    }
+
     function updatePromptNotes(section) {
       if (!promptNotes) return;
 
       promptNotes.innerHTML = "";
 
-      const notes = section.prompt?.notes || [];
+      const notes = getPromptNotesList(section);
 
       if (!notes.length) {
         const p = document.createElement("p");
@@ -742,63 +1313,109 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
       notes.forEach((note) => {
         const p = document.createElement("p");
-        p.textContent = `• ${note}`;
+        p.textContent = `- ${note}`;
         promptNotes.appendChild(p);
       });
     }
 
-    function getFamilySection() {
-      return scriptSections.find((item) => item.id === 6);
-    }
+    function setBranchSelection(stateKey, value) {
+      sessionState.branchSelections = {
+        ...sessionState.branchSelections,
+        [stateKey]: value
+      };
 
-    function updateRelationHelper() {
-      if (!relationHelperPanel || !relationHelperContent) return;
-
-      const shouldShow = currentSection.id === 5 || currentSection.id === 6;
-
-      if (!shouldShow) {
-        relationHelperPanel.classList.add("hidden");
+      if (stateKey === "productOutcome" && currentSection.id === 15) {
+        const nextSection =
+          scriptSections.find((section) => section.id === getProductRouteStartSectionId(value)) ||
+          currentSection;
+        renderSection(nextSection);
         return;
       }
 
-      relationHelperPanel.classList.remove("hidden");
-
-      const familySection = getFamilySection();
-      const relationPrompts = familySection?.prompt?.relationPrompts || {};
-      const selectedKey = sessionState.relationType || "generic";
-      const prompts = relationPrompts[selectedKey] || relationPrompts.generic || [];
-
-      relationHelperContent.innerHTML = "";
-
-      if (!prompts.length) {
-        const p = document.createElement("p");
-        p.textContent = "Select a relationship type to load the prompt guidance.";
-        relationHelperContent.appendChild(p);
-        return;
-      }
-
-      prompts.forEach((line) => {
-        const p = document.createElement("p");
-        p.textContent = `• ${applyTokens(line, getTokens())}`;
-        relationHelperContent.appendChild(p);
-      });
+      renderSection(currentSection);
     }
 
     function getRenderableScript(section) {
       const tokens = getTokens();
+      const selectedOption = getSelectedBranchOption(section);
+      const replaceBase = Boolean(section.branchControl?.replaceBaseOnSelect && selectedOption);
+      const lines = replaceBase
+        ? [...(selectedOption?.script || [])]
+        : [...(section.script || []), ...(selectedOption?.script || [])];
 
-      if (section.id !== 6) {
-        return section.script.map((line) => applyTokens(line, tokens));
+      return lines.map((line) => applyTokens(line, tokens));
+    }
+
+    function renderBranchPanel(section) {
+      if (
+        !branchPanel ||
+        !branchPanelTitle ||
+        !branchPanelText ||
+        !branchButtonGroup ||
+        !branchHelperBox ||
+        !branchHelperContent
+      ) {
+        return;
       }
 
-      const relationPrompts = section.prompt?.relationPrompts || {};
-      const selectedKey = sessionState.relationType || "generic";
-      const selectedLines = relationPrompts[selectedKey] || relationPrompts.generic || [];
+      const branch = getBranchConfig(section);
 
-      const baseTop = section.script.slice(0, 5);
-      const baseBottom = section.script.slice(5);
+      if (!branch || branch.display === false) {
+        branchPanel.classList.add("hidden");
+        branchButtonGroup.innerHTML = "";
+        branchHelperContent.innerHTML = "";
+        branchHelperBox.classList.add("hidden");
+        return;
+      }
 
-      return [...baseTop, ...selectedLines, ...baseBottom].map((line) => applyTokens(line, tokens));
+      branchPanel.classList.remove("hidden");
+      branchPanelTitle.textContent = branch.label || "Conversation Path";
+      branchPanelText.textContent =
+        branch.helpText || "Choose the direction that matches the conversation.";
+
+      branchButtonGroup.innerHTML = "";
+
+      branch.options.forEach((option) => {
+        const isActive = option.value === getBranchSelection(branch.stateKey);
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `branch-button ${isActive ? "branch-button-active" : "branch-button-idle"}`;
+
+        const label = document.createElement("span");
+        label.className = "block text-sm font-semibold text-white";
+        label.textContent = option.label;
+
+        const description = document.createElement("span");
+        description.className = "mt-1 block text-xs text-gray-300";
+        description.textContent = option.description;
+
+        button.appendChild(label);
+        button.appendChild(description);
+        button.addEventListener("click", () => setBranchSelection(branch.stateKey, option.value));
+
+        branchButtonGroup.appendChild(button);
+      });
+
+      const selectedOption = getSelectedBranchOption(section);
+
+      if (!selectedOption) {
+        branchHelperBox.classList.add("hidden");
+        branchHelperContent.innerHTML = "";
+        return;
+      }
+
+      branchHelperBox.classList.remove("hidden");
+      branchHelperContent.innerHTML = "";
+
+      const description = document.createElement("p");
+      description.textContent = applyTokens(selectedOption.description || "", getTokens());
+      branchHelperContent.appendChild(description);
+
+      (selectedOption.helperLines || []).forEach((line) => {
+        const p = document.createElement("p");
+        p.textContent = `- ${applyTokens(line, getTokens())}`;
+        branchHelperContent.appendChild(p);
+      });
     }
 
     function keepActiveSidebarItemVisible() {
@@ -849,7 +1466,10 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       });
 
       updatePromptNotes(section);
-      updateRelationHelper();
+      renderBranchPanel(section);
+      updateSalesWorkspace(section);
+      updatePricingActionPanel(section);
+      selectRebuttal(activeRebuttalId);
       updateProgress();
       keepActiveSidebarItemVisible();
       saveSession();
@@ -859,23 +1479,24 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       const currentIndex = scriptSections.findIndex((section) => section.id === currentSection.id);
       if (currentIndex === -1) return;
 
-      const nextIndex = currentIndex + direction;
-      if (nextIndex < 0 || nextIndex >= scriptSections.length) return;
+      let nextIndex = currentIndex + direction;
 
-      renderSection(scriptSections[nextIndex]);
+      while (nextIndex >= 0 && nextIndex < scriptSections.length) {
+        const nextSection = scriptSections[nextIndex];
+
+        if (isSectionRelevantForRoute(nextSection)) {
+          renderSection(nextSection);
+          return;
+        }
+
+        nextIndex += direction;
+      }
+
+      return;
     }
 
     function startCall() {
-      if (!sessionState.started) {
-        stats.totalCalls += 1;
-        sessionState.started = true;
-        saveStats();
-        saveSession();
-        updateMetrics();
-      }
-
-      startTimer();
-      clientNameInput?.focus();
+      clearCallSession();
     }
 
     function clearCallSession() {
@@ -886,12 +1507,29 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       if (beneficiaryNameInput) beneficiaryNameInput.value = "";
       if (premiumInput) premiumInput.value = "";
       if (draftDateInput) draftDateInput.value = "";
+      if (medicalSummaryInput) medicalSummaryInput.value = "";
+      if (coverageOption1Input) coverageOption1Input.value = "";
+      if (quoteOption1Input) quoteOption1Input.value = "";
+      if (coverageOption2Input) coverageOption2Input.value = "";
+      if (quoteOption2Input) quoteOption2Input.value = "";
+      if (coverageOption3Input) coverageOption3Input.value = "";
+      if (quoteOption3Input) quoteOption3Input.value = "";
+      if (policyNumberInput) policyNumberInput.value = "";
+      if (secondaryPhoneInput) secondaryPhoneInput.value = "";
+      if (beneficiaryPhoneInput) beneficiaryPhoneInput.value = "";
       if (callNotes) callNotes.value = "";
+
+      stats.transfers += 1;
+      sessionState.started = true;
+      sessionState.transferCounted = true;
 
       resetTimer();
       updateOutcomeDisplay();
       renderSection(scriptSections[0]);
+      saveStats();
+      updateMetrics();
       saveSession();
+      startTimer();
       clientNameInput?.focus();
     }
 
@@ -1004,13 +1642,43 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       const rebuttal = rebuttals.find((item) => item.id === Number(rebuttalId));
       if (!rebuttal) return;
 
+      activeRebuttalId = Number(rebuttalId);
+      const response = applyTokens(rebuttal.response, getTokens());
+
       if (selectedRebuttalTitle) {
         selectedRebuttalTitle.textContent = rebuttal.title;
       }
 
       if (selectedRebuttalBody) {
-        selectedRebuttalBody.textContent = applyTokens(rebuttal.response, getTokens());
+        selectedRebuttalBody.textContent = response;
       }
+
+      if (inlineSelectedRebuttalTitle) {
+        inlineSelectedRebuttalTitle.textContent = rebuttal.title;
+      }
+
+      if (inlineSelectedRebuttalBody) {
+        inlineSelectedRebuttalBody.textContent = response;
+      }
+    }
+
+    function openObjectionsWithRebuttal(rebuttalId) {
+      selectRebuttal(rebuttalId);
+    }
+
+    function setRecommendedQuote(optionNumber) {
+      sessionState.recommendedQuote = optionNumber;
+      renderSection(currentSection);
+    }
+
+    function useQuoteAsPremium(optionNumber) {
+      const quoteValue = getQuoteValue(optionNumber);
+      if (!quoteValue || !premiumInput) return;
+
+      premiumInput.value = formatMoneyDisplay(quoteValue, quoteValue);
+      syncCountedApWithPremium();
+      renderSection(currentSection);
+      saveSession();
     }
 
     function filterRebuttals(query) {
@@ -1071,18 +1739,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       });
     });
 
-    relationButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        sessionState.relationType = button.dataset.relationType || "generic";
-        updateRelationHelper();
-        if (currentSection.id === 6) {
-          renderSection(currentSection);
-        } else {
-          saveSession();
-        }
-      });
-    });
-
     favoriteRebuttalButtons.forEach((button) => {
       button.addEventListener("click", () => {
         selectRebuttal(button.dataset.rebuttalId);
@@ -1100,6 +1756,45 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       syncCountedApWithPremium();
       renderSection(currentSection);
       saveSession();
+    });
+
+    [
+      medicalSummaryInput,
+      coverageOption1Input,
+      quoteOption1Input,
+      coverageOption2Input,
+      quoteOption2Input,
+      coverageOption3Input,
+      quoteOption3Input,
+      policyNumberInput,
+      secondaryPhoneInput,
+      beneficiaryPhoneInput
+    ].forEach((input) => {
+      input?.addEventListener("input", () => {
+        renderSection(currentSection);
+        saveSession();
+      });
+    });
+
+    recommendQuoteButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (!(button instanceof HTMLElement)) return;
+        setRecommendedQuote(button.dataset.recommendQuote || "");
+      });
+    });
+
+    useQuoteButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (!(button instanceof HTMLElement)) return;
+        useQuoteAsPremium(button.dataset.useQuote || "");
+      });
+    });
+
+    quickObjectionButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (!(button instanceof HTMLElement)) return;
+        openObjectionsWithRebuttal(button.dataset.rebuttalId);
+      });
     });
 
     callNotes?.addEventListener("input", () => {
@@ -1179,21 +1874,9 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     window.addEventListener("keydown", (event) => {
       const typing = isTypingInField(event.target);
 
-      if (event.ctrlKey && event.key === "Enter") {
-        event.preventDefault();
-        startCall();
-        return;
-      }
-
       if (event.ctrlKey && event.key.toLowerCase() === "n") {
         event.preventDefault();
         clearCallSession();
-        return;
-      }
-
-      if (event.ctrlKey && event.key.toLowerCase() === "t") {
-        event.preventDefault();
-        addTransfer();
         return;
       }
 

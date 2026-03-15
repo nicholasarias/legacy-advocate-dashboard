@@ -1,3 +1,36 @@
+const productOutcomeChoices = {
+  "easy-life": {
+    label: "EMC Easy Life",
+    description: "Use this when the client clears EMC for the top tier Easy Life route."
+  },
+  "emc-graded": {
+    label: "EMC Graded",
+    description: "Use this when the client stays with EMC but lands in the graded route."
+  },
+  "eternal-legacy": {
+    label: "Eternal Legacy",
+    description: "Use this when EMC is out but Eternal Legacy is still available."
+  },
+  "no-option": {
+    label: "No Option",
+    description: "Use this when EMC is out and Eternal Legacy is not available."
+  }
+};
+
+type ProductOutcomeKey = keyof typeof productOutcomeChoices;
+
+function createProductOutcomeOption<T extends Record<string, unknown>>(
+  value: ProductOutcomeKey,
+  extra: T = {} as T
+) {
+  return {
+    value,
+    label: productOutcomeChoices[value].label,
+    description: productOutcomeChoices[value].description,
+    ...extra
+  };
+}
+
 export const scriptSections = [
   {
     id: 1,
@@ -5,13 +38,13 @@ export const scriptSections = [
     qaRequired: false,
     script: [
       "Hello [ClientName], thank you for speaking with me today.",
-      "Before we get started, I’m required to let you know this call may be recorded for quality and training purposes. That makes sense, right?",
-      "My name is [AdvisorName], and I’m a Senior Licensed Advisor here with Insurance Supermarket.",
-      "We’re a one-stop shop for life insurance, which is great for you because I’m licensed in [ClientState] to shop multiple companies at once.",
+      "Before we get started, I do need to let you know this call may be recorded for quality and training purposes. That makes sense, right?",
+      "Allow me to introduce myself, my name is [AdvisorName], and I'm a Senior Licensed Life Insurance Advisor here with Insurance Supermarket.",
+      "To touch on that briefly, we're a one-stop shop for life insurance, which is great for you because I'm licensed in [ClientState] to shop multiple carriers at once.",
       "Instead of you calling several companies yourself, I compare them all and find the best option for your situation.",
-      "Saves you a lot of time, doesn’t it?",
-      "All the plans we work with are state-approved and designed specifically for people over age 50.",
-      "As we go through this I’ll explain everything step-by-step, and if anything doesn’t make sense just stop me and I’ll clarify it.",
+      "Saves you a lot of time, doesn't it?",
+      "Now, all the plans we work with are final expense policies that have been state-approved and designed specifically for folks over the age of 50.",
+      "As we go through this I'll explain everything step-by-step, and if anything doesn't make sense just stop me and I'll clarify it.",
       "Fair enough?"
     ],
     prompt: {
@@ -25,253 +58,462 @@ export const scriptSections = [
   },
   {
     id: 2,
-    title: "Rapport",
+    title: "Warm Discovery",
     qaRequired: false,
     script: [
-      "I noticed you're in [ClientState].",
-      "Have you been there your whole life?",
-      "Is most of your family nearby with you or are they spread out?"
+      "I noticed you're in [ClientState]. Born and raised, or did you move there at some point?",
+      "[Insert your own here]",
+      "Is most of your family nearby, or are they spread out these days?",
+      "What do you enjoy most about living there?"
     ],
     prompt: {
-      goal: "Create a natural, relaxed opening",
+      goal: "Get them talking early and create a calm, natural tone",
       notes: [
-        "Keep it brief.",
-        "Listen for family location and support system."
+        "Let them talk for 30 to 60 seconds before steering the call.",
+        "Listen for family support, pace of life, and emotional hooks you can revisit later."
       ]
     }
   },
   {
     id: 3,
-    title: "Transition",
+    title: "Coverage Snapshot",
     qaRequired: false,
     script: [
-      "Well [ClientName], I want to respect your time as I know it's important to you as it is for me and since we're on the main subject of life insurance, I wanted to ask:",
-      "What life insurance company are you currently with?"
+      "Let me ask you this so I know how to help you best.",
+      "Do you already have any life insurance or final expense coverage in place right now?"
     ],
+    branchControl: {
+      stateKey: "coverageStatus",
+      label: "Coverage Direction",
+      helpText: "Pick the path that matches the answer and the follow-up lines will adjust.",
+      options: [
+        {
+          value: "has-coverage",
+          label: "Has Coverage",
+          description: "Use this when they already have some protection in force.",
+          script: [
+            "Who is that policy with?",
+            "About how much coverage is it?",
+            "About how much is the monthly premium?",
+            "What did you want that policy to take care of for your family?",
+            "That helps. My job today isn't to tear apart what you already did. It's to see whether there's still a gap that could land on your family."
+          ],
+          helperLines: [
+            "Get the reason they bought it, not just the numbers.",
+            "If they are proud of what they have, validate that first before talking about gaps."
+          ],
+          promptNotes: [
+            "Find the original buying reason so you can tie back to it later."
+          ]
+        },
+        {
+          value: "no-coverage",
+          label: "No Coverage",
+          description: "Use this when they do not have anything in place yet.",
+          script: [
+            "That is very common.",
+            "Was it something you meant to handle, or did life just keep moving?",
+            "What is usually the main reason people put it off, in your case?",
+            "I appreciate you being honest. That gives me a clear place to start."
+          ],
+          helperLines: [
+            "Let them explain without judgment.",
+            "People will usually give you the real objection if you sound curious instead of pushy."
+          ],
+          promptNotes: [
+            "Do not rush to fix it. Let them explain why it never got handled."
+          ]
+        }
+      ]
+    },
     prompt: {
-      goal: "Move from rapport into discovery",
+      goal: "Learn whether you are filling a gap or starting from zero",
       notes: [
-        "Do not sound robotic.",
-        "This should feel like a natural pivot."
+        "Ask this plainly. The less sales language here, the better.",
+        "This answer should shape the rest of the call."
       ]
     }
   },
   {
     id: 4,
-    title: "Coverage Discovery",
+    title: "Responsibility Anchor",
     qaRequired: false,
     script: [
-      "If you already have coverage, what company is that with?",
-      "How much coverage does it provide?",
-      "How long ago did you start that policy?",
-      "About how much is the monthly premium?",
-      "Thank you for sharing that.",
-      "My goal today isn’t necessarily to replace what you have.",
-      "It’s simply to make sure your family would have everything they need when that time comes."
+      "If something happened down the road, who would actually be the person making the calls and handling everything?",
+      "What is their name?",
+      "What is your relationship to them?",
+      "So if that day ever came, [BeneficiaryName] would be the one carrying all of that.",
+      "That's who I want us thinking about as we go through this."
     ],
     prompt: {
-      goal: "Understand current coverage and position yourself correctly",
+      goal: "Lock onto the one real person who would have to carry the burden",
       notes: [
-        "If they have nothing, acknowledge that gently and move into responsibility.",
-        "Find out whether current coverage is really enough."
+        "Slow down after they say the name.",
+        "Once you have the name, keep bringing the conversation back to that person."
       ]
     }
   },
   {
     id: 5,
-    title: "Legacy Discovery",
+    title: "Beneficiary Lens",
     qaRequired: false,
     script: [
-      "Now here’s the big question.",
-      "One day we are all going to pass away.",
-      "Emotionally we’re never ready for that.",
-      "But the financial side is something we can prepare for today.",
-      "When someone passes away the bills don’t come to us.",
-      "They go to the people we love.",
-      "So if something happened tomorrow…",
-      "who would be responsible for handling those final arrangements?",
-      "What is their name?",
-      "So everything we’re doing today is really about protecting [BeneficiaryName], correct?"
+      "Tell me a little about [BeneficiaryName].",
+      "I want to understand the person this would really fall on."
     ],
+    branchControl: {
+      stateKey: "relationType",
+      label: "Relationship Direction",
+      helpText: "Choose the relationship so the follow-up stays personal instead of generic.",
+      options: [
+        {
+          value: "spouse",
+          label: "Spouse",
+          description: "Use when the beneficiary is a spouse or partner.",
+          script: [
+            "How long have you two been together?",
+            "What do you appreciate most about them?",
+            "If something happened to you, what do you think that day would feel like for them?",
+            "That's exactly why people put something in place, so their spouse isn't grieving and trying to figure everything out alone."
+          ],
+          helperLines: [
+            "Spouse conversations land best when they feel steady, warm, and protective."
+          ],
+          promptNotes: [
+            "Get them talking about the relationship first, then bring it back to the burden."
+          ]
+        },
+        {
+          value: "child",
+          label: "Child",
+          description: "Use when the burden would fall on a son or daughter.",
+          script: [
+            "Do they live nearby or would they have to drop everything and come in?",
+            "What kind of person are they when the family needs something handled?",
+            "If this landed on them, they'd be trying to hold it together and handle everything at the same time.",
+            "Parents never stop trying to make things easier on their kids. That's usually why this matters so much."
+          ],
+          helperLines: [
+            "This path works best when you keep the tone protective, not guilty."
+          ],
+          promptNotes: [
+            "Let them describe the child. That creates stronger ownership than you explaining it for them."
+          ]
+        },
+        {
+          value: "sibling",
+          label: "Sibling",
+          description: "Use when a brother or sister would be the one handling things.",
+          script: [
+            "Have you two always been pretty close?",
+            "If this landed on them tomorrow, do you think they'd handle it calmly, or would it hit them pretty hard?",
+            "When it's someone you've been through life with, most people want to leave things easier, not heavier."
+          ],
+          helperLines: [
+            "Keep this path practical and familiar. Sibling conversations usually land better with realism than sentiment."
+          ]
+        },
+        {
+          value: "friend",
+          label: "Friend / Other",
+          description: "Use when the trusted person is a friend, partner, or someone outside the immediate family.",
+          script: [
+            "How long have you known them?",
+            "What makes them the person you'd trust with something this important?",
+            "If this fell on them, they'd be stepping in because they care about you.",
+            "Most people don't want that kindness to turn into a burden."
+          ],
+          helperLines: [
+            "This path is strongest when you validate the trust before talking about the burden."
+          ]
+        },
+        {
+          value: "noone",
+          label: "No One",
+          description: "Use when they initially say nobody would be responsible.",
+          script: [
+            "A lot of people say that at first.",
+            "Usually someone still ends up being the person the calls fall on.",
+            "It might be a niece, nephew, church friend, neighbor, or whoever steps in first.",
+            "Who do you think would realistically be the one trying to handle it?",
+            "That's the person we need to keep in mind."
+          ],
+          helperLines: [
+            "Do not argue. Just help them think through who would actually get the phone calls."
+          ],
+          promptNotes: [
+            "Keep this calm. If you sound confrontational, they will shut down."
+          ]
+        }
+      ]
+    },
     prompt: {
-      goal: "Anchor the conversation around the beneficiary",
+      goal: "Turn the beneficiary into a real person with a real life that would be interrupted",
       notes: [
-        "Once they give the name, use it often.",
-        "Select the beneficiary path below so the next section is tailored to the relationship."
+        "Use the relationship buttons to keep the follow-up specific.",
+        "This section should feel personal, not generic."
       ]
     }
   },
   {
     id: 6,
-    title: "Family Responsibility",
+    title: "Experience Path",
     qaRequired: false,
     script: [
-      "Let me ask you something real quick.",
-      "If something happened tomorrow, do you think [BeneficiaryName] would feel comfortable handling the financial responsibility and final arrangements on their own?",
-      "Or would that probably be something they would have to figure out unexpectedly while they were grieving?",
-      "Pause.",
-      "Most people tell me their family would probably have to figure things out as they go, and that can be really stressful for families, especially when they are already grieving.",
-      "One thing I’ve learned doing this for a long time is that most people do not worry about themselves. They worry about the people they leave behind.",
-      "That is why so many families decide to put something in place ahead of time so the people they love do not have to deal with everything on their own."
+      "Let me ask you something important.",
+      "Have you ever had to help with a funeral or final arrangements for someone close to you?"
     ],
+    branchControl: {
+      stateKey: "funeralExperience",
+      label: "Experience Direction",
+      helpText: "Choose whether they have lived through this before or would be imagining it for the first time.",
+      options: [
+        {
+          value: "handled",
+          label: "Handled One",
+          description: "Use this when they have helped with a funeral before.",
+          script: [
+            "Who was that for?",
+            "What part of that day stayed with you the most?",
+            "Was the family grieving and still trying to make decisions, or had some of it already been figured out?",
+            "Was the money side already handled, or did people have to come up with it quickly?",
+            "That's the part families remember. It's emotional, and it's a lot of pressure all at once."
+          ],
+          helperLines: [
+            "Let them tell the story. This is where your call length should come from.",
+            "Do not interrupt too quickly. The emotion is stronger when it comes from them."
+          ],
+          promptNotes: [
+            "Keep them in the memory long enough to feel the pressure without turning it into a monologue from you."
+          ]
+        },
+        {
+          value: "no-experience",
+          label: "No Experience",
+          description: "Use this when they have never had to handle a funeral directly.",
+          script: [
+            "Most people haven't until it lands in their lap out of nowhere.",
+            "And that's what I'm getting at here.",
+            "Can you picture [BeneficiaryName] trying to answer questions from the funeral home, family, and everybody else while they're still grieving?",
+            "Do you think they'd know exactly what you want and how you'd want everything handled?",
+            "That's a lot to put on one person all at once."
+          ],
+          helperLines: [
+            "Make them picture the confusion, not just the cost.",
+            "This path works best when your tone is calm and matter-of-fact."
+          ]
+        }
+      ]
+    },
     prompt: {
-      goal: "Make the client think about responsibility and emotional ownership in a financial way",
+      goal: "Make them either relive the pressure or picture it clearly for the first time",
       notes: [
-        "This section should feel personal, not scripted.",
-        "Use the beneficiary path helper to tailor this section."
-      ],
-      relationPrompts: {
-        generic: [
-          "How long have you and [BeneficiaryName] been close?",
-          "You can tell when someone really cares about the people in their life."
-        ],
-        spouse: [
-          "How long have you two been together?",
-          "What do you appreciate most about them?",
-          "That’s exactly why people decide to put something in place so their spouse does not have to deal with everything alone."
-        ],
-        child: [
-          "How many kids do you have?",
-          "Do they live nearby or are they spread out?",
-          "Parents never stop looking out for their kids. That’s usually why people want to make sure everything is already taken care of."
-        ],
-        sibling: [
-          "Are you two pretty close?",
-          "Did you grow up in the same area together?",
-          "It sounds like you’ve always looked out for each other."
-        ],
-        friend: [
-          "How long have you known them?",
-          "It’s always good to have someone you trust like that in your life."
-        ],
-        noone: [
-          "A lot of people tell me that at first.",
-          "Usually someone still ends up handling those arrangements.",
-          "Sometimes it’s a niece, nephew, church member, close friend, or whoever the hospital contacts first.",
-          "If something happened tomorrow, who do you think would end up being the person responsible for handling everything?",
-          "That’s why many people decide to set something aside ahead of time so no one has to figure it out."
-        ]
-      }
+        "This section should feel human, not theatrical.",
+        "The story should come from them, not from you."
+      ]
     }
   },
   {
     id: 7,
-    title: "Funeral Experience",
+    title: "Burden Clarifier",
     qaRequired: false,
     script: [
-      "Let me ask you something real quick [ClientName].",
-      "Have you ever had to help arrange a funeral for someone close to you before?",
-      "Pause.",
-      "Who was that for?",
-      "Pause and let them talk.",
-      "That must have been a difficult time.",
-      "When families go through something like that, they are usually dealing with two things at the same time. The emotional loss of the person, and all the practical things that suddenly have to be handled.",
-      "When you went through that experience, do you remember about how quickly the funeral home expected payment?",
-      "Pause.",
-      "Most people are surprised by that part. A lot of families think the bills come later, but funeral homes usually require payment right away before services can even happen.",
-      "When you were going through that situation, do you remember roughly how much everything ended up costing?",
-      "Pause.",
-      "That sounds about right. Today most funerals end up costing somewhere between fifteen thousand and twenty five thousand dollars depending on the arrangements.",
-      "And when families are already grieving, that financial pressure can make the situation even harder.",
-      "Let me ask you something.",
-      "When that happened, was the money already set aside, or did the family have to come up with it?",
-      "Pause.",
-      "That’s actually very common.",
-      "Most families do not have money specifically set aside for that moment, so the responsibility usually falls on the closest person in the family.",
-      "Which is exactly why many people decide to put a small plan in place ahead of time so their family does not have to scramble to figure things out.",
-      "Let me ask you this.",
-      "If something happened tomorrow, who would most likely be responsible for handling those arrangements for you?",
-      "What is their name?",
-      "Pause and capture beneficiary.",
-      "So everything we are doing here today is really about making sure [BeneficiaryName] is protected when that moment comes."
+      "When families are in that situation, it's usually not just one bill and one phone call.",
+      "It's the funeral home, transportation, paperwork, death certificates, family questions, and whatever final expenses are still sitting there.",
+      "So the real question is not whether [BeneficiaryName] would show up.",
+      "It's whether they would be forced to solve it under pressure.",
+      "If that happened tomorrow, would [BeneficiaryName] already have money set aside for it, or would they be scrambling to figure it out while they're already grieving?"
     ],
+    branchControl: {
+      stateKey: "fundingStatus",
+      label: "Money Direction",
+      helpText: "Use this after they tell you whether money is already earmarked for the problem.",
+      options: [
+        {
+          value: "set-aside",
+          label: "Money Set Aside",
+          description: "Use when they say there is already money available.",
+          script: [
+            "That's good planning.",
+            "Is that money truly set aside for this, or is it money your family might need for travel, bills, or something else too?",
+            "That's where people realize general savings and protected money are not always the same thing."
+          ],
+          helperLines: [
+            "Do not attack their savings. Just help them see that general money is not always protected money."
+          ],
+          promptNotes: [
+            "Your job here is to create doubt about whether the funds are truly dedicated."
+          ]
+        },
+        {
+          value: "would-scramble",
+          label: "Would Scramble",
+          description: "Use when they admit the family would have to figure it out in the moment.",
+          script: [
+            "That's what most families face.",
+            "It's not that they don't care. It's that everything hits at once.",
+            "That's why even a simple plan can completely change what that day looks like for them."
+          ],
+          helperLines: [
+            "This is a good moment to slow down and let the reality sink in."
+          ]
+        }
+      ]
+    },
     prompt: {
-      goal: "Connect a past funeral experience to the present need",
+      goal: "Shift the picture from emotion alone to the real pressure of that day",
       notes: [
-        "Let them talk here.",
-        "This section should feel human, not rushed."
+        "Stay conversational. Let them answer before you frame it for them.",
+        "This is where the scene starts feeling real."
       ]
     }
   },
   {
     id: 8,
-    title: "Protection Gap",
+    title: "Arrangement Fit",
     qaRequired: false,
     script: [
-      "Let me ask you something.",
-      "Do you happen to know about how much a funeral costs where you live today?",
-      "Pause.",
-      "Most families do not.",
-      "Once you add up the funeral home, service, transportation, death certificates, cemetery or cremation costs, it can easily reach fifteen thousand dollars or more.",
-      "Would you rather have [BeneficiaryName] responsible for coming up with that money when the time comes, or would you prefer having something already set aside so everything is handled?"
+      "Have you thought about whether you would prefer burial, cremation, or just keeping it simple and letting your family decide?"
     ],
+    branchControl: {
+      stateKey: "arrangementPreference",
+      label: "Arrangement Direction",
+      helpText: "Choose the arrangement path that matches their answer.",
+      options: [
+        {
+          value: "burial",
+          label: "Burial",
+          description: "Use when they prefer a traditional burial.",
+          script: [
+            "Traditional burial is usually the more expensive route.",
+            "If that's what you want, it matters that [BeneficiaryName] knows it and has the money ready to carry it out.",
+            "Does [BeneficiaryName] already know that's what you would want?"
+          ],
+          helperLines: [
+            "Use their own preference to make the cost feel real without lecturing."
+          ]
+        },
+        {
+          value: "cremation",
+          label: "Cremation",
+          description: "Use when they prefer cremation or a simpler service.",
+          script: [
+            "Cremation can be less expensive, but it still isn't free once the service and everything around it gets added in.",
+            "Does [BeneficiaryName] already know that's what you would want?",
+            "Even the simpler option is a lot easier on family when the money side is already handled."
+          ],
+          helperLines: [
+            "Do not let the lower cost remove urgency. Simpler does not mean free."
+          ]
+        },
+        {
+          value: "not-sure",
+          label: "Not Sure",
+          description: "Use when they have not made up their mind or have never talked about it.",
+          script: [
+            "That's common.",
+            "When nothing is decided, the family usually has to make emotional decisions and money decisions at the same time.",
+            "That's exactly the kind of situation I'm trying to keep [BeneficiaryName] out of."
+          ],
+          helperLines: [
+            "This path is about confusion and decision fatigue, not just price."
+          ]
+        }
+      ]
+    },
     prompt: {
-      goal: "Create the financial problem clearly",
+      goal: "Make the burden concrete by tying it to the actual choices family would face",
       notes: [
-        "This is where you can finally bring money into the conversation."
+        "Keep this practical and specific.",
+        "This is where the scene becomes real, not abstract."
       ]
     }
   },
   {
     id: 9,
-    title: "Personal Story",
+    title: "Why It Matters",
     qaRequired: false,
     script: [
-      "This actually became very personal for me.",
-      "I lost my father, and I have also experienced something no parent ever expects.",
-      "I lost my daughter.",
-      "Going through those moments showed me how overwhelming things can be for families.",
-      "When someone passes away the emotional loss is already extremely difficult. But families also suddenly face paperwork, phone calls, and thousands of dollars in expenses.",
-      "Funeral homes expect payment immediately. Hospitals expect payment immediately.",
-      "Imagine [BeneficiaryName] in that moment. They are already grieving but instead of focusing on remembering you they are trying to figure out how to pay for everything.",
-      "But imagine a different situation.",
-      "Imagine [BeneficiaryName] sitting at the same table with peace of mind because everything is already taken care of.",
-      "That is what this plan is really about. Protecting the people you love."
+      "The reason I'm asking you all of this isn't to make the conversation heavy.",
+      "It's because I want you to picture exactly what [BeneficiaryName] would be dealing with if you weren't here to handle it yourself.",
+      "What I'm trying to protect [BeneficiaryName] from is having to grieve, make decisions, and come up with money all at the same time."
     ],
+    branchControl: {
+      stateKey: "coverageStatus",
+      label: "Need Summary",
+      helpText: "Reuse the earlier coverage answer so the summary matches their situation.",
+      options: [
+        {
+          value: "has-coverage",
+          label: "Has Coverage",
+          description: "Use when the call is about confirming or filling a gap in existing coverage.",
+          script: [
+            "You already did something responsible by putting coverage in place.",
+            "What I need to figure out now is whether it fully protects [BeneficiaryName] from that situation or whether there's still a gap.",
+            "If there's a gap, I'd rather help you close it now than leave them carrying it later."
+          ],
+          helperLines: [
+            "This keeps their dignity intact while giving you room to position additional protection."
+          ]
+        },
+        {
+          value: "no-coverage",
+          label: "No Coverage",
+          description: "Use when they have not put anything in place yet.",
+          script: [
+            "You haven't ignored this because you don't care. Most people just never get around to it until it becomes real.",
+            "Now that we've talked it through, you can see exactly where the pressure would land.",
+            "If I can help you put something simple in place that protects [BeneficiaryName] from that, that's worth looking at."
+          ],
+          helperLines: [
+            "Keep the tone constructive. Shame will kill momentum."
+          ]
+        }
+      ]
+    },
     prompt: {
-      goal: "Build emotional weight and credibility",
+      goal: "Make the protection pivot explicit before you move into permission",
       notes: [
-        "Slow down here.",
-        "Let this land. Do not rush to the next line."
+        "This is the big-picture pivot.",
+        "Say plainly what you're trying to protect the beneficiary from."
       ]
     }
   },
   {
     id: 10,
-    title: "Burial Discovery",
+    title: "Permission to Solve It",
     qaRequired: false,
     script: [
-      "When the time eventually comes, have you thought about whether you would prefer burial or cremation?",
-      "Pause.",
-      "What made you lean toward that option?",
-      "Pause.",
-      "That makes sense.",
-      "Most traditional burials today cost between fifteen thousand and twenty five thousand dollars.",
-      "Cremation is usually less expensive but still ranges between five thousand and ten thousand dollars depending on services.",
-      "Would you want [BeneficiaryName] responsible for paying those expenses out of pocket, or would you rather have something already set aside for them?"
+      "So let me ask you this.",
+      "If I can help you put something in place that fits your budget and keeps [BeneficiaryName] from having to carry all of that alone, would you be open to looking at it today?",
+      "Because that's really what we're solving for."
     ],
     prompt: {
-      goal: "Make costs feel real and personal",
+      goal: "Get agreement on the big-picture reason to move forward",
       notes: [
-        "Use their answer to personalize the value."
+        "Get a real answer before you move on.",
+        "If there is hesitation here, isolate it before entering the next phase."
       ]
     }
   },
   {
     id: 11,
-    title: "Credentials",
-    qaRequired: true,
+    title: "Trust Bridge",
+    qaRequired: false,
     script: [
-      "Before we move forward I want to make sure you have my information.",
+      "[ClientName], I can see how much you care about your family, and it's clear you don't want them left carrying this burden.",
+      "Now that I understand your situation, my goal is to see if we can get you qualified for one of the preferred plans. These plans aren't available to everyone, but if you do qualify, you'll be in great hands.",
+      "While I pull that up, go ahead and grab a pen and paper and let me know when you are ready.",
+      "I'm going to walk you through everything, step by step, so you know exactly what you're getting.",
       "My name again is [AdvisorName].",
-      "You can reach me directly at [AdvisorPhone].",
-      "My National Producer Number is [AdvisorNPN].",
-      "If you ever want to verify my credentials you can look up my NPN online."
+      "My direct line, if you have any questions or if there's anything I can help with, is [AdvisorPhone].",
+      "My National Producer Number is [AdvisorNPN]. If you ever need to verify my credentials, that number is the easiest way to do it."
     ],
     prompt: {
-      goal: "Build trust before moving into company information",
+      goal: "Build trust and set up the qualification phase",
       notes: [
-        "Keep this clean and professional."
+        "This is not QA. Deliver it like a calm confidence bridge.",
+        "Keep the tone warm, not theatrical."
       ]
     }
   },
@@ -280,198 +522,616 @@ export const scriptSections = [
     title: "EMC Introduction",
     qaRequired: false,
     script: [
-      "The company I am really hoping we can get you qualified for today is EMC National Life Company.",
-      "They are located in Des Moines, Iowa and have been around for over one hundred years.",
-      "One thing people really like about this plan is there are no medical exams, no needles, and no doctor visits required."
+      "The company I'm really hoping we can get you qualified for today is EMC National Life Company.",
+      "They are located in Des Moines, Iowa and have been around for over one hundred years, and they carry a strong reputation.",
+      "One thing people really like about this plan is there aren't any medical exams, needles, or doctor visits required. Everything is done from the comfort of your own home. Pretty nice, huh?",
+      "As your licensed advisor, I just have a few simple questions to help determine which plan best fits your needs.",
+      "And as long as you answer each question to the best of your knowledge, we should be in good shape.",
+      "But before we can get to the medical questions, I just need to know a few things."
     ],
     prompt: {
-      goal: "Create confidence in the carrier",
+      goal: "Create confidence in EMC and set up the medical questions",
       notes: [
-        "This should feel reassuring."
+        "This should feel reassuring.",
+        "Move to the application flow after this section."
       ]
     }
   },
   {
     id: 13,
-    title: "GIACT Disclosure",
+    title: "GIACT Disclosure / Med Questions",
     qaRequired: true,
     script: [
-      "Now I just need to play a quick disclosure.",
-      "PLAY GIACT DISCLOSURE",
-      "Do I have your permission to continue?"
+      "Thank you for verifying those details.",
+      "Now I just need to play a quick disclosure in order to proceed to the medical questions for us to determine your qualification factors.",
+      "So, I just need to play this and then ask you a question right after, okay?",
+      "Now I will just ask some simple yes or no medical questions.",
+      "The important part is for you to respond honestly with a clear Yes with an S sound or No with an O sound, so I can take down your answers accurately.",
+      "You ready?"
     ],
     prompt: {
-      goal: "Handle required disclosure cleanly",
+      goal: "Handle the disclosure and move into the qualification questions cleanly",
       notes: [
-        "Do not paraphrase if QA requires exact wording."
+        "Do not paraphrase if QA requires exact wording.",
+        "The medical notes workspace will help you summarize conditions and prescriptions for the next step."
       ]
     }
   },
   {
     id: 14,
-    title: "EasyLife QA",
-    qaRequired: true,
+    title: "Medical Review Response",
+    qaRequired: false,
     script: [
-      "Now, after we're able to verify the approval factors, I hope you will qualify for either the Easy Life Plan that pays the entire face amount right away from day one, or the Graded Plan, which also pays the full face amount after two years.",
-      "I am really hoping I can get you day one coverage over a two year wait.",
-      "I am sure that is what you would like, right?"
+      "Use the direction below to match what came up in the medical questions."
     ],
+    branchControl: {
+      stateKey: "medicalReview",
+      replaceBaseOnSelect: true,
+      label: "Medical Review",
+      helpText: "Choose whether medical history came up so the bridge matches the call.",
+      options: [
+        {
+          value: "medical-history",
+          label: "History Exists",
+          description: "Use when conditions or prescriptions came up and you want to acknowledge them before routing.",
+          script: [
+            "So [ClientLastName], first of all, thank you for those answers.",
+            "And I appreciate your honesty with those questions. I know this can be a lot to talk through, and I want you to know that I'm here to help you.",
+            "Typically, [MedicalSummary] can make some insurance companies more cautious.",
+            "But the good news is I still have some strong options that may be able to get you covered today despite that."
+          ],
+          helperLines: [
+            "Keep this steady. You are creating urgency without sounding negative.",
+            "Use the medical workspace to note the conditions and prescriptions you want referenced here."
+          ],
+          promptNotes: [
+            "Avoid saying red flag. Cautious lands better."
+          ]
+        },
+        {
+          value: "no-history",
+          label: "No Issues",
+          description: "Use when nothing concerning came up in the medical review.",
+          script: [
+            "So [ClientLastName], first of all, thank you for those answers.",
+            "And I appreciate your honesty with those questions. I know you've been thinking about this, and I want you to know that I'm here to help you.",
+            "That's exactly why we're going to get this handled today if everything lines up the way it should."
+          ],
+          helperLines: [
+            "This is where you start leaning into momentum and same-day action."
+          ]
+        }
+      ]
+    },
     prompt: {
-      goal: "Frame the preferred approval outcome",
+      goal: "Acknowledge the answers and set up urgency before the qualification route",
       notes: [
-        "Read verbatim."
+        "Keep this warm and helpful.",
+        "This is the emotional bridge into the product outcome."
       ]
     }
   },
   {
     id: 15,
-    title: "Graded QA",
-    qaRequired: true,
+    title: "Product Route",
+    qaRequired: false,
     script: [
-      "Now, after we're able to verify the approval factors, I hope you will qualify for the Graded Plan, which pays the full face amount from day one due to accidental death, and after two years and a day for natural causes.",
-      "If you passed away during the first year it would pay 110 percent of your paid premiums.",
-      "During the second year it would pay 120 percent of your paid premiums.",
-      "So either way you will be better protected from day one with this plan, which is great right?"
+      "Use the route below that matches the qualification decision."
     ],
+    branchControl: {
+      stateKey: "productOutcome",
+      replaceBaseOnSelect: true,
+      label: "Product Route",
+      helpText: "Pick the product route that applies: Easy Life, EMC Graded, Eternal Legacy, or No Option.",
+      options: [
+        createProductOutcomeOption("easy-life", {
+          script: [
+            "EMC Easy Life route selected."
+          ],
+          helperLines: [
+            "Use this when the client clears the EMC day-one route."
+          ]
+        }),
+        createProductOutcomeOption("emc-graded", {
+          script: [
+            "EMC Graded route selected."
+          ],
+          helperLines: [
+            "Use this when EMC still works but the graded route is the right fit."
+          ]
+        }),
+        createProductOutcomeOption("eternal-legacy", {
+          script: [
+            "Eternal Legacy route selected."
+          ],
+          helperLines: [
+            "Use this when EMC is out but Eternal Legacy is still available."
+          ]
+        }),
+        createProductOutcomeOption("no-option", {
+          script: [
+            "No-option route selected."
+          ],
+          helperLines: [
+            "Use this when there is no same-day product route available."
+          ]
+        })
+      ]
+    },
     prompt: {
-      goal: "Explain the graded structure clearly",
+      goal: "Make the product route explicit before you move deeper into the close",
       notes: [
-        "Read verbatim."
+        "This is the key routing decision for the rest of the dashboard.",
+        "If the route changes, come back here and switch it."
       ]
     }
   },
   {
     id: 16,
-    title: "EMC Decline",
+    title: "EMC QA Route",
     qaRequired: true,
     script: [
-      "PLAY THE EMC DECLINE DISCLOSURE",
-      "Unfortunately it appears we will not be able to get you approved with EMC.",
-      "But I might still have some other options. Let me see what we can do."
+      "Select the EMC route in the prior section to load the correct QA language."
     ],
+    branchControl: {
+      stateKey: "productOutcome",
+      display: false,
+      replaceBaseOnSelect: true,
+      options: [
+        createProductOutcomeOption("easy-life", {
+          script: [
+            "Now, after we're able to verify the approval factors, I hope you will qualify for either the Easy Life Plan that pays the entire face amount right away from day one, or the Graded Plan, which also pays the full face amount after two years.",
+            "I'm really hoping I can get you day one coverage over a two year wait.",
+            "I'm sure that's what you'd like, right?"
+          ]
+        }),
+        createProductOutcomeOption("emc-graded", {
+          script: [
+            "Now, after we're able to verify the approval factors, I hope you will qualify for the Graded Plan, which pays the full face amount from day one due to accidental death, and after two years and a day for natural causes.",
+            "If you passed away during the first year it would pay 110 percent of your paid premiums.",
+            "During the second year it would pay 120 percent of your paid premiums.",
+            "So either way you will be better protected from day one with this plan, which is great right?"
+          ]
+        }),
+        createProductOutcomeOption("eternal-legacy", {
+          script: [
+            "This EMC QA section is not used for the Eternal Legacy route. Move to the next applicable section."
+          ]
+        }),
+        createProductOutcomeOption("no-option", {
+          script: [
+            "There is no EMC QA route on a no-option path. Move ahead to the wrap-up steps."
+          ]
+        })
+      ]
+    },
     prompt: {
-      goal: "Handle the decline cleanly and preserve momentum",
+      goal: "Read the route-specific EMC QA language before you deliver the qualification result",
       notes: [
-        "Do not sound defeated here."
+        "This is the anticipation step.",
+        "Read the Easy Life or Graded wording verbatim when it applies."
       ]
     }
   },
   {
     id: 17,
-    title: "Eternal Legacy Script",
-    qaRequired: true,
+    title: "Qualification Outcome",
+    qaRequired: false,
     script: [
-      "This is great [ClientName], based on the answers to the questions we just went over, the plan you can qualify for is Eternal Legacy, underwritten by Monitor Life Insurance Company of New York.",
-      "This is a guaranteed acceptance group term life insurance plan.",
-      "Since you have already answered the health questions, there are no additional medical exams or tests required, and this coverage will stay in force until age 95 as long as your premiums are paid and your group policy stays in force.",
-      "This coverage pays the full amount from day one due to accidental death, and after two years and a day for natural causes.",
-      "If you pass away during the first two years all paid premiums will be returned to the beneficiary.",
-      "So either way you will be better protected from day one with this plan, which is great right?"
+      "Select the current route to load the qualification result."
     ],
+    branchControl: {
+      stateKey: "productOutcome",
+      display: false,
+      replaceBaseOnSelect: true,
+      options: [
+        createProductOutcomeOption("easy-life", {
+          script: [
+            "Okay, [ClientName], I finished checking everything over, and I've got some really good news.",
+            "It looks like you may qualify for EMC Easy Life, which is one of the top tier routes we talked about.",
+            "That's exactly what I was hoping to see for you."
+          ]
+        }),
+        createProductOutcomeOption("emc-graded", {
+          script: [
+            "Okay, [ClientName], I finished checking everything over, and I do have some good news.",
+            "EMC can still work for you, and the route that's available is the EMC Graded plan.",
+            "The important thing is we still have a path to put protection in place today."
+          ]
+        }),
+        createProductOutcomeOption("eternal-legacy", {
+          script: [
+            "Okay, [ClientName], I finished checking everything over.",
+            "EMC isn't going to be the fit, but the good news is I do still have another option I can walk you through today.",
+            "So we're not out of options here."
+          ]
+        }),
+        createProductOutcomeOption("no-option", {
+          script: [
+            "Okay, [ClientName], I finished checking everything over, and I want to be straight with you.",
+            "Right now I don't have a same-day option I can put in front of you.",
+            "So I don't want to force something that isn't there."
+          ]
+        })
+      ]
+    },
     prompt: {
-      goal: "Present the fallback product with confidence",
+      goal: "Build anticipation and then deliver the result clearly",
       notes: [
-        "Read verbatim."
+        "The QA should make the reveal feel earned.",
+        "This is where the client hears the good news."
       ]
     }
   },
   {
     id: 18,
-    title: "AFEUSA Disclosure",
+    title: "Eternal Legacy Package",
     qaRequired: true,
     script: [
-      "This is a membership package offer that includes Guaranteed Acceptance Group Term Life Insurance along with other benefits and services associated with AFEUSA membership.",
-      "As a member of AFEUSA you will be entitled to valuable non insurance benefits such as health and wellness programs, savings on medications, identity theft investigation services, and many other services.",
-      "Benefits vary by state, and the membership brochure you receive will provide complete details."
+      "Select Eternal Legacy in the prior section to load the combined script and membership disclosure."
     ],
+    branchControl: {
+      stateKey: "productOutcome",
+      display: false,
+      replaceBaseOnSelect: true,
+      options: [
+        createProductOutcomeOption("easy-life", {
+          script: [
+            "This section is only used for Eternal Legacy. Stay on the EMC route and move to the next applicable section."
+          ]
+        }),
+        createProductOutcomeOption("emc-graded", {
+          script: [
+            "This section is only used for Eternal Legacy. Stay on the EMC route and move to the next applicable section."
+          ]
+        }),
+        createProductOutcomeOption("eternal-legacy", {
+          script: [
+            "The plan I can walk you through today is Eternal Legacy, underwritten by Monitor Life Insurance Company of New York.",
+            "This is a guaranteed acceptance group term life insurance plan.",
+            "Since you've already answered the health questions, there are no additional medical exams or tests required, and this coverage will stay in force until age 95 as long as your premiums are paid and your group policy stays in force.",
+            "This coverage pays the full amount from day one due to accidental death, and after two years and a day for natural causes.",
+            "If you pass away during the first two years all paid premiums will be returned to the beneficiary.",
+            "This is a membership package offer that includes Guaranteed Acceptance Group Term Life Insurance along with other benefits and services associated with AFEUSA membership.",
+            "As a member of AFEUSA you will be entitled to valuable non insurance benefits such as health and wellness programs, savings on medications, identity theft investigation services, and many other services.",
+            "Benefits vary by state, and the membership brochure you receive will provide complete details.",
+            "So either way you will be better protected from day one with this plan, which is great right?"
+          ]
+        }),
+        createProductOutcomeOption("no-option", {
+          script: [
+            "There is no Eternal Legacy package available on this route. Move ahead to the wrap-up steps."
+          ]
+        })
+      ]
+    },
     prompt: {
-      goal: "Handle the membership disclosure",
+      goal: "Handle the combined Eternal Legacy and AFEUSA route in one place",
       notes: [
-        "Read verbatim."
+        "Read this combined route verbatim when Eternal Legacy is the selected outcome.",
+        "If the route is EMC or no-option, skip this section."
       ]
     }
   },
   {
     id: 19,
-    title: "Accelerated Death Benefit",
+    title: "Product Reinforcement",
     qaRequired: false,
     script: [
-      "One additional feature included after the second year is the Accelerated Death Benefit.",
-      "If you are diagnosed with a terminal illness with 24 months or less to live, the company can send you up to seventy five percent of the coverage amount while you are still living.",
-      "The remaining twenty five percent would then be paid to your beneficiary when you pass away."
+      "Select the route in the prior section to load the right reinforcement language."
     ],
+    branchControl: {
+      stateKey: "productOutcome",
+      display: false,
+      replaceBaseOnSelect: true,
+      options: [
+        createProductOutcomeOption("easy-life", {
+          script: [
+            "Now [ClientName], as you know, taking a medical exam is usually mandatory to get the best life insurance plans and lowest rates, but not here.",
+            "As long as you're able to qualify for this plan, I promise, you won't have to go to any medical appointments or get poked by a needle for blood work, okay?",
+            "We just check with your doctor and the pharmacy, so that makes it pretty simple, doesn't it?",
+            "This plan also builds cash value over time that can be used to automatically pay missed premiums if necessary, you can borrow against it, or just take the cash out if you ever need a little extra money since it's like a savings account.",
+            "Also, the coverage never expires, so as long as the premiums are paid, you can feel good about having long term protection and knowing this money is going directly to your family tax-free when a claim is made.",
+            "On top of it all, we pay most claims immediately, usually within 48 hours of a completed submission.",
+            "The reason we do that is because when you leave this world, it'll already be one of the hardest days in your family's life. They shouldn't be left waiting on help.",
+            "So [ClientName], we provide that money to your family the same way you would if you were still there for them.",
+            "And that's all. It's really that easy.",
+            "And [ClientName], it looks like you also qualified for the Terminal Illness Rider we spoke about, which is great.",
+            "If you're diagnosed with a terminal illness, the company can send you a check for up to 75 percent of your coverage amount, so you can take care of everything yourself while you're still living, which is great, isn't it?",
+            "Do you have any questions about the coverage before we get into the numbers?",
+            "If at any time you have any questions about the policy or the benefits, I want you to know that I'll always be here to help you in any way I can. So please, keep my number in a safe place, because that'll be the easiest way for you to reach me, okay?",
+            "And in my professional opinion, this plan can cover what you need.",
+            "As a new customer, I first and foremost want to make sure we find something that's affordable and comfortable for you right now, because you may not qualify for this plan or these rates again if your health changes.",
+            "And the premiums will also never be more affordable than they are now, especially with all those additional benefits included."
+          ],
+          helperLines: [
+            "Easy Life gets the shared EMC benefits plus the terminal illness rider."
+          ]
+        }),
+        createProductOutcomeOption("emc-graded", {
+          script: [
+            "Now [ClientName], as you know, taking a medical exam is usually mandatory to get the best life insurance plans and lowest rates, but not here.",
+            "As long as you're able to qualify for this plan, I promise, you won't have to go to any medical appointments or get poked by a needle for blood work, okay?",
+            "We just check with your doctor and the pharmacy, so that makes it pretty simple, doesn't it?",
+            "This plan also builds cash value over time that can be used to automatically pay missed premiums if necessary.",
+            "And the coverage never expires, so as long as the premiums are paid, you can feel good about having long term protection and knowing this money is going directly to your family tax-free when a claim is made.",
+            "On top of it all, we pay most claims immediately, usually within 48 hours of a completed submission.",
+            "The reason we do that is because when you leave this world, it'll already be one of the hardest days in your family's life. They shouldn't be left waiting on help.",
+            "So [ClientName], we provide that money to your family the same way you would if you were still there for them.",
+            "And that's all. It's really that easy.",
+            "Do you have any questions about the coverage before we get into the numbers?",
+            "If at any time you have any questions about the policy or the benefits, I want you to know that I'll always be here to help you in any way I can. So please, keep my number in a safe place, because that'll be the easiest way for you to reach me, okay?",
+            "And in my professional opinion, this plan can cover what you need.",
+            "As a new customer, I first and foremost want to make sure we find something that's affordable and comfortable for you right now, because you may not qualify for this plan or these rates again if your health changes.",
+            "And the premiums will also never be more affordable than they are now."
+          ],
+          helperLines: [
+            "Graded does not get the Easy Life rider."
+          ]
+        }),
+        createProductOutcomeOption("eternal-legacy", {
+          script: [
+            "Do you have any questions about the coverage before we get into the numbers?",
+            "If at any time you have any questions about the policy or the benefits, I want you to know that I'll always be here to help you in any way I can. So please, keep my number in a safe place, because that'll be the easiest way for you to reach me, okay?",
+            "As a new customer, I first and foremost want to make sure we find something that's affordable and comfortable for you right now, because waiting rarely improves the path with life insurance.",
+            "So if the fit is there and the budget works, I'd rather help you get this handled today."
+          ],
+          helperLines: [
+            "Keep this route hopeful and direct. No EMC-only benefits here."
+          ]
+        }),
+        createProductOutcomeOption("no-option", {
+          script: [
+            "At this point I don't have a product to present today, so don't use the pricing push. Move to your no-option wrap-up instead."
+          ]
+        })
+      ]
+    },
     prompt: {
-      goal: "Add value right before the trial close",
+      goal: "Cover the route-specific benefits and urgency before price",
       notes: [
-        "This is a feature section, not a pressure section."
+        "Easy Life gets the rider language. EMC Graded does not.",
+        "The good news should already be delivered before this section starts."
       ]
     }
   },
   {
     id: 20,
-    title: "Trial Close",
+    title: "Price Presentation",
     qaRequired: false,
     script: [
-      "Before we look at the numbers let me ask you something.",
-      "If I can find a plan that fits comfortably into your budget today, is there any reason you would not want to get [BeneficiaryName] protected right now?"
+      "Select the current product route to load the pricing language."
     ],
+    branchControl: {
+      stateKey: "productOutcome",
+      display: false,
+      replaceBaseOnSelect: true,
+      options: [
+        createProductOutcomeOption("easy-life", {
+          script: [
+            "Based on what qualified, I have three options in front of me and I want to keep this comfortable for you.",
+            "Option 1 gives you [Coverage1] in coverage and comes in at [Quote1] per month.",
+            "Option 2 gives you [Coverage2] in coverage and comes in at [Quote2] per month.",
+            "Option 3 gives you [Coverage3] in coverage and comes in at [Quote3] per month.",
+            "[RecommendedQuote] is the one I like best for value based on what you told me.",
+            "Which of those feels the most comfortable to start with today?"
+          ]
+        }),
+        createProductOutcomeOption("emc-graded", {
+          script: [
+            "Based on what qualified, I have three options in front of me and I want to keep this comfortable for you.",
+            "Option 1 gives you [Coverage1] in coverage and comes in at [Quote1] per month.",
+            "Option 2 gives you [Coverage2] in coverage and comes in at [Quote2] per month.",
+            "Option 3 gives you [Coverage3] in coverage and comes in at [Quote3] per month.",
+            "[RecommendedQuote] is the one I like best for value based on what you told me.",
+            "Which of those feels the most comfortable to start with today?"
+          ]
+        }),
+        createProductOutcomeOption("eternal-legacy", {
+          script: [
+            "Based on what qualified, I have three options in front of me and I want to keep this comfortable for you.",
+            "Option 1 gives you [Coverage1] in coverage and comes in at [Quote1] per month.",
+            "Option 2 gives you [Coverage2] in coverage and comes in at [Quote2] per month.",
+            "Option 3 gives you [Coverage3] in coverage and comes in at [Quote3] per month.",
+            "[RecommendedQuote] is the one I like best for value based on what you told me.",
+            "Which of those feels the most comfortable to start with today?"
+          ]
+        }),
+        createProductOutcomeOption("no-option", {
+          script: [
+            "There is no price presentation on a no-option route."
+          ]
+        })
+      ]
+    },
     prompt: {
-      goal: "Surface hidden objections before price",
+      goal: "Guide the client to a comfortable same-day premium instead of inviting delay",
       notes: [
-        "Listen carefully to the answer."
+        "Use the quote workspace to store all three numbers so you do not lose them.",
+        "Use the quick objection buttons the moment they give you a reason not to move forward."
       ]
     }
   },
   {
     id: 21,
-    title: "Price Presentation",
+    title: "Same-Day Commitment",
     qaRequired: false,
     script: [
-      "Please grab a pen and paper.",
-      "I am going to show you three options so you can choose what makes the most sense for you.",
-      "Option one.",
-      "Option two.",
-      "Option three."
+      "Select the current product route to load the right commitment language."
     ],
+    branchControl: {
+      stateKey: "productOutcome",
+      display: false,
+      replaceBaseOnSelect: true,
+      options: [
+        createProductOutcomeOption("easy-life", {
+          script: [
+            "Now most people want to start their coverage right away, so we'll go ahead and start yours today.",
+            "I'll collect your banking information shortly, right after we start by confirming your beneficiary specifics to make sure your [BeneficiaryRelationship] is set to receive these insurance payouts.",
+            "The biggest thing with life insurance is getting the first payment set up right away so there's no delay in protecting [BeneficiaryName]."
+          ]
+        }),
+        createProductOutcomeOption("emc-graded", {
+          script: [
+            "Now most people want to start their coverage right away, so we'll go ahead and start yours today.",
+            "I'll collect your banking information shortly, right after we start by confirming your beneficiary specifics to make sure your [BeneficiaryRelationship] is set to receive these insurance payouts.",
+            "The biggest thing with life insurance is getting the first payment set up right away so there's no delay in protecting [BeneficiaryName]."
+          ]
+        }),
+        createProductOutcomeOption("eternal-legacy", {
+          script: [
+            "Now most people want to start their coverage right away, so we'll go ahead and start yours today.",
+            "I'll collect your banking information shortly, right after we start by confirming your beneficiary specifics to make sure your [BeneficiaryRelationship] is set to receive these insurance payouts.",
+            "The biggest thing with life insurance is getting the first payment set up right away so there's no delay in protecting [BeneficiaryName]."
+          ]
+        }),
+        createProductOutcomeOption("no-option", {
+          script: [
+            "There is no same-day start on a no-option route. Use your follow-up, callback, or disposition workflow instead."
+          ]
+        })
+      ]
+    },
     prompt: {
-      goal: "Frame the close as a choice, not a yes or no",
+      goal: "Normalize same-day action so payment today feels like the default move",
       notes: [
-        "Present with confidence.",
-        "Use your actual price options live."
+        "This is the commitment bridge into banking.",
+        "Same-day pay is the operational priority here."
       ]
     }
   },
   {
     id: 22,
-    title: "Decision Close",
+    title: "Start Coverage Today",
     qaRequired: false,
     script: [
-      "So tell me [ClientName].",
-      "When that day comes, which check would you want [BeneficiaryName] to receive?",
-      "Pause."
+      "Select the current product route to load the banking transition."
     ],
+    branchControl: {
+      stateKey: "productOutcome",
+      display: false,
+      replaceBaseOnSelect: true,
+      options: [
+        createProductOutcomeOption("easy-life", {
+          script: [
+            "Now most people want to start their coverage right away, so we'll go ahead and start yours today.",
+            "I'll collect your banking information shortly, right after we start with confirming your beneficiary specifics to make sure your [BeneficiaryRelationship] is set to receive these insurance payouts.",
+            "Once that first payment is set, we have your same-day start moving in the right direction."
+          ]
+        }),
+        createProductOutcomeOption("emc-graded", {
+          script: [
+            "Now most people want to start their coverage right away, so we'll go ahead and start yours today.",
+            "I'll collect your banking information shortly, right after we start with confirming your beneficiary specifics to make sure your [BeneficiaryRelationship] is set to receive these insurance payouts.",
+            "Once that first payment is set, we have your same-day start moving in the right direction."
+          ]
+        }),
+        createProductOutcomeOption("eternal-legacy", {
+          script: [
+            "Now most people want to start their coverage right away, so we'll go ahead and start yours today.",
+            "I'll collect your banking information shortly, right after we start with confirming your beneficiary specifics to make sure your [BeneficiaryRelationship] is set to receive these insurance payouts.",
+            "Once that first payment is set, we have your same-day start moving in the right direction."
+          ]
+        }),
+        createProductOutcomeOption("no-option", {
+          script: [
+            "There is no banking transition on a no-option route."
+          ]
+        })
+      ]
+    },
     prompt: {
-      goal: "Bring them back to the emotional reason for acting now",
+      goal: "Move the client from the chosen premium into same-day payment setup",
       notes: [
-        "Then move into the sale."
+        "Do not reopen the whole sale here.",
+        "Keep momentum tight and procedural."
       ]
     }
   },
   {
     id: 23,
-    title: "Rehash",
+    title: "Rehash / Wrap Up",
     qaRequired: false,
     script: [
-      "Congratulations.",
-      "Everything is set.",
-      "Your monthly premium will be $[Premium].",
-      "Your payment will draft on the [DraftDate].",
-      "If you ever need assistance you can reach me directly at [AdvisorPhone]."
+      "Select the current product route to load the correct wrap-up."
     ],
+    branchControl: {
+      stateKey: "productOutcome",
+      display: false,
+      replaceBaseOnSelect: true,
+      options: [
+        createProductOutcomeOption("easy-life", {
+          script: [
+            "Congratulations, we're all set here.",
+            "What happens next is the application is sent to [CarrierName] for completion, and once the first premium is taken, the coverage will be in force and they will send you a letter in the mail which will give you all the details you need including a copy of the policy.",
+            "Can you grab that pen and paper again please?",
+            "I'm going to give you your [PolicyLabel] number now.",
+            "It is [PolicyNumber].",
+            "And just as a reminder, we'll be charging the premium of [Premium] on the [DraftDate] of each month.",
+            "Please keep in mind that sometimes it can take an extra two to three business days for the payment to go through, especially if that date falls on a weekend. So it's important to leave that money in your account to cover the payment and make sure your coverage doesn't lapse, okay?",
+            "What's a secondary phone number we can reach you on if there's ever any need for us to reach you?",
+            "And in case we have to get in touch with your beneficiary, can you provide me with their phone number as well?",
+            "And just to be sure you have it, I'll give you my name and number again as well.",
+            "My name is [AdvisorName] and you can reach me at [AdvisorPhone].",
+            "And let me give you another number to take down as well: [CustomerExperiencePhone].",
+            "This is our Customer Experience Team, so if there's ever anything you need and I'm unavailable, they can help as well.",
+            "Do you have any questions for me today before we wrap things up?",
+            "One last thing I'll ask is that if you have any friends or family who may need insurance, please feel encouraged to have them give me a call and I can help them out as well.",
+            "So congratulations again on taking these steps in protecting your family, and thank you for choosing Insurance Supermarket."
+          ]
+        }),
+        createProductOutcomeOption("emc-graded", {
+          script: [
+            "Congratulations, we're all set here.",
+            "What happens next is the application is sent to [CarrierName] for completion, and once the first premium is taken, the coverage will be in force and they will send you a letter in the mail which will give you all the details you need including a copy of the policy.",
+            "Can you grab that pen and paper again please?",
+            "I'm going to give you your [PolicyLabel] number now.",
+            "It is [PolicyNumber].",
+            "And just as a reminder, we'll be charging the premium of [Premium] on the [DraftDate] of each month.",
+            "Please keep in mind that sometimes it can take an extra two to three business days for the payment to go through, especially if that date falls on a weekend. So it's important to leave that money in your account to cover the payment and make sure your coverage doesn't lapse, okay?",
+            "What's a secondary phone number we can reach you on if there's ever any need for us to reach you?",
+            "And in case we have to get in touch with your beneficiary, can you provide me with their phone number as well?",
+            "And just to be sure you have it, I'll give you my name and number again as well.",
+            "My name is [AdvisorName] and you can reach me at [AdvisorPhone].",
+            "And let me give you another number to take down as well: [CustomerExperiencePhone].",
+            "This is our Customer Experience Team, so if there's ever anything you need and I'm unavailable, they can help as well.",
+            "Do you have any questions for me today before we wrap things up?",
+            "One last thing I'll ask is that if you have any friends or family who may need insurance, please feel encouraged to have them give me a call and I can help them out as well.",
+            "So congratulations again on taking these steps in protecting your family, and thank you for choosing Insurance Supermarket."
+          ]
+        }),
+        createProductOutcomeOption("eternal-legacy", {
+          script: [
+            "Congratulations, we're all set here.",
+            "What happens next is the application is sent to [CarrierName] for completion, and once the first premium is taken, the coverage will be in force and they will send you a letter in the mail which will give you all the details you need including a copy of the policy.",
+            "Can you grab that pen and paper again please?",
+            "I'm going to give you your [PolicyLabel] number now.",
+            "It is [PolicyNumber].",
+            "And just as a reminder, we'll be charging the premium of [Premium] on the [DraftDate] of each month.",
+            "Please keep in mind that sometimes it can take an extra two to three business days for the payment to go through, especially if that date falls on a weekend. So it's important to leave that money in your account to cover the payment and make sure your coverage doesn't lapse, okay?",
+            "What's a secondary phone number we can reach you on if there's ever any need for us to reach you?",
+            "And in case we have to get in touch with your beneficiary, can you provide me with their phone number as well?",
+            "And just to be sure you have it, I'll give you my name and number again as well.",
+            "My name is [AdvisorName] and you can reach me at [AdvisorPhone].",
+            "And let me give you another number to take down as well: [CustomerExperiencePhone].",
+            "This is our Customer Experience Team, so if there's ever anything you need and I'm unavailable, they can help as well.",
+            "Do you have any questions for me today before we wrap things up?",
+            "One last thing I'll ask is that if you have any friends or family who may need insurance, please feel encouraged to have them give me a call and I can help them out as well.",
+            "So congratulations again on taking these steps in protecting your family, and thank you for choosing Insurance Supermarket."
+          ]
+        }),
+        createProductOutcomeOption("no-option", {
+          script: [
+            "There is no policy rehash on a no-option route. Use your outcome, callback, or follow-up process instead."
+          ]
+        })
+      ]
+    },
     prompt: {
-      goal: "Confirm the details confidently",
+      goal: "Lock down the post-sale details and leave the client with clean next steps",
       notes: [
-        "Use the policy detail fields in the top bar."
+        "Use the workspace to store the policy number, secondary phone, and beneficiary phone so you do not lose them.",
+        "This section should feel organized and complete."
       ]
     }
   },

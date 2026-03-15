@@ -93,6 +93,85 @@ select {
   background-color: rgb(124 58 237);
 }
 
+.branch-button {
+  min-width: 11rem;
+  flex: 1 1 11rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgb(55 65 81);
+  background-color: rgb(15 23 42);
+  padding: 0.9rem 1rem;
+  text-align: left;
+  transition: 150ms ease;
+}
+
+.branch-button-idle:hover {
+  border-color: rgb(71 85 105);
+  background-color: rgb(30 41 59);
+}
+
+.branch-button-active {
+  border-color: rgb(56 189 248);
+  background-color: rgb(8 47 73);
+  box-shadow: inset 0 0 0 1px rgb(14 165 233 / 0.2);
+}
+
+.quote-card {
+  border-radius: 0.85rem;
+  border: 1px solid rgb(55 65 81);
+  background-color: rgb(15 23 42);
+  padding: 1rem;
+  transition: 150ms ease;
+}
+
+.quote-card-active {
+  border-color: rgb(16 185 129);
+  background-color: rgb(6 78 59 / 0.35);
+  box-shadow: inset 0 0 0 1px rgb(16 185 129 / 0.2);
+}
+
+.quote-chip {
+  border-radius: 9999px;
+  border: 1px solid rgb(55 65 81);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: 150ms ease;
+}
+
+.quote-chip-idle {
+  background-color: rgb(17 24 39);
+  color: rgb(209 213 219);
+}
+
+.quote-chip-idle:hover {
+  background-color: rgb(31 41 55);
+  color: white;
+}
+
+.quote-chip-active {
+  border-color: rgb(16 185 129);
+  background-color: rgb(6 95 70);
+  color: white;
+}
+
+.quick-objection-button {
+  border-radius: 9999px;
+  border: 1px solid rgb(55 65 81);
+  background-color: rgb(17 24 39);
+  padding: 0.45rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgb(229 231 235);
+  transition: 150ms ease;
+}
+
+.quick-objection-button:hover {
+  border-color: rgb(14 165 233);
+  background-color: rgb(8 47 73);
+  color: white;
+}
+
 .metric-pill {
   border-radius: 9999px;
   padding: 0.25rem 0.75rem;
