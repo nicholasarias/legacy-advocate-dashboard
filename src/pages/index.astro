@@ -1014,6 +1014,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     if (callNotes) callNotes.value = sessionState.notes;
 
     let activeRebuttalId = 1;
+    let pendingBranchHighlight = null;
 
     function formatTime(totalSeconds) {
       const minutes = Math.floor(totalSeconds / 60);
@@ -1324,6 +1325,11 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         [stateKey]: value
       };
 
+      pendingBranchHighlight = {
+        stateKey,
+        value
+      };
+
       if (stateKey === "productOutcome" && currentSection.id === 15) {
         const nextSection =
           scriptSections.find((section) => section.id === getProductRouteStartSectionId(value)) ||
@@ -1335,15 +1341,32 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       renderSection(currentSection);
     }
 
-    function getRenderableScript(section) {
+    function getRenderableScriptBlocks(section) {
       const tokens = getTokens();
+      const branch = getBranchConfig(section);
       const selectedOption = getSelectedBranchOption(section);
-      const replaceBase = Boolean(section.branchControl?.replaceBaseOnSelect && selectedOption);
-      const lines = replaceBase
-        ? [...(selectedOption?.script || [])]
-        : [...(section.script || []), ...(selectedOption?.script || [])];
+      const replaceBase = Boolean(branch?.replaceBaseOnSelect && selectedOption);
+      const blocks = [];
 
-      return lines.map((line) => applyTokens(line, tokens));
+      if (!replaceBase) {
+        blocks.push({
+          type: "base",
+          lines: (section.script || []).map((line) => applyTokens(line, tokens))
+        });
+      }
+
+      if (selectedOption?.script?.length) {
+        blocks.push({
+          type: "branch",
+          heading: `${branch?.label || "Selected Path"}: ${selectedOption.label}`,
+          lines: selectedOption.script.map((line) => applyTokens(line, tokens)),
+          emphasize:
+            pendingBranchHighlight?.stateKey === branch?.stateKey &&
+            pendingBranchHighlight?.value === selectedOption.value
+        });
+      }
+
+      return blocks;
     }
 
     function renderBranchPanel(section) {
@@ -1446,12 +1469,32 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       if (scriptLines) {
         scriptLines.innerHTML = "";
 
-        getRenderableScript(section).forEach((line) => {
-          const p = document.createElement("p");
-          p.textContent = line;
-          scriptLines.appendChild(p);
+        getRenderableScriptBlocks(section).forEach((block) => {
+          const blockEl = document.createElement("div");
+          blockEl.className =
+            block.type === "branch"
+              ? `script-block script-branch-block${block.emphasize ? " script-branch-block-flash" : ""}`
+              : "script-block script-base-block";
+
+          if (block.type === "branch" && block.heading) {
+            const label = document.createElement("div");
+            label.className = "script-branch-label";
+            label.textContent = block.heading;
+            blockEl.appendChild(label);
+          }
+
+          block.lines.forEach((line) => {
+            const p = document.createElement("p");
+            p.className = "script-line";
+            p.textContent = line;
+            blockEl.appendChild(p);
+          });
+
+          scriptLines.appendChild(blockEl);
         });
       }
+
+      pendingBranchHighlight = null;
 
       sectionButtons.forEach((button) => {
         const isActive = Number(button.dataset.sectionId) === section.id;
