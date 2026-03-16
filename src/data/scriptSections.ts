@@ -730,7 +730,11 @@ export const scriptSections = [
           script: [
             "Now, after we're able to verify the approval factors, I hope you will qualify for either the Easy Life Plan that pays the entire face amount right away from day one, or the Graded Plan, which also pays the full face amount after two years.",
             "I'm really hoping I can get you day one coverage over a two year wait.",
-            "I'm sure that's what you'd like, right?"
+            "I'm sure that's what you'd like, right?",
+            "The reason I'm hoping for that route is it's simple. There are no medical appointments, no blood work, and no doctor visits. We just verify with your doctor and the pharmacy.",
+            "It also builds cash value over time, the coverage never expires as long as premiums are paid, and when a claim is made that money goes directly to your family tax-free.",
+            "On top of that, most claims are paid very quickly, usually within 48 hours of a completed submission.",
+            "So if this comes back the way I'm hoping, it gives your family real protection without putting them through more hoops."
           ]
         }),
         createProductOutcomeOption("emc-graded", {
@@ -738,7 +742,11 @@ export const scriptSections = [
             "Now, after we're able to verify the approval factors, I hope you will qualify for the Graded Plan, which pays the full face amount from day one due to accidental death, and after two years and a day for natural causes.",
             "If you passed away during the first year it would pay 110 percent of your paid premiums.",
             "During the second year it would pay 120 percent of your paid premiums.",
-            "So either way you will be better protected from day one with this plan, which is great right?"
+            "So either way you will be better protected from day one with this plan, which is great right?",
+            "The good part is there still aren't any medical appointments, blood work, or doctor visits. We just verify with your doctor and the pharmacy.",
+            "It also builds cash value over time, the coverage never expires as long as premiums are paid, and when a claim is made that money goes directly to your family tax-free.",
+            "On top of that, most claims are paid very quickly, usually within 48 hours of a completed submission.",
+            "So if this is the route we land on, it's still a simple way to put protection in place for your family."
           ]
         }),
         createProductOutcomeOption("eternal-legacy", {
@@ -754,10 +762,11 @@ export const scriptSections = [
       ]
     },
     prompt: {
-      goal: "Read the route-specific EMC QA language before you deliver the qualification result",
+      goal: "Read the route-specific EMC QA and build value before you deliver the qualification result",
       notes: [
         "This is the anticipation step.",
-        "Read the Easy Life or Graded wording verbatim when it applies."
+        "Read the Easy Life or Graded wording verbatim when it applies.",
+        "Shared EMC value build belongs here, before the good-news reveal."
       ]
     }
   },
@@ -776,7 +785,7 @@ export const scriptSections = [
         createProductOutcomeOption("easy-life", {
           script: [
             "Okay, [ClientName], I finished checking everything over, and I've got some really good news.",
-            "It looks like you may qualify for EMC Easy Life, which is one of the top tier routes we talked about.",
+            "You qualified for EMC Easy Life, which is one of the top tier routes we talked about.",
             "That's exactly what I was hoping to see for you."
           ]
         }),
@@ -863,10 +872,10 @@ export const scriptSections = [
   },
   {
     id: 19,
-    title: "Product Reinforcement",
+    title: "Post-Approval Confirmation",
     qaRequired: false,
     script: [
-      "Select the route in the prior section to load the right reinforcement language."
+      "Select the route in the prior section to load the right post-approval confirmation."
     ],
     branchControl: {
       stateKey: "productOutcome",
@@ -875,19 +884,8 @@ export const scriptSections = [
       options: [
         createProductOutcomeOption("easy-life", {
           script: [
-            "Now [ClientName], as you know, taking a medical exam is usually mandatory to get the best life insurance plans and lowest rates, but not here.",
-            "As long as you're able to qualify for this plan, I promise, you won't have to go to any medical appointments or get poked by a needle for blood work, okay?",
-            "We just check with your doctor and the pharmacy, so that makes it pretty simple, doesn't it?",
-            "This plan also builds cash value over time that can be used to automatically pay missed premiums if necessary, you can borrow against it, or just take the cash out if you ever need a little extra money since it's like a savings account.",
-            "Also, the coverage never expires, so as long as the premiums are paid, you can feel good about having long term protection and knowing this money is going directly to your family tax-free when a claim is made.",
-            "On top of it all, we pay most claims immediately, usually within 48 hours of a completed submission.",
-            "The reason we do that is because when you leave this world, it'll already be one of the hardest days in your family's life. They shouldn't be left waiting on help.",
-            "So [ClientName], we provide that money to your family the same way you would if you were still there for them.",
-            "And that's all. It's really that easy.",
-            "And [ClientName], it looks like you also qualified for the Terminal Illness Rider we spoke about, which is great.",
+            "And [ClientName], you also qualified for the Terminal Illness Rider we spoke about, which is great.",
             "If you're diagnosed with a terminal illness, the company can send you a check for up to 75 percent of your coverage amount, so you can take care of everything yourself while you're still living, which is great, isn't it?",
-            "Do you have any questions about the coverage before we get into the numbers?",
-            "If at any time you have any questions about the policy or the benefits, I want you to know that I'll always be here to help you in any way I can. So please, keep my number in a safe place, because that'll be the easiest way for you to reach me, okay?",
             "And in my professional opinion, this plan can cover what you need.",
             "As a new customer, I first and foremost want to make sure we find something that's affordable and comfortable for you right now, because you may not qualify for this plan or these rates again if your health changes.",
             "And the premiums will also never be more affordable than they are now, especially with all those additional benefits included."
@@ -898,17 +896,6 @@ export const scriptSections = [
         }),
         createProductOutcomeOption("emc-graded", {
           script: [
-            "Now [ClientName], as you know, taking a medical exam is usually mandatory to get the best life insurance plans and lowest rates, but not here.",
-            "As long as you're able to qualify for this plan, I promise, you won't have to go to any medical appointments or get poked by a needle for blood work, okay?",
-            "We just check with your doctor and the pharmacy, so that makes it pretty simple, doesn't it?",
-            "This plan also builds cash value over time that can be used to automatically pay missed premiums if necessary.",
-            "And the coverage never expires, so as long as the premiums are paid, you can feel good about having long term protection and knowing this money is going directly to your family tax-free when a claim is made.",
-            "On top of it all, we pay most claims immediately, usually within 48 hours of a completed submission.",
-            "The reason we do that is because when you leave this world, it'll already be one of the hardest days in your family's life. They shouldn't be left waiting on help.",
-            "So [ClientName], we provide that money to your family the same way you would if you were still there for them.",
-            "And that's all. It's really that easy.",
-            "Do you have any questions about the coverage before we get into the numbers?",
-            "If at any time you have any questions about the policy or the benefits, I want you to know that I'll always be here to help you in any way I can. So please, keep my number in a safe place, because that'll be the easiest way for you to reach me, okay?",
             "And in my professional opinion, this plan can cover what you need.",
             "As a new customer, I first and foremost want to make sure we find something that's affordable and comfortable for you right now, because you may not qualify for this plan or these rates again if your health changes.",
             "And the premiums will also never be more affordable than they are now."
@@ -936,10 +923,10 @@ export const scriptSections = [
       ]
     },
     prompt: {
-      goal: "Cover the route-specific benefits and urgency before price",
+      goal: "Confirm the route-specific extras and urgency after approval before price",
       notes: [
         "Easy Life gets the rider language. EMC Graded does not.",
-        "The good news should already be delivered before this section starts."
+        "Keep this section tight. The shared plan value should already be established before the good-news reveal."
       ]
     }
   },
