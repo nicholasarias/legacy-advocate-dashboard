@@ -89,8 +89,8 @@ export const scriptSections = [
       options: [
         {
           value: "has-coverage",
-          label: "Has Coverage",
-          description: "Use this when they already have some protection in force.",
+          label: "Need More",
+          description: "Use this when they already have protection in force but there still seems to be a gap.",
           script: [
             "Who is that policy with?",
             "About how much coverage is it?",
@@ -104,6 +104,27 @@ export const scriptSections = [
           ],
           promptNotes: [
             "Find the original buying reason so you can tie back to it later."
+          ]
+        },
+        {
+          value: "wants-extra",
+          label: "Leave Extra",
+          description: "Use this when they already have coverage but want to leave loved ones more than the basics.",
+          script: [
+            "Who is that policy with?",
+            "About how much coverage is it?",
+            "About how much is the monthly premium?",
+            "What did you want that policy to take care of for your family?",
+            "That makes sense.",
+            "So this isn't really about replacing what you already did.",
+            "It's about making sure [BeneficiaryName] has extra breathing room on top of it instead of just enough to get through the immediate expenses."
+          ],
+          helperLines: [
+            "Validate the existing planning first.",
+            "Frame the new plan as extra room, not a contradiction to what they already bought."
+          ],
+          promptNotes: [
+            "Use this when they say the current coverage handles the basics, but they still want to leave more behind."
           ]
         },
         {
@@ -127,7 +148,7 @@ export const scriptSections = [
       ]
     },
     prompt: {
-      goal: "Learn whether you are filling a gap or starting from zero",
+      goal: "Learn whether you are filling a gap, adding extra, or starting from zero",
       notes: [
         "Ask this plainly. The less sales language here, the better.",
         "This answer should shape the rest of the call."
@@ -454,7 +475,7 @@ export const scriptSections = [
       options: [
         {
           value: "has-coverage",
-          label: "Has Coverage",
+          label: "Need More",
           description: "Use when the call is about confirming or filling a gap in existing coverage.",
           script: [
             "You already did something responsible by putting coverage in place.",
@@ -464,6 +485,21 @@ export const scriptSections = [
           ],
           helperLines: [
             "This keeps their dignity intact while giving you room to position additional protection."
+          ]
+        },
+        {
+          value: "wants-extra",
+          label: "Leave Extra",
+          description: "Use when they already have coverage but want to leave more than the basics behind.",
+          script: [
+            "You already did something responsible by putting coverage in place.",
+            "Sometimes the issue isn't that nothing is there. It's that when [BeneficiaryName] is grieving, what's there may only cover the basics and still leave them counting every dollar.",
+            "A little extra can mean they're not just paying the immediate bills. It can mean breathing room, time off work, travel, and one less thing to worry about while they're hurting.",
+            "If I can help you add that kind of cushion on top of what you've already done, that's worth looking at."
+          ],
+          helperLines: [
+            "Do not position this like their current policy failed.",
+            "Frame it as adding room to breathe, not fixing a mistake."
           ]
         },
         {
@@ -497,7 +533,7 @@ export const scriptSections = [
     qaRequired: false,
     script: [
       "So let me ask you this.",
-      "If I can help you put something in place that fits your budget and keeps [BeneficiaryName] from having to carry all of that alone, would you be open to looking at it today?",
+      "If I can help you put something in place that fits your budget and either closes a gap or gives [BeneficiaryName] extra breathing room, would you be open to looking at it today?",
       "Because that's really what we're solving for."
     ],
     prompt: {
@@ -921,7 +957,7 @@ export const scriptSections = [
       options: [
         createProductOutcomeOption("easy-life", {
           script: [
-            "Based on what qualified, I have three options in front of me and I want to keep this comfortable for you.",
+            "Based on what qualified, I have three options in front of me, and whether this is your first coverage, filling a gap, or giving [BeneficiaryName] extra breathing room, I want to keep this comfortable for you.",
             "Option 1 gives you [Coverage1] in coverage and comes in at [Quote1] per month.",
             "Option 2 gives you [Coverage2] in coverage and comes in at [Quote2] per month.",
             "Option 3 gives you [Coverage3] in coverage and comes in at [Quote3] per month.",
@@ -931,7 +967,7 @@ export const scriptSections = [
         }),
         createProductOutcomeOption("emc-graded", {
           script: [
-            "Based on what qualified, I have three options in front of me and I want to keep this comfortable for you.",
+            "Based on what qualified, I have three options in front of me, and whether this is your first coverage, filling a gap, or giving [BeneficiaryName] extra breathing room, I want to keep this comfortable for you.",
             "Option 1 gives you [Coverage1] in coverage and comes in at [Quote1] per month.",
             "Option 2 gives you [Coverage2] in coverage and comes in at [Quote2] per month.",
             "Option 3 gives you [Coverage3] in coverage and comes in at [Quote3] per month.",
@@ -941,7 +977,7 @@ export const scriptSections = [
         }),
         createProductOutcomeOption("eternal-legacy", {
           script: [
-            "Based on what qualified, I have three options in front of me and I want to keep this comfortable for you.",
+            "Based on what qualified, I have three options in front of me, and whether this is your first coverage, filling a gap, or giving [BeneficiaryName] extra breathing room, I want to keep this comfortable for you.",
             "Option 1 gives you [Coverage1] in coverage and comes in at [Quote1] per month.",
             "Option 2 gives you [Coverage2] in coverage and comes in at [Quote2] per month.",
             "Option 3 gives you [Coverage3] in coverage and comes in at [Quote3] per month.",
