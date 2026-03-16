@@ -318,11 +318,12 @@ export const scriptSections = [
     title: "Burden Clarifier",
     qaRequired: false,
     script: [
-      "When families are in that situation, it's usually not just one bill and one phone call.",
-      "It's the funeral home, transportation, paperwork, death certificates, family questions, and whatever final expenses are still sitting there.",
-      "So the real question is not whether [BeneficiaryName] would show up.",
-      "It's whether they would be forced to solve it under pressure.",
-      "If that happened tomorrow, would [BeneficiaryName] already have money set aside for it, or would they be scrambling to figure it out while they're already grieving?"
+      "When that day comes, [BeneficiaryName] isn't just getting one bill and making one phone call.",
+      "They're getting hit with decisions before they've even had time to breathe.",
+      "It's the funeral home, transportation, paperwork, death certificates, family questions, and figuring out what gets paid first.",
+      "So the real question isn't whether [BeneficiaryName] would show up.",
+      "It's whether they'd have to carry all of that while they're grieving.",
+      "If that happened tomorrow, would they already have money set aside for it, or would they be scrambling to pull it together in the middle of all that?"
     ],
     branchControl: {
       stateKey: "fundingStatus",
@@ -335,8 +336,9 @@ export const scriptSections = [
           description: "Use when they say there is already money available.",
           script: [
             "That's good planning.",
-            "Is that money truly set aside for this, or is it money your family might need for travel, bills, or something else too?",
-            "That's where people realize general savings and protected money are not always the same thing."
+            "But is that money truly set aside for that day, or is it the same money your family might need for travel, bills, or time off work too?",
+            "Because when one pot of money has to do everything, [BeneficiaryName] still ends up under pressure trying to decide what gets paid first.",
+            "That's where people realize general savings and protected money aren't always the same thing."
           ],
           helperLines: [
             "Do not attack their savings. Just help them see that general money is not always protected money."
@@ -351,7 +353,8 @@ export const scriptSections = [
           description: "Use when they admit the family would have to figure it out in the moment.",
           script: [
             "That's what most families face.",
-            "It's not that they don't care. It's that everything hits at once.",
+            "It isn't because they don't care. It's because everything hits at once.",
+            "And once those calls start coming in, [BeneficiaryName] is the one trying to hold it together and figure out the money at the same time.",
             "That's why even a simple plan can completely change what that day looks like for them."
           ],
           helperLines: [
@@ -364,6 +367,7 @@ export const scriptSections = [
       goal: "Shift the picture from emotion alone to the real pressure of that day",
       notes: [
         "Stay conversational. Let them answer before you frame it for them.",
+        "Keep the focus on what [BeneficiaryName] would be carrying in that moment.",
         "This is where the scene starts feeling real."
       ]
     }
@@ -373,7 +377,7 @@ export const scriptSections = [
     title: "Arrangement Fit",
     qaRequired: false,
     script: [
-      "Have you thought about whether you would prefer burial, cremation, or just keeping it simple and letting your family decide?"
+      "Let me ask you this. If [BeneficiaryName] had to make those arrangements tomorrow, would they know whether you'd want burial, cremation, or something simple?"
     ],
     branchControl: {
       stateKey: "arrangementPreference",
@@ -386,8 +390,9 @@ export const scriptSections = [
           description: "Use when they prefer a traditional burial.",
           script: [
             "Traditional burial is usually the more expensive route.",
-            "If that's what you want, it matters that [BeneficiaryName] knows it and has the money ready to carry it out.",
-            "Does [BeneficiaryName] already know that's what you would want?"
+            "So if that's what you want, I don't want [BeneficiaryName] finding that out in the middle of grief and then wondering how they're going to pay for it.",
+            "Do they already know that's what you'd want?",
+            "And would the money already be there to carry it out the way you'd want?"
           ],
           helperLines: [
             "Use their own preference to make the cost feel real without lecturing."
@@ -398,8 +403,9 @@ export const scriptSections = [
           label: "Cremation",
           description: "Use when they prefer cremation or a simpler service.",
           script: [
-            "Cremation can be less expensive, but it still isn't free once the service and everything around it gets added in.",
-            "Does [BeneficiaryName] already know that's what you would want?",
+            "Cremation can be less expensive, but once you add the service, transportation, paperwork, and everything around it, it still becomes real money fast.",
+            "If that's your preference, I want [BeneficiaryName] knowing that ahead of time instead of making guesses under pressure.",
+            "Do they already know that's what you'd want?",
             "Even the simpler option is a lot easier on family when the money side is already handled."
           ],
           helperLines: [
@@ -412,7 +418,8 @@ export const scriptSections = [
           description: "Use when they have not made up their mind or have never talked about it.",
           script: [
             "That's common.",
-            "When nothing is decided, the family usually has to make emotional decisions and money decisions at the same time.",
+            "But when nothing's decided, [BeneficiaryName] is the one left trying to guess what you'd have wanted while everyone's emotional and looking at them for answers.",
+            "Then on top of that, they're still trying to figure out what they can afford to do.",
             "That's exactly the kind of situation I'm trying to keep [BeneficiaryName] out of."
           ],
           helperLines: [
@@ -424,7 +431,8 @@ export const scriptSections = [
     prompt: {
       goal: "Make the burden concrete by tying it to the actual choices family would face",
       notes: [
-        "Keep this practical and specific.",
+        "Keep this practical and personal.",
+        "Tie the arrangement choice back to what [BeneficiaryName] would be trying to handle.",
         "This is where the scene becomes real, not abstract."
       ]
     }
@@ -435,8 +443,9 @@ export const scriptSections = [
     qaRequired: false,
     script: [
       "The reason I'm asking you all of this isn't to make the conversation heavy.",
-      "It's because I want you to picture exactly what [BeneficiaryName] would be dealing with if you weren't here to handle it yourself.",
-      "What I'm trying to protect [BeneficiaryName] from is having to grieve, make decisions, and come up with money all at the same time."
+      "It's because I want you to picture [BeneficiaryName] trying to answer questions, make calls, sign papers, and come up with the money while they're still trying to process losing you.",
+      "That isn't just a bill. That's pressure, confusion, and heartbreak all hitting them at once.",
+      "What I'm trying to protect [BeneficiaryName] from is having to grieve and carry all of that at the same time."
     ],
     branchControl: {
       stateKey: "coverageStatus",
@@ -449,8 +458,9 @@ export const scriptSections = [
           description: "Use when the call is about confirming or filling a gap in existing coverage.",
           script: [
             "You already did something responsible by putting coverage in place.",
-            "What I need to figure out now is whether it fully protects [BeneficiaryName] from that situation or whether there's still a gap.",
-            "If there's a gap, I'd rather help you close it now than leave them carrying it later."
+            "What I need to figure out now is whether it fully protects [BeneficiaryName] in that moment, or whether there's still a gap that leaves them exposed.",
+            "Because if there's a gap, they're still the one standing there grieving, making calls, and trying to figure out how to cover the rest.",
+            "I'd rather help you close that now than leave them carrying it later under that kind of pressure."
           ],
           helperLines: [
             "This keeps their dignity intact while giving you room to position additional protection."
@@ -461,9 +471,10 @@ export const scriptSections = [
           label: "No Coverage",
           description: "Use when they have not put anything in place yet.",
           script: [
-            "You haven't ignored this because you don't care. Most people just never get around to it until it becomes real.",
-            "Now that we've talked it through, you can see exactly where the pressure would land.",
-            "If I can help you put something simple in place that protects [BeneficiaryName] from that, that's worth looking at."
+            "You haven't ignored this because you don't care. Most people just don't feel the weight of it until they picture exactly who it would fall on.",
+            "Now that we've talked it through, you can see what [BeneficiaryName] would really be walking into.",
+            "And I don't want them grieving, getting hit with questions, and scrambling to find the money all in the same moment.",
+            "If I can help you put something simple in place that takes that burden off of them, that's worth looking at."
           ],
           helperLines: [
             "Keep the tone constructive. Shame will kill momentum."
@@ -475,6 +486,7 @@ export const scriptSections = [
       goal: "Make the protection pivot explicit before you move into permission",
       notes: [
         "This is the big-picture pivot.",
+        "Paint the moment: calls, paperwork, decisions, and money while they're grieving.",
         "Say plainly what you're trying to protect the beneficiary from."
       ]
     }
