@@ -1037,10 +1037,10 @@ export const scriptSections = [
   },
   {
     id: 22,
-    title: "Start Coverage Today",
+    title: "Enrollment Setup",
     qaRequired: false,
     script: [
-      "Select the current product route to load the banking transition."
+      "Select the current product route to load the enrollment transition."
     ],
     branchControl: {
       stateKey: "productOutcome",
@@ -1049,23 +1049,23 @@ export const scriptSections = [
       options: [
         createProductOutcomeOption("easy-life", {
           script: [
-            "Now most people want to start their coverage right away, so we'll go ahead and start yours today.",
-            "I'll collect your banking information shortly, right after we start with confirming your beneficiary specifics to make sure your [BeneficiaryRelationship] is set to receive these insurance payouts.",
-            "Once that first payment is set, we have your same-day start moving in the right direction."
+            "Now let's get the setup details locked in the right way.",
+            "We'll confirm your beneficiary specifics, choose the draft day you want, and make sure everything is lined up correctly for the policy.",
+            "Right after that, we'll finish the banking information so your same-day start keeps moving in the right direction."
           ]
         }),
         createProductOutcomeOption("emc-graded", {
           script: [
-            "Now most people want to start their coverage right away, so we'll go ahead and start yours today.",
-            "I'll collect your banking information shortly, right after we start with confirming your beneficiary specifics to make sure your [BeneficiaryRelationship] is set to receive these insurance payouts.",
-            "Once that first payment is set, we have your same-day start moving in the right direction."
+            "Now let's get the setup details locked in the right way.",
+            "We'll confirm your beneficiary specifics, choose the draft day you want, and make sure everything is lined up correctly for the policy.",
+            "Right after that, we'll finish the banking information so your same-day start keeps moving in the right direction."
           ]
         }),
         createProductOutcomeOption("eternal-legacy", {
           script: [
-            "Now most people want to start their coverage right away, so we'll go ahead and start yours today.",
-            "I'll collect your banking information shortly, right after we start with confirming your beneficiary specifics to make sure your [BeneficiaryRelationship] is set to receive these insurance payouts.",
-            "Once that first payment is set, we have your same-day start moving in the right direction."
+            "Now let's get the setup details locked in the right way.",
+            "We'll confirm your beneficiary specifics, choose the draft day you want, and make sure everything is lined up correctly for the policy.",
+            "Right after that, we'll finish the banking information so your same-day start keeps moving in the right direction."
           ]
         }),
         createProductOutcomeOption("no-option", {
@@ -1076,7 +1076,7 @@ export const scriptSections = [
       ]
     },
     prompt: {
-      goal: "Move the client from the chosen premium into same-day payment setup",
+      goal: "Move the client from commitment into beneficiary, draft-day, and payment setup",
       notes: [
         "Do not reopen the whole sale here.",
         "Keep momentum tight and procedural."

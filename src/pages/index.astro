@@ -346,6 +346,22 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
             <div id="enrollment-workspace-group" class="mt-5 hidden space-y-4">
               <div class="grid gap-4 sm:grid-cols-2">
                 <div>
+                  <label for="draftDateInput" class="form-label">Draft Day</label>
+                  <select id="draftDateInput" class="form-input">
+                    <option value="">Select day</option>
+                    {Array.from({ length: 28 }, (_, index) => {
+                      const day = String(index + 1);
+
+                      return (
+                        <option value={day}>
+                          {day}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+
+                <div>
                   <label for="policy-number-input" class="form-label">Policy / Certificate #</label>
                   <input
                     id="policy-number-input"
@@ -1265,6 +1281,10 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         summaryParts.push(`Current premium: ${formatMoneyDisplay(premiumInput.value, premiumInput.value)}`);
       }
 
+      if (draftDateInput?.value.trim()) {
+        summaryParts.push(`Draft day: ${draftDateInput.value}`);
+      }
+
       salesRouteSummary.textContent =
         summaryParts.join(" | ") ||
         "Medical notes, route details, and enrollment fields will appear here when they apply.";
@@ -1283,7 +1303,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
       const productOutcome = getBranchSelection("productOutcome");
       const sectionId = section.id;
-      const showPanel = sectionId >= 20 && sectionId <= 21 && productOutcome !== "no-option";
+      const showPanel = sectionId === 20 && productOutcome !== "no-option";
 
       pricingActionPanel.classList.toggle("hidden", !showPanel);
       quoteWorkspaceGroup.classList.toggle("hidden", !showPanel);
