@@ -30,23 +30,24 @@
         <label for="premiumInput" class="form-label">Premium</label>
         <input id="premiumInput" type="text" placeholder="55.00" class="form-input" />
       </div>
-
-      <div class="min-w-[140px]">
-        <label for="draftDateInput" class="form-label">Draft Date</label>
-        <input id="draftDateInput" type="text" placeholder="15th" class="form-input" />
-      </div>
     </div>
 
-    <div class="rounded-xl border border-gray-800 bg-gray-950 px-4 py-3 text-left">
-      <div id="advisor-display-name" class="text-sm font-semibold">Nick Arias</div>
-      <div class="text-xs text-gray-400">
-        Phone:
-        <span id="advisor-display-phone">YOUR_PHONE</span>
+    <div class="flex flex-wrap items-end gap-3">
+      <div class="rounded-xl border border-gray-800 bg-gray-950 px-4 py-3 text-left">
+        <div id="advisor-display-name" class="text-sm font-semibold">Nick Arias</div>
+        <div class="text-xs text-gray-400">
+          Phone:
+          <span id="advisor-display-phone">YOUR_PHONE</span>
+        </div>
+        <div class="text-xs text-gray-400">
+          NPN:
+          <span id="advisor-display-npn">YOUR_NPN</span>
+        </div>
       </div>
-      <div class="text-xs text-gray-400">
-        NPN:
-        <span id="advisor-display-npn">YOUR_NPN</span>
-      </div>
+
+      <button id="open-settings-button" type="button" class="btn self-stretch">
+        Settings
+      </button>
     </div>
   </div>
 </div>

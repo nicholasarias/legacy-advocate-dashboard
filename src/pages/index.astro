@@ -61,24 +61,26 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     <section class="flex-1 bg-gray-950 text-white">
       <div class="border-b border-gray-800 px-8 py-6">
         <div class="flex flex-col gap-4">
-          <div class="flex flex-wrap items-center gap-3">
-            <button id="new-call-button" type="button" class="btn-blue">New Call</button>
-            <button id="outcome-sold-button" type="button" class="btn-green">Sold</button>
-            <button id="toggle-shortcuts-button" type="button" class="btn">Shortcuts</button>
-            <button id="toggle-objections-button" type="button" class="btn">Objections</button>
-            <button id="open-settings-button" type="button" class="btn">Settings</button>
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-3">
+              <button id="new-call-button" type="button" class="btn-blue">New Call</button>
+              <button id="outcome-sold-button" type="button" class="btn-green">Sold</button>
+              <button id="toggle-objections-button" type="button" class="btn">Objections</button>
 
-            <div
-              id="qa-badge"
-              class:list={[
-                "rounded-full border px-4 py-2 text-sm font-medium",
-                firstSection.qaRequired
-                  ? "border-amber-500/40 bg-amber-500/10 text-amber-300"
-                  : "hidden"
-              ]}
-            >
-              Verbatim Required
+              <div
+                id="qa-badge"
+                class:list={[
+                  "rounded-full border px-4 py-2 text-sm font-medium",
+                  firstSection.qaRequired
+                    ? "border-amber-500/40 bg-amber-500/10 text-amber-300"
+                    : "hidden"
+                ]}
+              >
+                Verbatim Required
+              </div>
             </div>
+
+            <button id="toggle-shortcuts-button" type="button" class="btn">Shortcuts</button>
           </div>
 
           <div>
@@ -109,6 +111,73 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
               <div id="branch-helper-box" class="hidden rounded-xl border border-gray-800 bg-gray-950 p-4">
                 <p class="text-xs uppercase tracking-wide text-gray-500">Current Direction</p>
                 <div id="branch-helper-content" class="mt-3 space-y-2 text-sm text-gray-300"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="objections-panel" class="panel hidden p-6">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <h3 class="panel-title !mb-0">Master Rebuttals</h3>
+                <p class="mt-2 text-sm text-gray-300">
+                  Search, select, and read rebuttals without leaving the main workflow.
+                </p>
+              </div>
+              <button id="close-objections-button" type="button" class="btn">Close</button>
+            </div>
+
+            <div class="mt-4">
+              <input
+                id="objection-search"
+                type="text"
+                placeholder="Search objections by keyword..."
+                class="form-input"
+              />
+            </div>
+
+            <div class="mt-4">
+              <p class="text-xs uppercase tracking-wide text-gray-500">Favorites</p>
+              <div class="mt-3 flex flex-wrap gap-2">
+                {favoriteRebuttals.map((item) => (
+                  <button
+                    type="button"
+                    class="favorite-rebuttal-button rounded-full border border-gray-700 bg-gray-950 px-3 py-1 text-xs text-gray-200 hover:bg-gray-800"
+                    data-rebuttal-id={item.id}
+                  >
+                    {item.title}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div class="mt-4 grid gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+              <div>
+                <p class="text-xs uppercase tracking-wide text-gray-500">Results</p>
+                <div id="objection-results" class="mt-3 max-h-80 space-y-2 overflow-y-auto">
+                  {rebuttals.slice(0, 10).map((item) => (
+                    <button
+                      type="button"
+                      class="rebuttal-result-button block w-full rounded-lg border border-gray-800 bg-gray-950 px-3 py-2 text-left text-sm text-gray-200 hover:bg-gray-800"
+                      data-rebuttal-id={item.id}
+                    >
+                      <div class="font-semibold">{item.title}</div>
+                      <div class="mt-1 text-xs text-gray-400">{item.category}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div class="rounded-xl border border-gray-800 bg-gray-950 p-4">
+                <p class="text-xs uppercase tracking-wide text-gray-500">Selected Rebuttal</p>
+                <div id="selected-rebuttal-title" class="mt-3 text-sm font-semibold text-white">
+                  Select an objection
+                </div>
+                <div
+                  id="selected-rebuttal-body"
+                  class="mt-2 whitespace-pre-wrap text-sm leading-6 text-gray-300"
+                >
+                  Your selected rebuttal will appear here.
+                </div>
               </div>
             </div>
           </div>
@@ -413,63 +482,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
             <div class="mt-4 rounded-lg border border-gray-800 bg-gray-950 px-3 py-2 text-sm text-gray-300">
               Current Outcome:
               <span id="current-outcome" class="ml-1 font-semibold text-white">None</span>
-            </div>
-          </div>
-
-          <div id="objections-panel" class="panel p-6">
-            <div class="flex items-center justify-between gap-3">
-              <h3 class="panel-title !mb-0">Objection Search</h3>
-              <span class="text-xs text-gray-500">Search rebuttals only</span>
-            </div>
-
-            <div class="mt-4">
-              <input
-                id="objection-search"
-                type="text"
-                placeholder="Search objections by keyword..."
-                class="form-input"
-              />
-            </div>
-
-            <div class="mt-4">
-              <p class="text-xs uppercase tracking-wide text-gray-500">Favorites</p>
-              <div class="mt-3 flex flex-wrap gap-2">
-                {favoriteRebuttals.map((item) => (
-                  <button
-                    type="button"
-                    class="favorite-rebuttal-button rounded-full border border-gray-700 bg-gray-950 px-3 py-1 text-xs text-gray-200 hover:bg-gray-800"
-                    data-rebuttal-id={item.id}
-                  >
-                    {item.title}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div class="mt-4">
-              <p class="text-xs uppercase tracking-wide text-gray-500">Results</p>
-              <div id="objection-results" class="mt-3 max-h-56 space-y-2 overflow-y-auto">
-                {rebuttals.slice(0, 10).map((item) => (
-                  <button
-                    type="button"
-                    class="rebuttal-result-button block w-full rounded-lg border border-gray-800 bg-gray-950 px-3 py-2 text-left text-sm text-gray-200 hover:bg-gray-800"
-                    data-rebuttal-id={item.id}
-                  >
-                    <div class="font-semibold">{item.title}</div>
-                    <div class="mt-1 text-xs text-gray-400">{item.category}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div class="mt-4 rounded-xl border border-gray-800 bg-gray-950 p-4">
-              <p class="text-xs uppercase tracking-wide text-gray-500">Selected Rebuttal</p>
-              <div id="selected-rebuttal-title" class="mt-3 text-sm font-semibold text-white">
-                Select an objection
-              </div>
-              <div id="selected-rebuttal-body" class="mt-2 whitespace-pre-wrap text-sm leading-6 text-gray-300">
-                Your selected rebuttal will appear here.
-              </div>
             </div>
           </div>
 
@@ -994,6 +1006,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
     const toggleShortcutsButton = document.getElementById("toggle-shortcuts-button");
     const toggleObjectionsButton = document.getElementById("toggle-objections-button");
+    const closeObjectionsButton = document.getElementById("close-objections-button");
     const shortcutsPanel = document.getElementById("shortcuts-panel");
     const objectionsPanel = document.getElementById("objections-panel");
 
@@ -1726,7 +1739,28 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     }
 
     function openObjectionsWithRebuttal(rebuttalId) {
+      showObjectionsPanel(true);
       selectRebuttal(rebuttalId);
+    }
+
+    function showObjectionsPanel(focusSearch = false) {
+      if (!objectionsPanel) return;
+
+      objectionsPanel.classList.remove("hidden");
+      objectionsPanel.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+      if (focusSearch) {
+        window.setTimeout(() => {
+          objectionSearch?.focus();
+        }, 120);
+      }
+    }
+
+    function hideObjectionsPanel() {
+      objectionsPanel?.classList.add("hidden");
     }
 
     function setRecommendedQuote(optionNumber) {
@@ -1813,6 +1847,11 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         renderSection(currentSection);
         saveSession();
       });
+    });
+
+    draftDateInput?.addEventListener("change", () => {
+      renderSection(currentSection);
+      saveSession();
     });
 
     premiumInput?.addEventListener("input", () => {
@@ -1913,7 +1952,11 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     });
 
     toggleObjectionsButton?.addEventListener("click", () => {
-      objectionsPanel?.classList.toggle("hidden");
+      showObjectionsPanel(true);
+    });
+
+    closeObjectionsButton?.addEventListener("click", () => {
+      hideObjectionsPanel();
     });
 
     openSettingsButton?.addEventListener("click", () => {
