@@ -884,7 +884,7 @@ export const scriptSections = [
       options: [
         createProductOutcomeOption("easy-life", {
           script: [
-            "And [ClientName], you also qualified for the Terminal Illness Rider we spoke about, which is great.",
+            "And [ClientName], another benefit you qualified for with Easy Life is the Terminal Illness Rider, which is great.",
             "If you're diagnosed with a terminal illness, the company can send you a check for up to 75 percent of your coverage amount, so you can take care of everything yourself while you're still living, which is great, isn't it?",
             "And in my professional opinion, this plan can cover what you need.",
             "As a new customer, I first and foremost want to make sure we find something that's affordable and comfortable for you right now, because you may not qualify for this plan or these rates again if your health changes.",
