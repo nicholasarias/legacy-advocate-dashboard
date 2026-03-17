@@ -537,3 +537,265 @@ select {
   background-color: rgb(31 41 55);
   color: white;
 }
+
+html,
+body {
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgb(15 23 42), rgb(2 6 23) 52%, rgb(2 6 23) 100%);
+  color: rgb(248 250 252);
+}
+
+body {
+  background-attachment: fixed;
+}
+
+:focus-visible {
+  outline: 2px solid rgb(16 185 129);
+  outline-offset: 2px;
+}
+
+.dashboard-shell {
+  background: transparent;
+}
+
+.btn,
+.btn-blue,
+.btn-green,
+.btn-red,
+.btn-violet {
+  border-width: 1px;
+  box-shadow: 0 16px 30px rgb(2 6 23 / 0.14);
+}
+
+.btn {
+  border-color: rgb(51 65 85 / 0.45);
+  background-color: rgb(15 23 42 / 0.72);
+  backdrop-filter: blur(12px);
+}
+
+.btn:hover {
+  background-color: rgb(15 23 42 / 0.9);
+}
+
+.panel {
+  border: 1px solid rgb(30 41 59 / 0.42);
+  background: rgb(15 23 42 / 0.58);
+  box-shadow:
+    0 24px 50px rgb(2 6 23 / 0.28),
+    0 0 0 1px rgb(16 185 129 / 0.03);
+}
+
+.workflow-grid-cockpit {
+  display: grid;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.cockpit-flow-group:empty {
+  display: none;
+}
+
+#hud-column,
+#secondary-rail,
+#toolkit-column {
+  min-width: 0;
+}
+
+#sections-drawer {
+  backdrop-filter: blur(20px);
+}
+
+#sections-drawer #sidebar-nav {
+  max-height: calc(100vh - 6.75rem);
+}
+
+#script-panel {
+  border: none;
+  border-left: 4px solid rgb(16 185 129);
+  background:
+    linear-gradient(180deg, rgb(2 6 23 / 0.86), rgb(2 6 23 / 0.7)),
+    rgb(2 6 23 / 0.82);
+  box-shadow:
+    0 28px 60px rgb(2 6 23 / 0.34),
+    0 0 0 1px rgb(16 185 129 / 0.04);
+}
+
+#script-lines {
+  color: rgb(241 245 249);
+  line-height: 1.75;
+}
+
+#advisor-capture-panel,
+#branch-panel,
+#prompt-panel,
+#discovery-workspace-panel,
+#sales-workspace-panel {
+  border: none;
+  background: rgb(15 23 42 / 0.3);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    0 22px 50px rgb(2 6 23 / 0.18),
+    0 0 0 1px rgb(148 163 184 / 0.04);
+}
+
+#objections-panel,
+#premium-estimate-panel,
+#pricing-action-panel,
+#call-notes-panel,
+#outcome-panel,
+#shortcuts-panel {
+  border: 1px solid rgb(30 41 59 / 0.38);
+  background: rgb(15 23 42 / 0.44);
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 22px 50px rgb(2 6 23 / 0.2),
+    0 0 0 1px rgb(16 185 129 / 0.02);
+}
+
+.discovery-focus-shell {
+  border: none;
+  background:
+    linear-gradient(180deg, rgb(15 23 42 / 0.55), rgb(2 6 23 / 0.42)),
+    rgb(15 23 42 / 0.48);
+}
+
+.discovery-reminder {
+  font-size: 1.5rem;
+  line-height: 1.45;
+  color: rgb(241 245 249);
+}
+
+.discovery-pacing-text,
+.discovery-focus-title {
+  color: rgb(241 245 249);
+}
+
+.discovery-visual-cue-text {
+  color: rgb(167 243 208);
+  font-style: italic;
+}
+
+.script-token {
+  font-weight: 700;
+  color: rgb(52 211 153);
+}
+
+.script-cue {
+  font-size: 0.84rem;
+  font-style: italic;
+  letter-spacing: 0.03em;
+  color: rgb(148 163 184);
+}
+
+.script-line em {
+  color: rgb(203 213 225);
+  font-style: italic;
+}
+
+.script-line strong {
+  color: rgb(255 255 255);
+}
+
+.impact-card {
+  border-color: rgb(30 41 59);
+  background: rgb(15 23 42 / 0.5);
+  box-shadow: 0 16px 30px rgb(2 6 23 / 0.14);
+}
+
+.impact-card-idle:hover {
+  border-color: rgb(71 85 105);
+  background: rgb(15 23 42 / 0.72);
+  transform: translateY(-1px);
+}
+
+.impact-card-active {
+  border-color: rgb(16 185 129);
+  background: rgb(16 185 129 / 0.1);
+  box-shadow:
+    0 18px 35px rgb(2 6 23 / 0.18),
+    0 0 0 1px rgb(16 185 129 / 0.1);
+  transform: scale(1.05);
+}
+
+.impact-card-title {
+  color: rgb(248 250 252);
+}
+
+.impact-card-body {
+  color: rgb(203 213 225);
+}
+
+.form-input {
+  border-color: rgb(30 41 59 / 0.5);
+  background-color: rgb(2 6 23 / 0.5);
+  box-shadow: inset 0 0 0 1px rgb(148 163 184 / 0.02);
+}
+
+.form-input:focus {
+  border-color: rgb(16 185 129);
+  outline: none;
+  box-shadow:
+    0 0 0 1px rgb(16 185 129 / 0.2),
+    0 0 0 4px rgb(16 185 129 / 0.08);
+}
+
+.form-input::placeholder {
+  color: rgb(100 116 139);
+}
+
+.cockpit-input {
+  background:
+    linear-gradient(180deg, rgb(2 6 23 / 0.44), rgb(2 6 23 / 0.34)),
+    rgb(2 6 23 / 0.44);
+}
+
+.panel-quiet {
+  background: rgb(15 23 42 / 0.26);
+  opacity: 0.94;
+}
+
+#toolkit-column {
+  opacity: 0.5;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+#toolkit-column:hover,
+#toolkit-column:focus-within,
+#toolkit-column.toolkit-column-active {
+  opacity: 1;
+}
+
+#toolkit-column .panel-quiet {
+  opacity: 1;
+}
+
+@media (min-width: 1024px) {
+  .workflow-grid-cockpit {
+    grid-template-columns: 32% 48% 20%;
+    min-height: calc(100vh - 16rem);
+  }
+
+  #hud-column {
+    align-self: start;
+  }
+
+  #script-panel {
+    position: sticky;
+    top: 2rem;
+  }
+
+  #secondary-rail {
+    max-height: calc(100vh - 16rem);
+    overflow-y: auto;
+    padding-right: 0.35rem;
+  }
+
+  #toolkit-column {
+    position: sticky;
+    top: 2rem;
+    align-self: start;
+  }
+}
