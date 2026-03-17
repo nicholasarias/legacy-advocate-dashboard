@@ -610,6 +610,49 @@ body {
   max-height: calc(100vh - 6.75rem);
 }
 
+#branch-toolbar-shell {
+  position: sticky;
+  top: 0;
+  z-index: 25;
+  background:
+    linear-gradient(180deg, rgb(2 6 23 / 0.94), rgb(2 6 23 / 0.86)),
+    rgb(2 6 23 / 0.92);
+  backdrop-filter: blur(18px);
+}
+
+.branch-toolbar-button {
+  border-radius: 9999px;
+  border: 1px solid rgb(51 65 85 / 0.6);
+  padding: 0.65rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.branch-toolbar-button-idle {
+  background: rgb(15 23 42 / 0.72);
+  color: rgb(226 232 240);
+}
+
+.branch-toolbar-button-idle:hover {
+  border-color: rgb(16 185 129 / 0.7);
+  background: rgb(15 23 42 / 0.94);
+  color: rgb(255 255 255);
+  transform: translateY(-1px);
+}
+
+.branch-toolbar-button-active {
+  border-color: rgb(16 185 129);
+  background: rgb(16 185 129 / 0.12);
+  color: rgb(110 231 183);
+  box-shadow: 0 0 0 1px rgb(16 185 129 / 0.12);
+}
+
 #script-panel {
   border: none;
   border-left: 4px solid rgb(16 185 129);
@@ -778,7 +821,12 @@ body {
     min-height: calc(100vh - 16rem);
   }
 
+  .workflow-grid-cockpit.workflow-grid-no-toolkit {
+    grid-template-columns: 32% 68%;
+  }
+
   #hud-column {
+    grid-column: 1;
     align-self: start;
   }
 
@@ -788,14 +836,36 @@ body {
   }
 
   #secondary-rail {
+    grid-column: 2;
+    display: block;
+    align-self: start;
     max-height: calc(100vh - 16rem);
     overflow-y: auto;
     padding-right: 0.35rem;
   }
 
+  #branch-panel {
+    position: sticky;
+    top: 0;
+    z-index: 15;
+    background:
+      linear-gradient(180deg, rgb(15 23 42 / 0.92), rgb(15 23 42 / 0.82)),
+      rgb(15 23 42 / 0.88);
+    backdrop-filter: blur(18px);
+  }
+
   #toolkit-column {
+    grid-column: 3;
     position: sticky;
     top: 2rem;
     align-self: start;
+  }
+
+  #toolkit-column.toolkit-column-empty {
+    display: none;
+  }
+
+  .workflow-grid-cockpit > .cockpit-flow-group:not(#secondary-rail) {
+    display: none;
   }
 }

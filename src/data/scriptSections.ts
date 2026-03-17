@@ -58,39 +58,40 @@ export const scriptSections = [
   },
   {
     id: 2,
-    title: "Family & Life Context",
+    title: "The Person",
     qaRequired: false,
     script: [
-      "Tell me a little about your family these days.",
-      "Who are the most important people in your life right now?",
-      "Who do you still show up for, even in small ways?",
-      "That gives me a better feel for who matters most to you."
+      "When you think about why you wanted to look into this, who comes to mind first?",
+      "What is their name?",
+      "Tell me a little about [BeneficiaryName].",
+      "That gives me a better feel for who this is really about."
     ],
     prompt: {
-      goal: "Build trust naturally and understand who matters most in their life",
+      goal: "Get to one real person right away instead of starting broad",
       notes: [
         "Keep this conversational",
-        "Listen for names, roles, and responsibility",
+        "Use their name as soon as you have it",
+        "Listen for warmth, responsibility, and closeness",
         "PAUSE: Let them answer and sit in the silence."
       ]
     }
   },
   {
     id: 3,
-    title: "The Person",
+    title: "The Why",
     qaRequired: false,
     script: [
-      "When you think about all of this, who is the one person you care most about protecting?",
-      "What is their name?",
-      "Tell me a little about [BeneficiaryName].",
-      "You'd want [BeneficiaryName] to feel cared for, not overwhelmed, right?"
+      "What is it about [BeneficiaryName] that makes you want to get this taken care of?",
+      "Would [BeneficiaryName] probably be the one handling things if something happened?",
+      "Are they nearby, or are they a little ways out?",
+      "So really, this is about making things easier on [BeneficiaryName], right?"
     ],
     prompt: {
-      goal: "Turn the conversation toward one real person instead of a technical beneficiary",
+      goal: "Find the emotional reason first, then the practical family context around it",
       notes: [
-        "Use their name as soon as you have it",
+        "Let them explain why this person matters",
         "Let them answer fully",
-        "Keep this warm and personal"
+        "Keep this warm, simple, and grounded"
       ]
     }
   },

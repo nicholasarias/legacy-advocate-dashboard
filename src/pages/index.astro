@@ -101,6 +101,21 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         </div>
       </div>
 
+      <div id="branch-toolbar-shell" class="hidden border-b border-slate-800/40 px-8 py-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p id="branch-toolbar-title" class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+              Quick Path
+            </p>
+          </div>
+          <p id="branch-toolbar-current" class="text-xs font-semibold uppercase tracking-[0.14em] text-emerald-300">
+            Pick the line that fits the conversation.
+          </p>
+        </div>
+
+        <div id="branch-toolbar-buttons" class="mt-3 flex flex-wrap gap-2"></div>
+      </div>
+
       <div id="workflow-grid" class="workflow-grid-cockpit p-8">
         <div id="hud-column" class="space-y-6"></div>
         <div class="cockpit-flow-group space-y-6">
@@ -225,24 +240,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
               {firstSection.script.map((line) => (
                 <p>{line}</p>
               ))}
-            </div>
-
-            <div id="discovery-inline-notes-shell" class="mt-8 hidden border-t border-gray-800 pt-6">
-              <div class="flex items-center justify-between gap-3">
-                <div>
-                  <p id="discovery-inline-notes-label" class="panel-title !mb-2">Section Notes</p>
-                  <p class="text-sm text-gray-400">
-                    Capture the key detail in their own words while the section is still fresh.
-                  </p>
-                </div>
-              </div>
-
-              <textarea
-                id="discovery-inline-notes-input"
-                rows="3"
-                placeholder="Capture the key point from this part of the conversation"
-                class="form-input mt-4"
-              ></textarea>
             </div>
           </div>
 
@@ -408,18 +405,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
               </div>
             </div>
 
-            <div class="mt-5 rounded-xl border border-gray-800 bg-gray-950 p-4">
-              <p class="text-xs uppercase tracking-wide text-gray-500">Selected Rebuttal</p>
-              <div id="inline-selected-rebuttal-title" class="mt-3 text-sm font-semibold text-white">
-                Select an objection
-              </div>
-              <div
-                id="inline-selected-rebuttal-body"
-                class="mt-2 whitespace-pre-wrap text-sm leading-6 text-gray-300"
-              >
-                Your selected rebuttal will appear here.
-              </div>
-            </div>
           </div>
         </div>
 
@@ -481,23 +466,41 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           </div>
 
           <div id="prompt-panel" class="panel p-6" data-quiet-during-discovery="true">
-            <h3 class="panel-title">Prompts</h3>
-
-            <div class="space-y-4">
+            <div class="flex items-start justify-between gap-3">
               <div>
-                <p class="text-xs uppercase tracking-wide text-gray-500">Goal</p>
-                <p id="prompt-goal" class="mt-1 text-sm text-gray-200">
-                  {firstSection.prompt.goal}
+                <h3 class="panel-title !mb-2">Call Reference</h3>
+                <p class="text-sm text-gray-300">
+                  Keep the person, the why, and your running notes in one place as you move through the call.
+                </p>
+              </div>
+              <div class="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-300">
+                <span id="reference-step-readout">Section 1</span>
+              </div>
+            </div>
+
+            <div class="mt-5 space-y-4">
+              <div class="rounded-xl border border-slate-800/60 bg-slate-950/70 p-4">
+                <p class="text-xs uppercase tracking-wide text-slate-500">Person</p>
+                <p id="reference-person-readout" class="mt-2 text-sm text-white">
+                  Capture the person who matters most and they will stay pinned here.
+                </p>
+              </div>
+
+              <div class="rounded-xl border border-emerald-500/15 bg-emerald-500/6 p-4">
+                <p class="text-xs uppercase tracking-wide text-emerald-300">The Why</p>
+                <p id="reference-why-readout" class="mt-2 text-sm leading-6 text-emerald-50">
+                  Capture the why and it will stay here for the rest of the call.
                 </p>
               </div>
 
               <div>
-                <p class="text-xs uppercase tracking-wide text-gray-500">Notes</p>
-                <div id="prompt-notes" class="mt-2 space-y-2 text-sm text-gray-300">
-                  {(firstSection.prompt.notes || []).map((note) => (
-                    <p>- {note}</p>
-                  ))}
-                </div>
+                <label for="family-context-notes" class="form-label">Call Notes</label>
+                <textarea
+                  id="family-context-notes"
+                  rows="4"
+                  placeholder="Keep the running details you want to reference later in the call"
+                  class="form-input"
+                ></textarea>
               </div>
             </div>
           </div>
@@ -586,15 +589,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
                 </div>
               </div>
 
-              <div>
-                <label for="family-context-notes" class="form-label">Notes</label>
-                <textarea
-                  id="family-context-notes"
-                  rows="3"
-                  placeholder="Anything important about family dynamics or who matters most"
-                  class="form-input"
-                ></textarea>
-              </div>
             </div>
 
             <div id="loss-experience-group" class="mt-5 hidden">
@@ -783,31 +777,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
             </div>
           </div>
 
-          <div
-            id="premium-estimate-panel"
-            class="panel cockpit-glass-panel p-6"
-            data-quiet-during-discovery="true"
-          >
-            <div class="flex items-start justify-between gap-3">
-              <div>
-                <h3 class="panel-title !mb-2">Premium Estimate</h3>
-                <p class="text-sm text-gray-300">
-                  Keep the current premium and annualized snapshot visible while you work.
-                </p>
-              </div>
-            </div>
-
-            <div class="mt-5 rounded-2xl border border-emerald-500/20 bg-emerald-500/8 p-4">
-              <p class="text-xs uppercase tracking-wide text-emerald-300">Current Premium</p>
-              <p id="premium-estimate-display" class="mt-2 text-2xl font-semibold text-white">
-                No estimate yet
-              </p>
-              <p id="premium-estimate-detail" class="mt-2 text-sm text-emerald-50/90">
-                Enter or select a premium to populate this estimate.
-              </p>
-            </div>
-          </div>
-
           <div id="sales-workspace-panel" class="panel hidden p-6" data-quiet-during-discovery="true">
             <div>
               <h3 class="panel-title !mb-2">Sales Workspace</h3>
@@ -877,28 +846,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
                   class="form-input"
                 />
               </div>
-            </div>
-          </div>
-
-          <div id="call-notes-panel" class="panel p-6" data-quiet-during-discovery="true">
-            <h3 class="panel-title">Call Notes</h3>
-
-            <textarea
-              id="call-notes"
-              rows="6"
-              placeholder="Type notes here..."
-              class="form-input"
-            ></textarea>
-          </div>
-
-          <div id="outcome-panel" class="panel p-6" data-quiet-during-discovery="true">
-            <div class="mb-4 flex items-center justify-between gap-3">
-              <h3 class="panel-title !mb-0">Outcome</h3>
-            </div>
-
-            <div class="mt-4 rounded-lg border border-gray-800 bg-gray-950 px-3 py-2 text-sm text-gray-300">
-              Current Outcome:
-              <span id="current-outcome" class="ml-1 font-semibold text-white">None</span>
             </div>
           </div>
 
@@ -1142,7 +1089,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
         return {
           currentSectionId: Number(parsed.currentSectionId ?? (scriptSections[0]?.id ?? 1)),
-          notes: String(parsed.notes ?? ""),
+          notes: String(parsed.notes ?? parsedDiscovery.familyContextNotes ?? ""),
           outcome: String(parsed.outcome ?? ""),
           clientName: String(parsed.clientName ?? ""),
           clientState: String(parsed.clientState ?? ""),
@@ -1177,7 +1124,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
                   : "")
             ),
             reliesOnThem: String(parsedDiscovery.reliesOnThem ?? ""),
-            familyContextNotes: String(parsedDiscovery.familyContextNotes ?? ""),
+            familyContextNotes: String(parsedDiscovery.familyContextNotes ?? parsed.notes ?? ""),
             lossExperienceNotes: String(parsedDiscovery.lossExperienceNotes ?? ""),
             funeralConcern: String(parsedDiscovery.funeralConcern ?? ""),
             debtConcerns: String(parsedDiscovery.debtConcerns ?? ""),
@@ -1220,7 +1167,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         SESSION_STORAGE_KEY,
         JSON.stringify({
           currentSectionId: currentSection.id,
-          notes: callNotes?.value ?? "",
+          notes: familyContextNotesInput?.value ?? sessionState.discovery.familyContextNotes ?? "",
           outcome: sessionState.outcome,
           clientName: clientNameInput?.value ?? "",
           clientState: clientStateInput?.value ?? "",
@@ -1411,9 +1358,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     const cockpitStepReadout = document.getElementById("cockpit-step-readout");
     const cockpitHudPreview = document.getElementById("cockpit-hud-preview");
     const advisorCapturePanel = document.getElementById("advisor-capture-panel");
-    const premiumEstimatePanel = document.getElementById("premium-estimate-panel");
-    const premiumEstimateDisplay = document.getElementById("premium-estimate-display");
-    const premiumEstimateDetail = document.getElementById("premium-estimate-detail");
     const draftDateInput = document.getElementById("draftDateInput");
     const pricingActionPanel = document.getElementById("pricing-action-panel");
     const workflowGrid = document.getElementById("workflow-grid");
@@ -1421,7 +1365,14 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     const scriptPanel = document.getElementById("script-panel");
     const secondaryRail = document.getElementById("secondary-rail");
     const toolkitColumn = document.getElementById("toolkit-column");
+    const branchToolbarShell = document.getElementById("branch-toolbar-shell");
+    const branchToolbarTitle = document.getElementById("branch-toolbar-title");
+    const branchToolbarCurrent = document.getElementById("branch-toolbar-current");
+    const branchToolbarButtons = document.getElementById("branch-toolbar-buttons");
     const promptPanel = document.getElementById("prompt-panel");
+    const referenceStepReadout = document.getElementById("reference-step-readout");
+    const referencePersonReadout = document.getElementById("reference-person-readout");
+    const referenceWhyReadout = document.getElementById("reference-why-readout");
     const quietDuringDiscoveryPanels = document.querySelectorAll("[data-quiet-during-discovery]");
     const discoveryFocusShell = document.getElementById("discovery-focus-shell");
     const discoveryPacingCue = document.getElementById("discovery-pacing-cue");
@@ -1475,8 +1426,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     const quoteCards = document.querySelectorAll("[data-quote-card]");
     const pricingObjectionsGroup = document.getElementById("pricing-objections-group");
     const quickObjectionButtons = document.querySelectorAll(".quick-objection-button");
-    const inlineSelectedRebuttalTitle = document.getElementById("inline-selected-rebuttal-title");
-    const inlineSelectedRebuttalBody = document.getElementById("inline-selected-rebuttal-body");
     const enrollmentWorkspaceGroup = document.getElementById("enrollment-workspace-group");
     const policyNumberInput = document.getElementById("policy-number-input");
     const secondaryPhoneInput = document.getElementById("secondary-phone-input");
@@ -1512,16 +1461,9 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     const branchButtonGroup = document.getElementById("branch-button-group");
     const branchHelperBox = document.getElementById("branch-helper-box");
     const branchHelperContent = document.getElementById("branch-helper-content");
-    const promptGoal = document.getElementById("prompt-goal");
-    const promptNotes = document.getElementById("prompt-notes");
 
     const progressText = document.getElementById("progress-text");
     const progressBar = document.getElementById("progress-bar");
-
-    const currentOutcomeEl = document.getElementById("current-outcome");
-    const callNotes = document.getElementById("call-notes");
-    const callNotesPanel = document.getElementById("call-notes-panel");
-    const outcomePanel = document.getElementById("outcome-panel");
 
     const markTransferButton = document.getElementById("mark-transfer-button");
     const markSaleButton = document.getElementById("mark-sale-button");
@@ -1563,7 +1505,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       }
 
       if (secondaryRail) {
-        [advisorCapturePanel, branchPanel, promptPanel, discoveryWorkspacePanel, salesWorkspacePanel]
+        [discoveryWorkspacePanel, promptPanel, advisorCapturePanel, salesWorkspacePanel]
           .filter((panel) => panel instanceof HTMLElement)
           .forEach((panel) => {
             if (panel.parentElement !== secondaryRail) {
@@ -1575,10 +1517,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       if (toolkitColumn) {
         [
           objectionsPanel,
-          premiumEstimatePanel,
           pricingActionPanel,
-          callNotesPanel,
-          outcomePanel,
           shortcutsPanel
         ]
           .filter((panel) => panel instanceof HTMLElement)
@@ -1590,7 +1529,21 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       }
     }
 
+    function updateToolkitVisibility() {
+      if (!workflowGrid || !toolkitColumn) return;
+
+      const visiblePanels = Array.from(toolkitColumn.children).filter((child) => {
+        return child instanceof HTMLElement && !child.classList.contains("hidden");
+      });
+
+      const toolkitEmpty = visiblePanels.length === 0;
+
+      toolkitColumn.classList.toggle("toolkit-column-empty", toolkitEmpty);
+      workflowGrid.classList.toggle("workflow-grid-no-toolkit", toolkitEmpty);
+    }
+
     configureCockpitLayout();
+    updateToolkitVisibility();
 
     if (clientNameInput) clientNameInput.value = sessionState.clientName;
     if (clientStateInput) clientStateInput.value = sessionState.clientState;
@@ -1644,7 +1597,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     if (policyNumberInput) policyNumberInput.value = sessionState.policyNumber;
     if (secondaryPhoneInput) secondaryPhoneInput.value = sessionState.secondaryPhone;
     if (beneficiaryPhoneInput) beneficiaryPhoneInput.value = sessionState.beneficiaryPhone;
-    if (callNotes) callNotes.value = sessionState.notes;
     setImpactCardSelectionUI(sessionState.discovery.primaryConcern);
 
     let activeRebuttalId = 1;
@@ -1770,9 +1722,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     }
 
     function updateOutcomeDisplay() {
-      if (currentOutcomeEl) {
-        currentOutcomeEl.textContent = sessionState.outcome || "None";
-      }
+      return;
     }
 
     function syncCountedApWithPremium() {
@@ -1844,8 +1794,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       const primaryConcern = getPrimaryConcern();
       const cockpitWhyValue =
         sessionState.discovery?.primaryConcern || sessionState.discovery?.protectionPriorityNotes || "";
-      const premiumValue = premiumInput?.value.trim() || "";
-      const annualPremium = getAnnualPremium();
 
       if (cockpitClientNameInput && cockpitClientNameInput.value !== clientName) {
         cockpitClientNameInput.value = clientName;
@@ -1867,19 +1815,31 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         const nameForPreview = focusName === defaultFocusName ? "them" : focusName;
         cockpitHudPreview.textContent = `What would this mean for ${nameForPreview} if ${primaryConcern} landed on them?`;
       }
+    }
 
-      if (premiumEstimateDisplay) {
-        premiumEstimateDisplay.textContent = premiumValue
-          ? formatMoneyDisplay(premiumValue, premiumValue)
-          : "No estimate yet";
+    function updateReferencePanel(section = currentSection) {
+      const focusName = getAdvisorFocusName();
+      const primaryConcern = getPrimaryConcern();
+      const hasWhy = primaryConcern && primaryConcern !== "those first expenses";
+      const showDiscoveryIntake = isDiscoverySection(section) && !hasWhy;
+
+      advisorCapturePanel?.classList.toggle("hidden", !showDiscoveryIntake);
+
+      if (referenceStepReadout) {
+        referenceStepReadout.textContent = `Section ${section.id}`;
       }
 
-      if (premiumEstimateDetail) {
-        if (premiumValue) {
-          premiumEstimateDetail.textContent = `Annualized premium: ${formatCurrency(annualPremium)}.`;
-        } else {
-          premiumEstimateDetail.textContent = "Enter or select a premium to populate this estimate.";
-        }
+      if (referencePersonReadout) {
+        referencePersonReadout.textContent =
+          focusName === "the person they care about most"
+            ? "Capture the person who matters most and they will stay pinned here."
+            : focusName;
+      }
+
+      if (referenceWhyReadout) {
+        referenceWhyReadout.textContent = hasWhy
+          ? `${focusName === "the person they care about most" ? "They" : focusName} would be carrying ${primaryConcern} if nothing was set aside.`
+          : "Capture the why and it will stay here for the rest of the call.";
       }
     }
 
@@ -1919,8 +1879,8 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       if (section.id === 2 || section.id === 3) {
         return {
           key: "familyContextNotes",
-          label: "Family Notes",
-          placeholder: "Anything important about family dynamics or who matters most"
+          label: "Family / Call Notes",
+          placeholder: "Capture family details and any running notes you want to keep"
         };
       }
 
@@ -2063,17 +2023,17 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       updateBridgePrioritySummary();
 
       if (sectionId === 2) {
-        discoveryPanelTitle.textContent = "Family & Life Context";
+        discoveryPanelTitle.textContent = "The Person";
         discoveryPanelText.textContent =
-          "Keep this conversational and listen for who matters most.";
+          "Start with one real person and get to their name quickly.";
         familyContextGroup?.classList.remove("hidden");
         return;
       }
 
       if (sectionId === 3) {
-        discoveryPanelTitle.textContent = "The Person";
+        discoveryPanelTitle.textContent = "The Why";
         discoveryPanelText.textContent =
-          "Use their name quickly so the conversation stays grounded in one real person.";
+          "Lock onto why this matters, then how it would actually land on them.";
         familyContextGroup?.classList.remove("hidden");
         return;
       }
@@ -2124,6 +2084,10 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         [key]: value
       };
 
+      if (key === "familyContextNotes") {
+        sessionState.notes = String(value || "");
+      }
+
       if (render) {
         renderSection(currentSection);
         return;
@@ -2133,6 +2097,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         updateDiscoveryInlineNotes(currentSection);
       }
       updateAdvisorCockpit(currentSection);
+      updateReferencePanel(currentSection);
       updateDiscoveryWorkspace(currentSection);
       saveSession();
     }
@@ -2343,6 +2308,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         salesWorkspacePanel.classList.add("hidden");
         medicalSummaryGroup.classList.add("hidden");
         enrollmentWorkspaceGroup.classList.add("hidden");
+        updateToolkitVisibility();
         return;
       }
 
@@ -2379,6 +2345,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
       medicalSummaryGroup.classList.toggle("hidden", !showMedicalSummary);
       enrollmentWorkspaceGroup.classList.toggle("hidden", !showEnrollment);
+      updateToolkitVisibility();
     }
 
     function updatePricingActionPanel(section) {
@@ -2395,33 +2362,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       pricingObjectionsGroup.classList.toggle("hidden", !showPanel);
 
       updateRecommendedQuoteUI();
-    }
-
-    function getPromptNotesList(section) {
-      const selectedOption = getSelectedBranchOption(section);
-
-      return [...(section.prompt?.notes || []), ...(selectedOption?.promptNotes || [])];
-    }
-
-    function updatePromptNotes(section) {
-      if (!promptNotes) return;
-
-      promptNotes.innerHTML = "";
-
-      const notes = getPromptNotesList(section);
-
-      if (!notes.length) {
-        const p = document.createElement("p");
-        p.textContent = "No prompt notes for this section.";
-        promptNotes.appendChild(p);
-        return;
-      }
-
-      notes.forEach((note) => {
-        const p = document.createElement("p");
-        p.textContent = `- ${note}`;
-        promptNotes.appendChild(p);
-      });
+      updateToolkitVisibility();
     }
 
     function setBranchSelection(stateKey, value) {
@@ -2475,13 +2416,13 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     }
 
     function renderBranchPanel(section) {
+      branchPanel?.classList.add("hidden");
+
       if (
-        !branchPanel ||
-        !branchPanelTitle ||
-        !branchPanelText ||
-        !branchButtonGroup ||
-        !branchHelperBox ||
-        !branchHelperContent
+        !branchToolbarShell ||
+        !branchToolbarTitle ||
+        !branchToolbarCurrent ||
+        !branchToolbarButtons
       ) {
         return;
       }
@@ -2489,61 +2430,33 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       const branch = getBranchConfig(section);
 
       if (!branch || branch.display === false) {
-        branchPanel.classList.add("hidden");
-        branchButtonGroup.innerHTML = "";
-        branchHelperContent.innerHTML = "";
-        branchHelperBox.classList.add("hidden");
+        branchToolbarShell.classList.add("hidden");
+        branchToolbarButtons.innerHTML = "";
         return;
       }
 
-      branchPanel.classList.remove("hidden");
-      branchPanelTitle.textContent = branch.label || "Conversation Path";
-      branchPanelText.textContent =
-        branch.helpText || "Choose the direction that matches the conversation.";
-
-      branchButtonGroup.innerHTML = "";
+      branchToolbarShell.classList.remove("hidden");
+      branchToolbarTitle.textContent = branch.label || "Quick Path";
+      branchToolbarButtons.innerHTML = "";
 
       branch.options.forEach((option) => {
         const isActive = option.value === getBranchSelection(branch.stateKey);
         const button = document.createElement("button");
         button.type = "button";
-        button.className = `branch-button ${isActive ? "branch-button-active" : "branch-button-idle"}`;
-
-        const label = document.createElement("span");
-        label.className = "block text-sm font-semibold text-white";
-        label.textContent = option.label;
-
-        const description = document.createElement("span");
-        description.className = "mt-1 block text-xs text-gray-300";
-        description.textContent = option.description;
-
-        button.appendChild(label);
-        button.appendChild(description);
+        button.className = `branch-toolbar-button ${isActive ? "branch-toolbar-button-active" : "branch-toolbar-button-idle"}`;
+        button.textContent = option.label;
         button.addEventListener("click", () => setBranchSelection(branch.stateKey, option.value));
-
-        branchButtonGroup.appendChild(button);
+        branchToolbarButtons.appendChild(button);
       });
 
       const selectedOption = getSelectedBranchOption(section);
 
       if (!selectedOption) {
-        branchHelperBox.classList.add("hidden");
-        branchHelperContent.innerHTML = "";
+        branchToolbarCurrent.textContent = "Pick the line that fits the conversation.";
         return;
       }
 
-      branchHelperBox.classList.remove("hidden");
-      branchHelperContent.innerHTML = "";
-
-      const description = document.createElement("p");
-      description.textContent = applyTokens(selectedOption.description || "", getTokens());
-      branchHelperContent.appendChild(description);
-
-      (selectedOption.helperLines || []).forEach((line) => {
-        const p = document.createElement("p");
-        p.textContent = `- ${applyTokens(line, getTokens())}`;
-        branchHelperContent.appendChild(p);
-      });
+      branchToolbarCurrent.textContent = `Current: ${selectedOption.label}`;
     }
 
     function keepActiveSidebarItemVisible() {
@@ -2557,11 +2470,11 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     }
 
     function renderSection(section) {
+      const previousSectionId = currentSection?.id;
       currentSection = section;
 
       if (sectionNumber) sectionNumber.textContent = `Section ${section.id}`;
       if (sectionTitle) sectionTitle.textContent = section.title;
-      if (promptGoal) promptGoal.textContent = section.prompt.goal;
 
       if (qaBadge) {
         if (section.qaRequired) {
@@ -2613,13 +2526,19 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         }
       });
 
-      updatePromptNotes(section);
       renderBranchPanel(section);
       updateAdvisorCockpit(section);
+      updateReferencePanel(section);
       updateDiscoveryFocusCard(section);
       updateDiscoveryWorkspace(section);
       updateSalesWorkspace(section);
       updatePricingActionPanel(section);
+      if (previousSectionId && previousSectionId !== section.id) {
+        secondaryRail?.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      }
       selectRebuttal(activeRebuttalId);
       updateProgress();
       keepActiveSidebarItemVisible();
@@ -2688,7 +2607,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       if (policyNumberInput) policyNumberInput.value = "";
       if (secondaryPhoneInput) secondaryPhoneInput.value = "";
       if (beneficiaryPhoneInput) beneficiaryPhoneInput.value = "";
-      if (callNotes) callNotes.value = "";
 
       stats.transfers += 1;
       sessionState.started = true;
@@ -2824,13 +2742,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         selectedRebuttalBody.textContent = response;
       }
 
-      if (inlineSelectedRebuttalTitle) {
-        inlineSelectedRebuttalTitle.textContent = rebuttal.title;
-      }
-
-      if (inlineSelectedRebuttalBody) {
-        inlineSelectedRebuttalBody.textContent = response;
-      }
     }
 
     function openObjectionsWithRebuttal(rebuttalId) {
@@ -2844,6 +2755,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
       objectionsPanel.classList.remove("hidden");
       emphasizeToolkit();
+      updateToolkitVisibility();
       objectionsPanel.scrollIntoView({
         behavior: "smooth",
         block: "start"
@@ -2859,6 +2771,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     function hideObjectionsPanel() {
       objectionsPanel?.classList.add("hidden");
       relaxToolkit();
+      updateToolkitVisibility();
     }
 
     function setRecommendedQuote(optionNumber) {
@@ -3110,10 +3023,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       });
     });
 
-    callNotes?.addEventListener("input", () => {
-      saveSession();
-    });
-
     discoveryHandoffButton?.addEventListener("click", () => {
       const nextStepSection = scriptSections.find((section) => section.id === 11);
       if (nextStepSection) {
@@ -3167,6 +3076,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
     toggleShortcutsButton?.addEventListener("click", () => {
       shortcutsPanel?.classList.toggle("hidden");
+      updateToolkitVisibility();
     });
 
     toggleObjectionsButton?.addEventListener("click", () => {
