@@ -42,7 +42,7 @@ export const scriptSections = [
       "Allow me to introduce myself, my name is [AdvisorName], and I'm a Senior Licensed Life Insurance Advisor here with Insurance Supermarket.",
       "To touch on that briefly, we're a one-stop shop for life insurance, which is great for you because I'm licensed in [ClientState] to shop multiple carriers at once.",
       "Instead of you calling several companies yourself, I compare them all and find the best option for your situation.",
-      "Saves you a lot of time, doesn't it?",
+      "That just makes things a lot easier to deal with, right?",
       "Now, all the plans we work with are final expense policies that have been state-approved and designed specifically for folks over the age of 50.",
       "As we go through this I'll explain everything step-by-step, and if anything doesn't make sense just stop me and I'll clarify it.",
       "Fair enough?"
@@ -63,33 +63,34 @@ export const scriptSections = [
     script: [
       "Tell me a little about your family these days.",
       "Who are the most important people in your life right now?",
-      "Who depends on you the most, even in small ways?",
-      "That gives me a better feel for what matters most to you."
+      "Who do you still show up for, even in small ways?",
+      "That gives me a better feel for who matters most to you."
     ],
     prompt: {
       goal: "Build trust naturally and understand who matters most in their life",
       notes: [
         "Keep this conversational",
-        "Listen for who matters most",
-        "Pause and listen"
+        "Listen for names, roles, and responsibility",
+        "PAUSE: Let them answer and sit in the silence."
       ]
     }
   },
   {
     id: 3,
-    title: "Who Matters Most",
+    title: "The Person",
     qaRequired: false,
     script: [
-      "Who would you most want looked after if something happened to you?",
-      "Who would likely be the person helping make calls or decisions?",
-      "You'd want that to be as easy on them as possible, right?"
+      "When you think about all of this, who is the one person you care most about protecting?",
+      "What is their name?",
+      "Tell me a little about [BeneficiaryName].",
+      "You'd want [BeneficiaryName] to feel cared for, not overwhelmed, right?"
     ],
     prompt: {
-      goal: "Identify the likely decision maker and keep the tone personal",
+      goal: "Turn the conversation toward one real person instead of a technical beneficiary",
       notes: [
-        "Keep this warm and respectful",
+        "Use their name as soon as you have it",
         "Let them answer fully",
-        "Use follow-up only if it feels natural"
+        "Keep this warm and personal"
       ]
     }
   },
@@ -110,11 +111,10 @@ export const scriptSections = [
           label: "Experienced Loss",
           description: "Use this when they have gone through losing someone close.",
           script: [
-            "When that happened, what was hardest for the family afterward?",
-            "Did it create any stress around final arrangements or expenses?",
-            "Who ended up handling everything?",
-            "Was that an easy process or was it a lot on the family?",
-            "Did that situation shape how you think about this for your own family?",
+            "When that happened, what was hardest on the family afterward?",
+            "Who ended up carrying most of it?",
+            "Was the pressure mostly emotional, mostly financial, or a little of both?",
+            "Did that experience shape how you think about this for [BeneficiaryName]?",
             "That kind of experience really stays with people, right?"
           ],
           helperLines: [
@@ -131,8 +131,8 @@ export const scriptSections = [
           description: "Use this when they have not gone through it personally yet.",
           script: [
             "A lot of folks haven't had to deal with that personally yet.",
-            "If something unexpected happened, who do you think would be the one trying to handle everything?",
-            "What do you think that first few days would look like for them?",
+            "If something unexpected happened, do you think [BeneficiaryName] would be the one trying to hold things together?",
+            "What do you think those first few days would feel like for [BeneficiaryName]?",
             "That can put a lot on one person all at once, right?"
           ],
           helperLines: [
@@ -156,19 +156,20 @@ export const scriptSections = [
   },
   {
     id: 5,
-    title: "Family Responsibility",
+    title: "The First 90 Days",
     qaRequired: false,
     script: [
-      "If something happened tomorrow, who would be the one making the calls and handling everything?",
-      "Would that be a smooth situation financially, or would it put pressure on them?",
-      "Are there any bills or responsibilities you would not want left on someone else?",
-      "What would you most want taken care of right away?",
-      "If those pieces were already handled, that would make things a lot easier to deal with, right?"
+      "*slow down here*",
+      "If you weren't here tomorrow, what do you think the first couple of months would really look like for [BeneficiaryName]?",
+      "Who would be trying to keep up with the house payment, utilities, or any other monthly bills while everything is still fresh?",
+      "What would need to be handled right away so [BeneficiaryName] isn't making hard decisions while grieving?",
+      "Those first 90 days are usually where families feel the pressure the most, aren't they?"
     ],
     prompt: {
-      goal: "Move from emotional awareness into practical responsibility",
+      goal: "Expose the real pressure window after a death without sounding clinical",
       notes: [
-        "Let the client describe the burden in their own words",
+        "Use consequence-based language instead of checklist questions",
+        "Let them describe the burden in their own words",
         "Let them answer fully",
         "Do not rush to solve it yet"
       ]
@@ -176,11 +177,13 @@ export const scriptSections = [
   },
   {
     id: 6,
-    title: "Current Support In Place",
+    title: "Support & Priorities",
     qaRequired: false,
     script: [
       "Some people I speak with already have something set aside for this, and some don't.",
-      "Have you set anything aside yet to help your family with those expenses?"
+      "Have you set anything aside yet to help [BeneficiaryName] with those expenses?",
+      "If you could make one part of this easier on [BeneficiaryName], what would you want handled first?",
+      "That just gives [BeneficiaryName] one less thing to carry, right?"
     ],
     branchControl: {
       stateKey: "coverageStatus",
@@ -193,8 +196,8 @@ export const scriptSections = [
           description: "Use this when they already have something set aside but it may not fully handle the burden.",
           script: [
             "That makes sense.",
-            "What did you want that to help with the most?",
-            "Do you feel like it would fully handle things, or would there still be some pressure left on the family?",
+            "Was that meant to cover the funeral itself, the bills at home, or just give [BeneficiaryName] some breathing room?",
+            "Do you feel like it fully covers that first stretch, or would [BeneficiaryName] still feel some pressure?",
             "Even a small gap can become a lot to deal with in that moment, right?"
           ],
           helperLines: [
@@ -211,8 +214,8 @@ export const scriptSections = [
           description: "Use this when they already have something in place but want to leave a little more behind.",
           script: [
             "That makes sense.",
-            "Sometimes people already have something in place and still want to leave a little more breathing room.",
-            "That just gives the family one less thing to worry about, right?"
+            "Sometimes people already have something in place and still want to leave [BeneficiaryName] a little more breathing room.",
+            "That can make those first few months feel a lot steadier, right?"
           ],
           helperLines: [
             "Validate the planning that's already there.",
@@ -235,40 +238,41 @@ export const scriptSections = [
       ]
     },
     prompt: {
-      goal: "Capture whether they already have something in place without making discovery feel like a funnel",
+      goal: "Capture current support while identifying the one pressure point that matters most",
       notes: [
         "Keep this gentle and matter-of-fact",
-        "This is information gathering, not a pitch",
-        "Use tie-downs naturally if it fits"
+        "Listen for the one thing they most want handled first",
+        "This is information gathering, not a pitch"
       ]
     }
   },
   {
     id: 7,
-    title: "What Would You Want Protected",
+    title: "Advisor Bridge",
     qaRequired: false,
     script: [
-      "If you could make one part of this easier on your family, what would you want handled?",
-      "What would you want your loved ones to not have to worry about?",
-      "Would your priority be covering final expenses, avoiding family stress, or leaving something behind?",
-      "What feels most important to take care of?"
+      "*slow down here*",
+      "So from what you've shared with me, if something happened, [BeneficiaryName] would be the one carrying [PrimaryConcern] while everything still feels raw.",
+      "That is really what I'm trying to protect [BeneficiaryName] from.",
+      "The next step for me is to see what you can medically qualify for, because that determines which protection options I can honestly put in front of you.",
+      "If that's alright with you, I'll walk through a few brief health questions and see what we can earn for [BeneficiaryName] today."
     ],
     prompt: {
-      goal: "Let the client define what matters most before any recommendation talk",
+      goal: "Use their own concerns as the reason for the medical qualification step",
       notes: [
-        "Confirm what matters most before moving on",
-        "Use follow-up only if it feels natural",
-        "Keep this simple and easy to scan"
+        "Sound like a family advocate, not a closer",
+        "Tie the medical step back to the person they named",
+        "Keep the tone grounded and steady"
       ]
     }
   },
   {
     id: 8,
-    title: "Priority Confirmation",
+    title: "Concern Confirmation",
     qaRequired: false,
     script: [
-      "So the main thing you'd want is making sure your family doesn't have to scramble with [PrioritySummary], right?",
-      "And if that part were already handled, that would take a lot of pressure off of them, right?"
+      "So the main thing you'd want is making sure [BeneficiaryName] doesn't have to scramble with [PrimaryConcern], right?",
+      "And if that part were already handled, that just makes things a lot easier to deal with, right?"
     ],
     prompt: {
       goal: "Confirm the priority in the client's own language before moving on",
@@ -281,7 +285,7 @@ export const scriptSections = [
   },
   {
     id: 9,
-    title: "Advisor Bridge",
+    title: "Medical Bridge",
     qaRequired: false,
     script: [
       "Choose the bridge that fits the tone of the call."
@@ -295,34 +299,34 @@ export const scriptSections = [
         {
           value: "steady-bridge",
           label: "Steady Bridge",
-          description: "Use this when you want a calm and direct transition.",
+          description: "Use this when you want a calm and direct transition into qualification.",
           script: [
-            "Based on what you've shared with me, my role is to help make sure your family wouldn't be left carrying that burden alone."
-          ],
+            "Based on everything you've shared, asking a few medical questions is simply how I narrow this down the right way for [BeneficiaryName]."
+          ]
         },
         {
           value: "soft-bridge",
           label: "Softer Transition",
-          description: "Use this when you want the gentlest move into protection options.",
+          description: "Use this when you want the gentlest move into medical qualification.",
           script: [
-            "What I can do from here is walk you through a few protection options that are designed to help with exactly those kinds of final expenses, and then we can see what feels comfortable for you."
+            "What I'll do from here is ask a few brief health questions so I can see which protection options line up best with what you want handled for [BeneficiaryName]."
           ]
         },
         {
           value: "guided-bridge",
           label: "Guided Bridge",
-          description: "Use this when the client is engaged and ready for a simple next-step frame.",
+          description: "Use this when the client is engaged and ready for a clear next step.",
           script: [
-            "From here, I'll walk you through a few simple options built to help with the priorities you just shared, and then we can see what feels like the right next step."
+            "From here, I'll guide you through a short medical qualification step so I can match the right protection to the priorities you just shared with me."
           ]
         }
       ]
     },
     prompt: {
-      goal: "Transition naturally from discovery into recommendation without sounding like a pitch",
+      goal: "Make the medical questions feel like part of the advocacy process",
       notes: [
         "Keep this calm and respectful",
-        "Do not use the word insurance unless it feels necessary",
+        "Do not sound like you're switching into a script",
         "Choose the bridge that sounds most human in the moment"
       ]
     }
@@ -332,12 +336,12 @@ export const scriptSections = [
     title: "Permission To Continue",
     qaRequired: false,
     script: [
-      "If I show you a few protection options that line up with what you just shared, would you be open to taking a look?",
-      "We don't have to force anything. I just want to see what would fit the priorities that matter most to you.",
+      "We'll keep it simple.",
+      "If I ask you a few health questions so I can narrow this down correctly, would that be alright?",
       "Fair enough?"
     ],
     prompt: {
-      goal: "Get a natural yes before moving into the next step of the call",
+      goal: "Get a natural yes before moving into the medical part of the call",
       notes: [
         "Keep this light and easy",
         "A simple yes is enough here",

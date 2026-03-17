@@ -320,6 +320,19 @@ select {
   color: rgb(255 255 255);
 }
 
+.discovery-visual-cue {
+  margin-top: 1rem;
+  border-top: 1px solid rgb(51 65 85 / 0.65);
+  padding-top: 0.95rem;
+}
+
+.discovery-visual-cue-text {
+  margin: 0.4rem 0 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: rgb(186 230 253);
+}
+
 .secondary-rail-discovery .panel {
   transition:
     opacity 150ms ease,
@@ -341,6 +354,67 @@ select {
 
 .panel-quiet-soft {
   opacity: 0.82;
+}
+
+.impact-card {
+  display: flex;
+  min-height: 7.2rem;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-radius: 0.95rem;
+  border: 1px solid rgb(55 65 81);
+  background:
+    linear-gradient(180deg, rgb(15 23 42), rgb(10 15 26)),
+    rgb(15 23 42);
+  padding: 1rem;
+  text-align: left;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    transform 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.impact-card-idle:hover {
+  border-color: rgb(71 85 105);
+  background:
+    linear-gradient(180deg, rgb(30 41 59), rgb(15 23 42)),
+    rgb(15 23 42);
+  transform: translateY(-1px);
+}
+
+.impact-card-active {
+  border-color: rgb(56 189 248);
+  background:
+    linear-gradient(180deg, rgb(8 47 73 / 0.96), rgb(12 27 44)),
+    rgb(8 47 73);
+  box-shadow: inset 0 0 0 1px rgb(56 189 248 / 0.18);
+}
+
+.impact-card-title {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: rgb(255 255 255);
+}
+
+.impact-card-body {
+  display: block;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: rgb(203 213 225);
+}
+
+.script-line em {
+  color: rgb(186 230 253);
+  font-style: italic;
+}
+
+.script-line strong {
+  font-weight: 700;
+  color: rgb(255 255 255);
 }
 
 @media (min-width: 1024px) {

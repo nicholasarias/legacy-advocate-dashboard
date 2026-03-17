@@ -206,6 +206,13 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
                   {firstSection.title}
                 </p>
               </div>
+
+              <div class="discovery-visual-cue">
+                <p class="discovery-focus-kicker">Visual Cue</p>
+                <p class="discovery-visual-cue-text">
+                  PAUSE: Let them answer and sit in the silence.
+                </p>
+              </div>
             </div>
             <div id="script-lines" class="space-y-5 text-lg leading-8 text-gray-100">
               {firstSection.script.map((line) => (
@@ -440,6 +447,13 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
               </p>
             </div>
 
+            <div class="mt-4 rounded-xl border border-sky-500/20 bg-sky-950/20 p-4">
+              <p class="text-xs uppercase tracking-wide text-sky-200">Visual Cue</p>
+              <p class="mt-2 text-sm text-sky-50">
+                PAUSE: Let them answer and sit in the silence.
+              </p>
+            </div>
+
             <div id="family-context-group" class="mt-5 hidden space-y-4">
               <div class="grid gap-4 sm:grid-cols-2">
                 <div>
@@ -608,40 +622,69 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
             <div id="protection-priority-group" class="mt-5 hidden space-y-4">
               <div>
-                <p class="form-label !mb-3">Family Priorities</p>
-                <div class="grid gap-3 sm:grid-cols-2">
-                  <label class="rounded-lg border border-gray-800 bg-gray-950 px-3 py-3 text-sm text-gray-200">
-                    <input type="checkbox" class="mr-2" data-priority-value="funeral costs" />
-                    Funeral Costs
-                  </label>
-                  <label class="rounded-lg border border-gray-800 bg-gray-950 px-3 py-3 text-sm text-gray-200">
-                    <input type="checkbox" class="mr-2" data-priority-value="burial costs" />
-                    Burial Costs
-                  </label>
-                  <label class="rounded-lg border border-gray-800 bg-gray-950 px-3 py-3 text-sm text-gray-200">
-                    <input
-                      type="checkbox"
-                      class="mr-2"
-                      data-priority-value="immediate household expenses"
-                    />
-                    Immediate Household Expenses
-                  </label>
-                  <label class="rounded-lg border border-gray-800 bg-gray-950 px-3 py-3 text-sm text-gray-200">
-                    <input type="checkbox" class="mr-2" data-priority-value="unpaid bills" />
-                    Unpaid Bills
-                  </label>
-                  <label class="rounded-lg border border-gray-800 bg-gray-950 px-3 py-3 text-sm text-gray-200">
-                    <input
-                      type="checkbox"
-                      class="mr-2"
-                      data-priority-value="easing the burden on family"
-                    />
-                    Easing The Burden On Family
-                  </label>
-                  <label class="rounded-lg border border-gray-800 bg-gray-950 px-3 py-3 text-sm text-gray-200">
-                    <input type="checkbox" class="mr-2" data-priority-value="leaving something behind" />
-                    Leaving Something Behind
-                  </label>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="form-label !mb-0">Impact Cards</p>
+                  <p id="primary-concern-readout" class="text-xs text-gray-400">
+                    No primary concern selected yet.
+                  </p>
+                </div>
+
+                <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                  <button
+                    type="button"
+                    class="impact-card impact-card-idle"
+                    data-impact-value="funeral costs"
+                  >
+                    <span class="impact-card-title">Funeral Costs</span>
+                    <span class="impact-card-body">Handle the service and immediate arrangements.</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="impact-card impact-card-idle"
+                    data-impact-value="burial costs"
+                  >
+                    <span class="impact-card-title">Burial Costs</span>
+                    <span class="impact-card-body">Cover cemetery, plot, and burial-related expenses.</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="impact-card impact-card-idle"
+                    data-impact-value="immediate household expenses"
+                  >
+                    <span class="impact-card-title">Immediate Household Expenses</span>
+                    <span class="impact-card-body">
+                      Keep the lights on and the home steady in the first few months.
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="impact-card impact-card-idle"
+                    data-impact-value="unpaid bills"
+                  >
+                    <span class="impact-card-title">Unpaid Bills</span>
+                    <span class="impact-card-body">Prevent card, loan, or payment pressure from piling up.</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="impact-card impact-card-idle"
+                    data-impact-value="easing the burden on family"
+                  >
+                    <span class="impact-card-title">Easing The Burden On Family</span>
+                    <span class="impact-card-body">Give them breathing room while they are still grieving.</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="impact-card impact-card-idle"
+                    data-impact-value="leaving something behind"
+                  >
+                    <span class="impact-card-title">Leaving Something Behind</span>
+                    <span class="impact-card-body">Leave a little extra support beyond the immediate bills.</span>
+                  </button>
                 </div>
               </div>
 
@@ -650,7 +693,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
                 <textarea
                   id="protection-priority-notes"
                   rows="3"
-                  placeholder="Capture what feels most important to protect"
+                  placeholder="Capture the main pressure point or what they want handled first"
                   class="form-input"
                 ></textarea>
               </div>
@@ -660,14 +703,14 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
               <div class="rounded-xl border border-gray-800 bg-gray-950 p-4">
                 <p class="text-xs uppercase tracking-wide text-gray-500">Priority Readback</p>
                 <p id="bridge-priority-summary" class="mt-2 text-sm text-gray-200">
-                  No family priority captured yet.
+                  No main pressure point captured yet.
                 </p>
               </div>
 
               <div class="rounded-xl border border-gray-800 bg-gray-950 p-4">
                 <p class="text-xs uppercase tracking-wide text-gray-500">Next Step</p>
                 <p class="mt-2 text-sm text-gray-300">
-                  Use the bridge above, then continue into the existing qualification flow. The pricing workspace stays connected later in the call.
+                  Use the bridge above, then continue into the medical qualification step. The pricing workspace stays connected later in the call.
                 </p>
               </div>
 
@@ -898,6 +941,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         spousePartner: "",
         childrenInfo: "",
         decisionMaker: "",
+        primaryConcern: "",
         reliesOnThem: "",
         familyContextNotes: "",
         lossExperienceNotes: "",
@@ -1036,6 +1080,12 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
             spousePartner: String(parsedDiscovery.spousePartner ?? ""),
             childrenInfo: String(parsedDiscovery.childrenInfo ?? ""),
             decisionMaker,
+            primaryConcern: String(
+              parsedDiscovery.primaryConcern ??
+                (Array.isArray(parsedDiscovery.protectionPriorities)
+                  ? parsedDiscovery.protectionPriorities[0] ?? ""
+                  : "")
+            ),
             reliesOnThem: String(parsedDiscovery.reliesOnThem ?? ""),
             familyContextNotes: String(parsedDiscovery.familyContextNotes ?? ""),
             lossExperienceNotes: String(parsedDiscovery.lossExperienceNotes ?? ""),
@@ -1278,6 +1328,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     const discoveryWorkspacePanel = document.getElementById("discovery-workspace-panel");
     const discoveryPanelTitle = document.getElementById("discovery-panel-title");
     const discoveryPanelText = document.getElementById("discovery-panel-text");
+    const primaryConcernReadout = document.getElementById("primary-concern-readout");
     const familyContextGroup = document.getElementById("family-context-group");
     const lossExperienceGroup = document.getElementById("loss-experience-group");
     const familyResponsibilityGroup = document.getElementById("family-responsibility-group");
@@ -1302,7 +1353,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     const familyResponsibilityNotesInput = document.getElementById("family-responsibility-notes");
     const currentSupportNotesInput = document.getElementById("current-support-notes");
     const protectionPriorityNotesInput = document.getElementById("protection-priority-notes");
-    const priorityCheckboxes = document.querySelectorAll("[data-priority-value]");
+    const impactCards = document.querySelectorAll("[data-impact-value]");
     const salesWorkspacePanel = document.getElementById("sales-workspace-panel");
     const salesRouteSummary = document.getElementById("sales-route-summary");
     const medicalSummaryGroup = document.getElementById("medical-summary-group");
@@ -1448,7 +1499,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     if (secondaryPhoneInput) secondaryPhoneInput.value = sessionState.secondaryPhone;
     if (beneficiaryPhoneInput) beneficiaryPhoneInput.value = sessionState.beneficiaryPhone;
     if (callNotes) callNotes.value = sessionState.notes;
-    setPriorityCheckboxSelections(sessionState.discovery.protectionPriorities);
+    setImpactCardSelectionUI(sessionState.discovery.primaryConcern);
 
     let activeRebuttalId = 1;
     let pendingBranchHighlight = null;
@@ -1545,35 +1596,30 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       }
     }
 
-    function setPriorityCheckboxSelections(values) {
-      const selectedValues = new Set(Array.isArray(values) ? values : []);
+    function setImpactCardSelectionUI(value) {
+      const selectedValue = String(value || "");
 
-      priorityCheckboxes.forEach((checkbox) => {
-        if (!(checkbox instanceof HTMLInputElement)) return;
-        checkbox.checked = selectedValues.has(checkbox.dataset.priorityValue || "");
+      impactCards.forEach((card) => {
+        if (!(card instanceof HTMLElement)) return;
+
+        const isActive = card.dataset.impactValue === selectedValue;
+        card.classList.toggle("impact-card-active", isActive);
+        card.classList.toggle("impact-card-idle", !isActive);
+        card.setAttribute("aria-pressed", String(isActive));
       });
-    }
 
-    function getSelectedPriorities() {
-      return Array.from(priorityCheckboxes)
-        .filter((checkbox) => checkbox instanceof HTMLInputElement && checkbox.checked)
-        .map((checkbox) => checkbox.dataset.priorityValue || "")
-        .filter(Boolean);
-    }
-
-    function joinNaturalList(items) {
-      if (!items.length) return "";
-      if (items.length === 1) return items[0];
-      if (items.length === 2) return `${items[0]} and ${items[1]}`;
-      return `${items.slice(0, -1).join(", ")}, and ${items.at(-1)}`;
-    }
-
-    function getPrioritySummary() {
-      const priorities = sessionState.discovery?.protectionPriorities || [];
-
-      if (priorities.length) {
-        return joinNaturalList(priorities);
+      if (primaryConcernReadout) {
+        const concernLabel = selectedValue || getPrimaryConcern();
+        primaryConcernReadout.textContent =
+          concernLabel && concernLabel !== "those first expenses"
+            ? `Primary concern: ${concernLabel}`
+            : "No primary concern selected yet.";
       }
+    }
+
+    function getPrimaryConcern() {
+      const selectedConcern = sessionState.discovery?.primaryConcern?.trim() || "";
+      if (selectedConcern) return selectedConcern;
 
       const priorityNotes = sessionState.discovery?.protectionPriorityNotes?.trim() || "";
       if (priorityNotes) return priorityNotes;
@@ -1584,7 +1630,26 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         sessionState.discovery?.householdBills?.trim() || ""
       ].find(Boolean);
 
-      return responsibilityFallback || "those costs";
+      return responsibilityFallback || "those first expenses";
+    }
+
+    function joinNaturalList(items) {
+      if (!items.length) return "";
+      if (items.length === 1) return items[0];
+      if (items.length === 2) return `${items[0]} and ${items[1]}`;
+      return `${items.slice(0, -1).join(", ")}, and ${items.at(-1)}`;
+    }
+
+    function getPrioritySummary() {
+      const primaryConcern = getPrimaryConcern();
+      if (primaryConcern) return primaryConcern;
+
+      const priorities = sessionState.discovery?.protectionPriorities || [];
+      if (priorities.length) {
+        return joinNaturalList(priorities);
+      }
+
+      return "those costs";
     }
 
     function isDiscoverySection(section) {
@@ -1620,24 +1685,24 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       if (section.id === 5) {
         return {
           key: "familyResponsibilityNotes",
-          label: "Responsibility Notes",
-          placeholder: "Capture the burden in their own words"
+          label: "90-Day Window Notes",
+          placeholder: "Capture what those first few months would look like"
         };
       }
 
       if (section.id === 6) {
         return {
           key: "currentSupportNotes",
-          label: "Current Support Notes",
-          placeholder: "What is already set aside and what they want it to handle"
+          label: "Support Notes",
+          placeholder: "What is already set aside and where the pressure still lands"
         };
       }
 
       if (section.id >= 7 && section.id <= 10) {
         return {
           key: "protectionPriorityNotes",
-          label: "Priority Notes",
-          placeholder: "Capture what feels most important to protect"
+          label: "Bridge Notes",
+          placeholder: "Capture the one pressure point you want to carry into the bridge"
         };
       }
 
@@ -1719,12 +1784,16 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     function updateBridgePrioritySummary() {
       if (!bridgePrioritySummary) return;
 
-      const prioritySummary = getPrioritySummary();
+      const prioritySummary = getPrimaryConcern();
+      const personName =
+        beneficiaryNameInput?.value.trim() ||
+        decisionMakerInput?.value.trim() ||
+        "the person they care about most";
 
       bridgePrioritySummary.textContent =
-        prioritySummary === "those costs"
-          ? "No family priority captured yet."
-          : `Main family priority: ${prioritySummary}.`;
+        prioritySummary === "those first expenses"
+          ? "No main pressure point captured yet."
+          : `${personName} would be the one carrying ${prioritySummary} in those first few months.`;
     }
 
     function updateDiscoveryWorkspace(section) {
@@ -1743,12 +1812,21 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
       discoveryWorkspacePanel.classList.remove("hidden");
       hideDiscoveryGroups();
+      setImpactCardSelectionUI(sessionState.discovery?.primaryConcern || "");
       updateBridgePrioritySummary();
 
-      if (sectionId === 2 || sectionId === 3) {
+      if (sectionId === 2) {
         discoveryPanelTitle.textContent = "Family & Life Context";
         discoveryPanelText.textContent =
           "Keep this conversational and listen for who matters most.";
+        familyContextGroup?.classList.remove("hidden");
+        return;
+      }
+
+      if (sectionId === 3) {
+        discoveryPanelTitle.textContent = "The Person";
+        discoveryPanelText.textContent =
+          "Use their name quickly so the conversation stays grounded in one real person.";
         familyContextGroup?.classList.remove("hidden");
         return;
       }
@@ -1762,32 +1840,34 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       }
 
       if (sectionId === 5) {
-        discoveryPanelTitle.textContent = "Family Responsibility";
+        discoveryPanelTitle.textContent = "The First 90 Days";
         discoveryPanelText.textContent =
-          "Let the client describe the burden in their own words.";
+          "Let them picture the first few months, not just the funeral bill.";
         familyResponsibilityGroup?.classList.remove("hidden");
         return;
       }
 
       if (sectionId === 6) {
-        discoveryPanelTitle.textContent = "Current Support In Place";
+        discoveryPanelTitle.textContent = "Support & Priorities";
         discoveryPanelText.textContent =
-          "Capture what is already set aside without making this feel like a funnel.";
+          "Capture what is already set aside and the one pressure point they most want handled.";
         currentSupportGroup?.classList.remove("hidden");
-        return;
-      }
-
-      if (sectionId === 7 || sectionId === 8) {
-        discoveryPanelTitle.textContent = "What Would You Want Protected";
-        discoveryPanelText.textContent =
-          "Confirm what matters most before moving on.";
         protectionPriorityGroup?.classList.remove("hidden");
         return;
       }
 
-      discoveryPanelTitle.textContent = "Advisor Bridge";
+      if (sectionId === 7) {
+        discoveryPanelTitle.textContent = "Advisor Bridge";
+        discoveryPanelText.textContent =
+          "Summarize the person and the pressure point before you pivot.";
+        protectionPriorityGroup?.classList.remove("hidden");
+        discoveryBridgeGroup?.classList.remove("hidden");
+        return;
+      }
+
+      discoveryPanelTitle.textContent = "Medical Qualification";
       discoveryPanelText.textContent =
-        "Pause, confirm the priority, and use the bridge that feels most natural.";
+        "Keep the handoff steady. The medical step should feel earned, not abrupt.";
       discoveryBridgeGroup?.classList.remove("hidden");
     }
 
@@ -1838,6 +1918,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           decisionMakerInput?.value.trim() ||
           "Beneficiary Name",
         BeneficiaryRelationship: getBeneficiaryRelationshipLabel(),
+        PrimaryConcern: getPrimaryConcern(),
         PrioritySummary: getPrioritySummary(),
         AdvisorName: settings.advisorName || "Advisor Name",
         AdvisorPhone: settings.advisorPhone || "Advisor Phone",
@@ -1861,6 +1942,19 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
     function applyTokens(text, tokens) {
       return text.replace(/\[([A-Za-z0-9]+)\]/g, (match, key) => tokens[key] ?? match);
+    }
+
+    function formatScriptLine(text) {
+      const escaped = String(text || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+
+      return escaped
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*(.+?)\*/g, "<em>$1</em>");
     }
 
     function updateProgress() {
@@ -2216,7 +2310,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           block.lines.forEach((line) => {
             const p = document.createElement("p");
             p.className = "script-line";
-            p.textContent = line;
+            p.innerHTML = formatScriptLine(line);
             blockEl.appendChild(p);
           });
 
@@ -2296,7 +2390,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       if (familyResponsibilityNotesInput) familyResponsibilityNotesInput.value = "";
       if (currentSupportNotesInput) currentSupportNotesInput.value = "";
       if (protectionPriorityNotesInput) protectionPriorityNotesInput.value = "";
-      setPriorityCheckboxSelections([]);
+      setImpactCardSelectionUI("");
       if (premiumInput) premiumInput.value = "";
       if (draftDateInput) draftDateInput.value = "";
       if (medicalSummaryInput) medicalSummaryInput.value = "";
@@ -2620,12 +2714,19 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       setDiscoveryField(discoveryKey, discoveryInlineNotesInput.value, false, "inline");
     });
 
-    priorityCheckboxes.forEach((checkbox) => {
-      checkbox.addEventListener("change", () => {
+    impactCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        if (!(card instanceof HTMLElement)) return;
+
+        const nextValue = card.dataset.impactValue || "";
+        const selectedValue = sessionState.discovery?.primaryConcern === nextValue ? "" : nextValue;
+
         sessionState.discovery = {
           ...sessionState.discovery,
-          protectionPriorities: getSelectedPriorities()
+          primaryConcern: selectedValue,
+          protectionPriorities: selectedValue ? [selectedValue] : []
         };
+
         renderSection(currentSection);
       });
     });
