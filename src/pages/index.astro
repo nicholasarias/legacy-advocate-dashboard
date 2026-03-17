@@ -95,7 +95,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         </div>
       </div>
 
-      <div class="grid gap-6 p-8 lg:grid-cols-[minmax(0,1fr)_380px]">
+      <div id="workflow-grid" class="grid gap-6 p-8 lg:grid-cols-[minmax(0,1fr)_380px]">
         <div class="space-y-6">
           <div id="branch-panel" class="panel hidden p-6">
             <div class="space-y-4">
@@ -182,12 +182,53 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
             </div>
           </div>
 
-          <div class="panel p-8">
+          <div id="script-panel" class="panel p-8">
             <h3 class="panel-title">Read Aloud Script</h3>
+            <div id="discovery-focus-shell" class="discovery-focus-shell hidden">
+              <div class="discovery-focus-header">
+                <div>
+                  <p class="discovery-focus-kicker">Discovery Focus</p>
+                  <p id="discovery-reminder" class="discovery-reminder">
+                    Listen more than you speak. Let the client answer fully.
+                  </p>
+                </div>
+                <div class="discovery-pacing">
+                  <p class="discovery-focus-kicker">Pacing Cue</p>
+                  <p id="discovery-pacing-cue" class="discovery-pacing-text">
+                    Keep this conversational.
+                  </p>
+                </div>
+              </div>
+
+              <div class="discovery-focus-meta">
+                <p class="discovery-focus-kicker">Current Conversation Step</p>
+                <p id="discovery-focus-title" class="discovery-focus-title">
+                  {firstSection.title}
+                </p>
+              </div>
+            </div>
             <div id="script-lines" class="space-y-5 text-lg leading-8 text-gray-100">
               {firstSection.script.map((line) => (
                 <p>{line}</p>
               ))}
+            </div>
+
+            <div id="discovery-inline-notes-shell" class="mt-8 hidden border-t border-gray-800 pt-6">
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <p id="discovery-inline-notes-label" class="panel-title !mb-2">Section Notes</p>
+                  <p class="text-sm text-gray-400">
+                    Capture the key detail in their own words while the section is still fresh.
+                  </p>
+                </div>
+              </div>
+
+              <textarea
+                id="discovery-inline-notes-input"
+                rows="3"
+                placeholder="Capture the key point from this part of the conversation"
+                class="form-input mt-4"
+              ></textarea>
             </div>
           </div>
 
@@ -368,8 +409,8 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           </div>
         </div>
 
-        <div class="self-start space-y-6 lg:sticky lg:top-6">
-          <div class="panel p-6">
+        <div id="secondary-rail" class="self-start space-y-6 lg:sticky lg:top-6">
+          <div id="prompt-panel" class="panel p-6" data-quiet-during-discovery="true">
             <h3 class="panel-title">Prompts</h3>
 
             <div class="space-y-4">
@@ -391,7 +432,252 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
             </div>
           </div>
 
-          <div id="sales-workspace-panel" class="panel hidden p-6">
+          <div id="discovery-workspace-panel" class="panel hidden p-6" data-quiet-during-discovery="true">
+            <div>
+              <h3 id="discovery-panel-title" class="panel-title !mb-2">Discovery Workspace</h3>
+              <p id="discovery-panel-text" class="text-sm text-gray-300">
+                Capture family priorities and notes while you listen.
+              </p>
+            </div>
+
+            <div id="family-context-group" class="mt-5 hidden space-y-4">
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label for="marital-status-input" class="form-label">Marital Status</label>
+                  <select id="marital-status-input" class="form-input">
+                    <option value="">Select status</option>
+                    <option value="married">Married</option>
+                    <option value="partnered">Partnered</option>
+                    <option value="single">Single</option>
+                    <option value="widowed">Widowed</option>
+                    <option value="divorced">Divorced</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="spouse-partner-input" class="form-label">Spouse / Partner</label>
+                  <input
+                    id="spouse-partner-input"
+                    type="text"
+                    placeholder="Name or quick note"
+                    class="form-input"
+                  />
+                </div>
+
+                <div>
+                  <label for="children-info-input" class="form-label">Children</label>
+                  <input
+                    id="children-info-input"
+                    type="text"
+                    placeholder="How many or nearby?"
+                    class="form-input"
+                  />
+                </div>
+
+                <div>
+                  <label for="decision-maker-input" class="form-label">Likely Decision Maker</label>
+                  <input
+                    id="decision-maker-input"
+                    type="text"
+                    placeholder="Who would handle things?"
+                    class="form-input"
+                  />
+                </div>
+
+                <div>
+                  <label for="decision-maker-relation" class="form-label">
+                    Decision Maker Relationship
+                  </label>
+                  <select id="decision-maker-relation" class="form-input">
+                    <option value="">Select relationship</option>
+                    <option value="spouse">Spouse / Partner</option>
+                    <option value="child">Child</option>
+                    <option value="sibling">Sibling</option>
+                    <option value="friend">Friend / Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="relies-on-them-input" class="form-label">Who Relies On Them</label>
+                  <input
+                    id="relies-on-them-input"
+                    type="text"
+                    placeholder="Financially or practically"
+                    class="form-input"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="family-context-notes" class="form-label">Notes</label>
+                <textarea
+                  id="family-context-notes"
+                  rows="3"
+                  placeholder="Anything important about family dynamics or who matters most"
+                  class="form-input"
+                ></textarea>
+              </div>
+            </div>
+
+            <div id="loss-experience-group" class="mt-5 hidden">
+              <label for="loss-experience-notes" class="form-label">Notes</label>
+              <textarea
+                id="loss-experience-notes"
+                rows="4"
+                placeholder="Who was lost, who handled things, and what felt hardest"
+                class="form-input"
+              ></textarea>
+            </div>
+
+            <div id="family-responsibility-group" class="mt-5 hidden space-y-4">
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label for="funeral-concern-input" class="form-label">Funeral / Burial Concern</label>
+                  <input
+                    id="funeral-concern-input"
+                    type="text"
+                    placeholder="What concerns them most?"
+                    class="form-input"
+                  />
+                </div>
+
+                <div>
+                  <label for="debts-input" class="form-label">Debts</label>
+                  <input
+                    id="debts-input"
+                    type="text"
+                    placeholder="Credit cards, loans, etc."
+                    class="form-input"
+                  />
+                </div>
+
+                <div>
+                  <label for="household-bills-input" class="form-label">Household Bills</label>
+                  <input
+                    id="household-bills-input"
+                    type="text"
+                    placeholder="Mortgage, rent, utilities"
+                    class="form-input"
+                  />
+                </div>
+
+                <div>
+                  <label for="dependents-input" class="form-label">Dependents</label>
+                  <input
+                    id="dependents-input"
+                    type="text"
+                    placeholder="Anyone still depending on them?"
+                    class="form-input"
+                  />
+                </div>
+
+                <div class="sm:col-span-2">
+                  <label for="other-obligations-input" class="form-label">
+                    Other Financial Obligations
+                  </label>
+                  <input
+                    id="other-obligations-input"
+                    type="text"
+                    placeholder="Anything else they would not want left behind"
+                    class="form-input"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="family-responsibility-notes" class="form-label">Notes</label>
+                <textarea
+                  id="family-responsibility-notes"
+                  rows="3"
+                  placeholder="Capture the burden in their own words"
+                  class="form-input"
+                ></textarea>
+              </div>
+            </div>
+
+            <div id="current-support-group" class="mt-5 hidden">
+              <label for="current-support-notes" class="form-label">Notes</label>
+              <textarea
+                id="current-support-notes"
+                rows="3"
+                placeholder="What is already set aside and what they want it to handle"
+                class="form-input"
+              ></textarea>
+            </div>
+
+            <div id="protection-priority-group" class="mt-5 hidden space-y-4">
+              <div>
+                <p class="form-label !mb-3">Family Priorities</p>
+                <div class="grid gap-3 sm:grid-cols-2">
+                  <label class="rounded-lg border border-gray-800 bg-gray-950 px-3 py-3 text-sm text-gray-200">
+                    <input type="checkbox" class="mr-2" data-priority-value="funeral costs" />
+                    Funeral Costs
+                  </label>
+                  <label class="rounded-lg border border-gray-800 bg-gray-950 px-3 py-3 text-sm text-gray-200">
+                    <input type="checkbox" class="mr-2" data-priority-value="burial costs" />
+                    Burial Costs
+                  </label>
+                  <label class="rounded-lg border border-gray-800 bg-gray-950 px-3 py-3 text-sm text-gray-200">
+                    <input
+                      type="checkbox"
+                      class="mr-2"
+                      data-priority-value="immediate household expenses"
+                    />
+                    Immediate Household Expenses
+                  </label>
+                  <label class="rounded-lg border border-gray-800 bg-gray-950 px-3 py-3 text-sm text-gray-200">
+                    <input type="checkbox" class="mr-2" data-priority-value="unpaid bills" />
+                    Unpaid Bills
+                  </label>
+                  <label class="rounded-lg border border-gray-800 bg-gray-950 px-3 py-3 text-sm text-gray-200">
+                    <input
+                      type="checkbox"
+                      class="mr-2"
+                      data-priority-value="easing the burden on family"
+                    />
+                    Easing The Burden On Family
+                  </label>
+                  <label class="rounded-lg border border-gray-800 bg-gray-950 px-3 py-3 text-sm text-gray-200">
+                    <input type="checkbox" class="mr-2" data-priority-value="leaving something behind" />
+                    Leaving Something Behind
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <label for="protection-priority-notes" class="form-label">Notes</label>
+                <textarea
+                  id="protection-priority-notes"
+                  rows="3"
+                  placeholder="Capture what feels most important to protect"
+                  class="form-input"
+                ></textarea>
+              </div>
+            </div>
+
+            <div id="discovery-bridge-group" class="mt-5 hidden space-y-4">
+              <div class="rounded-xl border border-gray-800 bg-gray-950 p-4">
+                <p class="text-xs uppercase tracking-wide text-gray-500">Priority Readback</p>
+                <p id="bridge-priority-summary" class="mt-2 text-sm text-gray-200">
+                  No family priority captured yet.
+                </p>
+              </div>
+
+              <div class="rounded-xl border border-gray-800 bg-gray-950 p-4">
+                <p class="text-xs uppercase tracking-wide text-gray-500">Next Step</p>
+                <p class="mt-2 text-sm text-gray-300">
+                  Use the bridge above, then continue into the existing qualification flow. The pricing workspace stays connected later in the call.
+                </p>
+              </div>
+
+              <button id="discovery-handoff-button" type="button" class="btn-blue">
+                Continue To Next Step
+              </button>
+            </div>
+          </div>
+
+          <div id="sales-workspace-panel" class="panel hidden p-6" data-quiet-during-discovery="true">
             <div>
               <h3 class="panel-title !mb-2">Sales Workspace</h3>
               <p id="sales-route-summary" class="text-sm text-gray-300">
@@ -463,7 +749,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
             </div>
           </div>
 
-          <div class="panel p-6">
+          <div id="call-notes-panel" class="panel p-6" data-quiet-during-discovery="true">
             <h3 class="panel-title">Call Notes</h3>
 
             <textarea
@@ -474,7 +760,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
             ></textarea>
           </div>
 
-          <div class="panel p-6">
+          <div id="outcome-panel" class="panel p-6" data-quiet-during-discovery="true">
             <div class="mb-4 flex items-center justify-between gap-3">
               <h3 class="panel-title !mb-0">Outcome</h3>
             </div>
@@ -485,7 +771,11 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
             </div>
           </div>
 
-          <div id="shortcuts-panel" class="panel hidden p-6">
+          <div
+            id="shortcuts-panel"
+            class="panel hidden p-6"
+            data-quiet-during-discovery="true"
+          >
             <h3 class="panel-title">Keyboard Shortcuts</h3>
 
             <div class="space-y-2 text-sm text-gray-200">
@@ -563,9 +853,8 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       return {
         coverageStatus: "",
         relationType: "",
-        funeralExperience: "",
-        fundingStatus: "",
-        arrangementPreference: "",
+        lossExperience: "",
+        bridgeStyle: "",
         medicalReview: "",
         productOutcome: ""
       };
@@ -603,6 +892,27 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       };
     }
 
+    function createFreshDiscoveryData() {
+      return {
+        maritalStatus: "",
+        spousePartner: "",
+        childrenInfo: "",
+        decisionMaker: "",
+        reliesOnThem: "",
+        familyContextNotes: "",
+        lossExperienceNotes: "",
+        funeralConcern: "",
+        debtConcerns: "",
+        householdBills: "",
+        dependentsConcern: "",
+        otherObligations: "",
+        familyResponsibilityNotes: "",
+        currentSupportNotes: "",
+        protectionPriorities: [],
+        protectionPriorityNotes: ""
+      };
+    }
+
     function createFreshSession() {
       return {
         currentSectionId: scriptSections[0]?.id ?? 1,
@@ -629,6 +939,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         saleCounted: false,
         saleFromOutcome: false,
         countedAp: 0,
+        discovery: createFreshDiscoveryData(),
         branchSelections: createEmptyBranchSelections()
       };
     }
@@ -691,6 +1002,9 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           parsed.branchSelections && typeof parsed.branchSelections === "object"
             ? parsed.branchSelections
             : {};
+        const parsedDiscovery =
+          parsed.discovery && typeof parsed.discovery === "object" ? parsed.discovery : {};
+        const decisionMaker = String(parsedDiscovery.decisionMaker ?? parsed.beneficiaryName ?? "");
 
         return {
           currentSectionId: Number(parsed.currentSectionId ?? (scriptSections[0]?.id ?? 1)),
@@ -698,7 +1012,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           outcome: String(parsed.outcome ?? ""),
           clientName: String(parsed.clientName ?? ""),
           clientState: String(parsed.clientState ?? ""),
-          beneficiaryName: String(parsed.beneficiaryName ?? ""),
+          beneficiaryName: String(parsed.beneficiaryName ?? decisionMaker),
           premium: String(parsed.premium ?? ""),
           draftDate: String(parsed.draftDate ?? ""),
           medicalSummary: String(parsed.medicalSummary ?? ""),
@@ -717,12 +1031,33 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           saleCounted: Boolean(parsed.saleCounted ?? false),
           saleFromOutcome: Boolean(parsed.saleFromOutcome ?? false),
           countedAp: Number(parsed.countedAp ?? 0),
+          discovery: {
+            maritalStatus: String(parsedDiscovery.maritalStatus ?? ""),
+            spousePartner: String(parsedDiscovery.spousePartner ?? ""),
+            childrenInfo: String(parsedDiscovery.childrenInfo ?? ""),
+            decisionMaker,
+            reliesOnThem: String(parsedDiscovery.reliesOnThem ?? ""),
+            familyContextNotes: String(parsedDiscovery.familyContextNotes ?? ""),
+            lossExperienceNotes: String(parsedDiscovery.lossExperienceNotes ?? ""),
+            funeralConcern: String(parsedDiscovery.funeralConcern ?? ""),
+            debtConcerns: String(parsedDiscovery.debtConcerns ?? ""),
+            householdBills: String(parsedDiscovery.householdBills ?? ""),
+            dependentsConcern: String(parsedDiscovery.dependentsConcern ?? ""),
+            otherObligations: String(parsedDiscovery.otherObligations ?? ""),
+            familyResponsibilityNotes: String(parsedDiscovery.familyResponsibilityNotes ?? ""),
+            currentSupportNotes: String(parsedDiscovery.currentSupportNotes ?? ""),
+            protectionPriorities: Array.isArray(parsedDiscovery.protectionPriorities)
+              ? parsedDiscovery.protectionPriorities.map((value) => String(value))
+              : [],
+            protectionPriorityNotes: String(parsedDiscovery.protectionPriorityNotes ?? "")
+          },
           branchSelections: {
             coverageStatus: String(parsedBranchSelections.coverageStatus ?? ""),
             relationType: String(parsedBranchSelections.relationType ?? parsed.relationType ?? ""),
-            funeralExperience: String(parsedBranchSelections.funeralExperience ?? ""),
-            fundingStatus: String(parsedBranchSelections.fundingStatus ?? ""),
-            arrangementPreference: String(parsedBranchSelections.arrangementPreference ?? ""),
+            lossExperience: String(
+              parsedBranchSelections.lossExperience ?? parsedBranchSelections.funeralExperience ?? ""
+            ),
+            bridgeStyle: String(parsedBranchSelections.bridgeStyle ?? ""),
             medicalReview: String(parsedBranchSelections.medicalReview ?? ""),
             productOutcome: String(parsedBranchSelections.productOutcome ?? "")
           }
@@ -768,6 +1103,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           saleCounted: sessionState.saleCounted,
           saleFromOutcome: sessionState.saleFromOutcome,
           countedAp: sessionState.countedAp,
+          discovery: sessionState.discovery,
           branchSelections: sessionState.branchSelections
         })
       );
@@ -928,6 +1264,45 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     const premiumInput = document.getElementById("premiumInput");
     const draftDateInput = document.getElementById("draftDateInput");
     const pricingActionPanel = document.getElementById("pricing-action-panel");
+    const workflowGrid = document.getElementById("workflow-grid");
+    const scriptPanel = document.getElementById("script-panel");
+    const secondaryRail = document.getElementById("secondary-rail");
+    const promptPanel = document.getElementById("prompt-panel");
+    const quietDuringDiscoveryPanels = document.querySelectorAll("[data-quiet-during-discovery]");
+    const discoveryFocusShell = document.getElementById("discovery-focus-shell");
+    const discoveryPacingCue = document.getElementById("discovery-pacing-cue");
+    const discoveryFocusTitle = document.getElementById("discovery-focus-title");
+    const discoveryInlineNotesShell = document.getElementById("discovery-inline-notes-shell");
+    const discoveryInlineNotesLabel = document.getElementById("discovery-inline-notes-label");
+    const discoveryInlineNotesInput = document.getElementById("discovery-inline-notes-input");
+    const discoveryWorkspacePanel = document.getElementById("discovery-workspace-panel");
+    const discoveryPanelTitle = document.getElementById("discovery-panel-title");
+    const discoveryPanelText = document.getElementById("discovery-panel-text");
+    const familyContextGroup = document.getElementById("family-context-group");
+    const lossExperienceGroup = document.getElementById("loss-experience-group");
+    const familyResponsibilityGroup = document.getElementById("family-responsibility-group");
+    const currentSupportGroup = document.getElementById("current-support-group");
+    const protectionPriorityGroup = document.getElementById("protection-priority-group");
+    const discoveryBridgeGroup = document.getElementById("discovery-bridge-group");
+    const bridgePrioritySummary = document.getElementById("bridge-priority-summary");
+    const discoveryHandoffButton = document.getElementById("discovery-handoff-button");
+    const maritalStatusInput = document.getElementById("marital-status-input");
+    const spousePartnerInput = document.getElementById("spouse-partner-input");
+    const childrenInfoInput = document.getElementById("children-info-input");
+    const decisionMakerInput = document.getElementById("decision-maker-input");
+    const decisionMakerRelationInput = document.getElementById("decision-maker-relation");
+    const reliesOnThemInput = document.getElementById("relies-on-them-input");
+    const familyContextNotesInput = document.getElementById("family-context-notes");
+    const lossExperienceNotesInput = document.getElementById("loss-experience-notes");
+    const funeralConcernInput = document.getElementById("funeral-concern-input");
+    const debtsInput = document.getElementById("debts-input");
+    const householdBillsInput = document.getElementById("household-bills-input");
+    const dependentsInput = document.getElementById("dependents-input");
+    const otherObligationsInput = document.getElementById("other-obligations-input");
+    const familyResponsibilityNotesInput = document.getElementById("family-responsibility-notes");
+    const currentSupportNotesInput = document.getElementById("current-support-notes");
+    const protectionPriorityNotesInput = document.getElementById("protection-priority-notes");
+    const priorityCheckboxes = document.querySelectorAll("[data-priority-value]");
     const salesWorkspacePanel = document.getElementById("sales-workspace-panel");
     const salesRouteSummary = document.getElementById("sales-route-summary");
     const medicalSummaryGroup = document.getElementById("medical-summary-group");
@@ -1028,6 +1403,38 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     if (clientNameInput) clientNameInput.value = sessionState.clientName;
     if (clientStateInput) clientStateInput.value = sessionState.clientState;
     if (beneficiaryNameInput) beneficiaryNameInput.value = sessionState.beneficiaryName;
+    if (maritalStatusInput) maritalStatusInput.value = sessionState.discovery.maritalStatus;
+    if (spousePartnerInput) spousePartnerInput.value = sessionState.discovery.spousePartner;
+    if (childrenInfoInput) childrenInfoInput.value = sessionState.discovery.childrenInfo;
+    if (decisionMakerInput) {
+      decisionMakerInput.value = sessionState.discovery.decisionMaker || sessionState.beneficiaryName;
+    }
+    if (decisionMakerRelationInput) {
+      decisionMakerRelationInput.value = sessionState.branchSelections.relationType || "";
+    }
+    if (reliesOnThemInput) reliesOnThemInput.value = sessionState.discovery.reliesOnThem;
+    if (familyContextNotesInput) {
+      familyContextNotesInput.value = sessionState.discovery.familyContextNotes;
+    }
+    if (lossExperienceNotesInput) {
+      lossExperienceNotesInput.value = sessionState.discovery.lossExperienceNotes;
+    }
+    if (funeralConcernInput) funeralConcernInput.value = sessionState.discovery.funeralConcern;
+    if (debtsInput) debtsInput.value = sessionState.discovery.debtConcerns;
+    if (householdBillsInput) householdBillsInput.value = sessionState.discovery.householdBills;
+    if (dependentsInput) dependentsInput.value = sessionState.discovery.dependentsConcern;
+    if (otherObligationsInput) {
+      otherObligationsInput.value = sessionState.discovery.otherObligations;
+    }
+    if (familyResponsibilityNotesInput) {
+      familyResponsibilityNotesInput.value = sessionState.discovery.familyResponsibilityNotes;
+    }
+    if (currentSupportNotesInput) {
+      currentSupportNotesInput.value = sessionState.discovery.currentSupportNotes;
+    }
+    if (protectionPriorityNotesInput) {
+      protectionPriorityNotesInput.value = sessionState.discovery.protectionPriorityNotes;
+    }
     if (premiumInput) premiumInput.value = sessionState.premium;
     if (draftDateInput) draftDateInput.value = sessionState.draftDate;
     if (medicalSummaryInput) medicalSummaryInput.value = sessionState.medicalSummary;
@@ -1041,9 +1448,14 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     if (secondaryPhoneInput) secondaryPhoneInput.value = sessionState.secondaryPhone;
     if (beneficiaryPhoneInput) beneficiaryPhoneInput.value = sessionState.beneficiaryPhone;
     if (callNotes) callNotes.value = sessionState.notes;
+    setPriorityCheckboxSelections(sessionState.discovery.protectionPriorities);
 
     let activeRebuttalId = 1;
     let pendingBranchHighlight = null;
+
+    if (beneficiaryNameInput && !beneficiaryNameInput.value.trim() && decisionMakerInput?.value.trim()) {
+      beneficiaryNameInput.value = decisionMakerInput.value.trim();
+    }
 
     function formatTime(totalSeconds) {
       const minutes = Math.floor(totalSeconds / 60);
@@ -1133,6 +1545,287 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       }
     }
 
+    function setPriorityCheckboxSelections(values) {
+      const selectedValues = new Set(Array.isArray(values) ? values : []);
+
+      priorityCheckboxes.forEach((checkbox) => {
+        if (!(checkbox instanceof HTMLInputElement)) return;
+        checkbox.checked = selectedValues.has(checkbox.dataset.priorityValue || "");
+      });
+    }
+
+    function getSelectedPriorities() {
+      return Array.from(priorityCheckboxes)
+        .filter((checkbox) => checkbox instanceof HTMLInputElement && checkbox.checked)
+        .map((checkbox) => checkbox.dataset.priorityValue || "")
+        .filter(Boolean);
+    }
+
+    function joinNaturalList(items) {
+      if (!items.length) return "";
+      if (items.length === 1) return items[0];
+      if (items.length === 2) return `${items[0]} and ${items[1]}`;
+      return `${items.slice(0, -1).join(", ")}, and ${items.at(-1)}`;
+    }
+
+    function getPrioritySummary() {
+      const priorities = sessionState.discovery?.protectionPriorities || [];
+
+      if (priorities.length) {
+        return joinNaturalList(priorities);
+      }
+
+      const priorityNotes = sessionState.discovery?.protectionPriorityNotes?.trim() || "";
+      if (priorityNotes) return priorityNotes;
+
+      const responsibilityFallback = [
+        sessionState.discovery?.funeralConcern?.trim() || "",
+        sessionState.discovery?.debtConcerns?.trim() || "",
+        sessionState.discovery?.householdBills?.trim() || ""
+      ].find(Boolean);
+
+      return responsibilityFallback || "those costs";
+    }
+
+    function isDiscoverySection(section) {
+      return section.id >= 2 && section.id <= 10;
+    }
+
+    function getPrimaryPacingCue(section) {
+      const selectedOption = getSelectedBranchOption(section);
+      return (
+        selectedOption?.promptNotes?.[0] ||
+        section.prompt?.notes?.[0] ||
+        "Keep this conversational."
+      );
+    }
+
+    function getDiscoveryNotesConfig(section) {
+      if (section.id === 2 || section.id === 3) {
+        return {
+          key: "familyContextNotes",
+          label: "Family Notes",
+          placeholder: "Anything important about family dynamics or who matters most"
+        };
+      }
+
+      if (section.id === 4) {
+        return {
+          key: "lossExperienceNotes",
+          label: "Loss Notes",
+          placeholder: "Who was lost, who handled things, and what felt hardest"
+        };
+      }
+
+      if (section.id === 5) {
+        return {
+          key: "familyResponsibilityNotes",
+          label: "Responsibility Notes",
+          placeholder: "Capture the burden in their own words"
+        };
+      }
+
+      if (section.id === 6) {
+        return {
+          key: "currentSupportNotes",
+          label: "Current Support Notes",
+          placeholder: "What is already set aside and what they want it to handle"
+        };
+      }
+
+      if (section.id >= 7 && section.id <= 10) {
+        return {
+          key: "protectionPriorityNotes",
+          label: "Priority Notes",
+          placeholder: "Capture what feels most important to protect"
+        };
+      }
+
+      return null;
+    }
+
+    function getDiscoveryNotesFieldByKey(key) {
+      if (key === "familyContextNotes") return familyContextNotesInput;
+      if (key === "lossExperienceNotes") return lossExperienceNotesInput;
+      if (key === "familyResponsibilityNotes") return familyResponsibilityNotesInput;
+      if (key === "currentSupportNotes") return currentSupportNotesInput;
+      if (key === "protectionPriorityNotes") return protectionPriorityNotesInput;
+      return null;
+    }
+
+    function updateDiscoveryInlineNotes(section) {
+      if (!discoveryInlineNotesShell || !discoveryInlineNotesInput || !discoveryInlineNotesLabel) {
+        return;
+      }
+
+      const notesConfig = getDiscoveryNotesConfig(section);
+
+      if (!isDiscoverySection(section) || !notesConfig) {
+        discoveryInlineNotesShell.classList.add("hidden");
+        discoveryInlineNotesInput.dataset.discoveryKey = "";
+        return;
+      }
+
+      discoveryInlineNotesShell.classList.remove("hidden");
+      discoveryInlineNotesLabel.textContent = notesConfig.label;
+      discoveryInlineNotesInput.placeholder = notesConfig.placeholder;
+      discoveryInlineNotesInput.dataset.discoveryKey = notesConfig.key;
+      discoveryInlineNotesInput.value = sessionState.discovery?.[notesConfig.key] || "";
+    }
+
+    function updateDiscoveryFocusCard(section) {
+      const discoveryActive = isDiscoverySection(section);
+
+      workflowGrid?.classList.toggle("workflow-grid-discovery", discoveryActive);
+      scriptPanel?.classList.toggle("script-panel-discovery", discoveryActive);
+      secondaryRail?.classList.toggle("secondary-rail-discovery", discoveryActive);
+
+      quietDuringDiscoveryPanels.forEach((panel) => {
+        panel.classList.toggle("panel-quiet", discoveryActive);
+      });
+
+      promptPanel?.classList.toggle("panel-quiet-soft", discoveryActive);
+
+      if (!discoveryFocusShell || !discoveryPacingCue || !discoveryFocusTitle) {
+        updateDiscoveryInlineNotes(section);
+        return;
+      }
+
+      if (!discoveryActive) {
+        discoveryFocusShell.classList.add("hidden");
+        updateDiscoveryInlineNotes(section);
+        return;
+      }
+
+      discoveryFocusShell.classList.remove("hidden");
+      discoveryFocusTitle.textContent = section.title;
+      discoveryPacingCue.textContent = getPrimaryPacingCue(section);
+      updateDiscoveryInlineNotes(section);
+    }
+
+    function hideDiscoveryGroups() {
+      [
+        familyContextGroup,
+        lossExperienceGroup,
+        familyResponsibilityGroup,
+        currentSupportGroup,
+        protectionPriorityGroup,
+        discoveryBridgeGroup
+      ].forEach((group) => {
+        group?.classList.add("hidden");
+      });
+    }
+
+    function updateBridgePrioritySummary() {
+      if (!bridgePrioritySummary) return;
+
+      const prioritySummary = getPrioritySummary();
+
+      bridgePrioritySummary.textContent =
+        prioritySummary === "those costs"
+          ? "No family priority captured yet."
+          : `Main family priority: ${prioritySummary}.`;
+    }
+
+    function updateDiscoveryWorkspace(section) {
+      if (!discoveryWorkspacePanel || !discoveryPanelTitle || !discoveryPanelText) {
+        return;
+      }
+
+      const sectionId = section.id;
+      const showWorkspace = sectionId >= 2 && sectionId <= 10;
+
+      if (!showWorkspace) {
+        discoveryWorkspacePanel.classList.add("hidden");
+        hideDiscoveryGroups();
+        return;
+      }
+
+      discoveryWorkspacePanel.classList.remove("hidden");
+      hideDiscoveryGroups();
+      updateBridgePrioritySummary();
+
+      if (sectionId === 2 || sectionId === 3) {
+        discoveryPanelTitle.textContent = "Family & Life Context";
+        discoveryPanelText.textContent =
+          "Keep this conversational and listen for who matters most.";
+        familyContextGroup?.classList.remove("hidden");
+        return;
+      }
+
+      if (sectionId === 4) {
+        discoveryPanelTitle.textContent = "Life Experiences With Loss";
+        discoveryPanelText.textContent =
+          "Be warm here, but keep it gentle and brief.";
+        lossExperienceGroup?.classList.remove("hidden");
+        return;
+      }
+
+      if (sectionId === 5) {
+        discoveryPanelTitle.textContent = "Family Responsibility";
+        discoveryPanelText.textContent =
+          "Let the client describe the burden in their own words.";
+        familyResponsibilityGroup?.classList.remove("hidden");
+        return;
+      }
+
+      if (sectionId === 6) {
+        discoveryPanelTitle.textContent = "Current Support In Place";
+        discoveryPanelText.textContent =
+          "Capture what is already set aside without making this feel like a funnel.";
+        currentSupportGroup?.classList.remove("hidden");
+        return;
+      }
+
+      if (sectionId === 7 || sectionId === 8) {
+        discoveryPanelTitle.textContent = "What Would You Want Protected";
+        discoveryPanelText.textContent =
+          "Confirm what matters most before moving on.";
+        protectionPriorityGroup?.classList.remove("hidden");
+        return;
+      }
+
+      discoveryPanelTitle.textContent = "Advisor Bridge";
+      discoveryPanelText.textContent =
+        "Pause, confirm the priority, and use the bridge that feels most natural.";
+      discoveryBridgeGroup?.classList.remove("hidden");
+    }
+
+    function setDiscoveryField(key, value, render = false, source = "workspace") {
+      sessionState.discovery = {
+        ...sessionState.discovery,
+        [key]: value
+      };
+
+      if (render) {
+        renderSection(currentSection);
+        return;
+      }
+
+      if (source !== "inline") {
+        updateDiscoveryInlineNotes(currentSection);
+      }
+      updateDiscoveryWorkspace(currentSection);
+      saveSession();
+    }
+
+    function syncDecisionMakerName(value, source = "discovery") {
+      const nextValue = String(value || "");
+
+      sessionState.discovery = {
+        ...sessionState.discovery,
+        decisionMaker: nextValue
+      };
+
+      if (source !== "discovery" && decisionMakerInput && decisionMakerInput.value !== nextValue) {
+        decisionMakerInput.value = nextValue;
+      }
+
+      if (source !== "beneficiary" && beneficiaryNameInput && beneficiaryNameInput.value !== nextValue) {
+        beneficiaryNameInput.value = nextValue;
+      }
+    }
+
     function getTokens() {
       const productMeta = getProductOutcomeMeta();
 
@@ -1140,8 +1833,12 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         ClientName: clientNameInput?.value.trim() || "Client Name",
         ClientLastName: getClientLastName(),
         ClientState: clientStateInput?.value.trim().toUpperCase() || "Client State",
-        BeneficiaryName: beneficiaryNameInput?.value.trim() || "Beneficiary Name",
+        BeneficiaryName:
+          beneficiaryNameInput?.value.trim() ||
+          decisionMakerInput?.value.trim() ||
+          "Beneficiary Name",
         BeneficiaryRelationship: getBeneficiaryRelationshipLabel(),
+        PrioritySummary: getPrioritySummary(),
         AdvisorName: settings.advisorName || "Advisor Name",
         AdvisorPhone: settings.advisorPhone || "Advisor Phone",
         AdvisorNPN: settings.advisorNPN || "Advisor NPN",
@@ -1543,6 +2240,8 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
       updatePromptNotes(section);
       renderBranchPanel(section);
+      updateDiscoveryFocusCard(section);
+      updateDiscoveryWorkspace(section);
       updateSalesWorkspace(section);
       updatePricingActionPanel(section);
       selectRebuttal(activeRebuttalId);
@@ -1581,6 +2280,23 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       if (clientNameInput) clientNameInput.value = "";
       if (clientStateInput) clientStateInput.value = "";
       if (beneficiaryNameInput) beneficiaryNameInput.value = "";
+      if (maritalStatusInput) maritalStatusInput.value = "";
+      if (spousePartnerInput) spousePartnerInput.value = "";
+      if (childrenInfoInput) childrenInfoInput.value = "";
+      if (decisionMakerInput) decisionMakerInput.value = "";
+      if (decisionMakerRelationInput) decisionMakerRelationInput.value = "";
+      if (reliesOnThemInput) reliesOnThemInput.value = "";
+      if (familyContextNotesInput) familyContextNotesInput.value = "";
+      if (lossExperienceNotesInput) lossExperienceNotesInput.value = "";
+      if (funeralConcernInput) funeralConcernInput.value = "";
+      if (debtsInput) debtsInput.value = "";
+      if (householdBillsInput) householdBillsInput.value = "";
+      if (dependentsInput) dependentsInput.value = "";
+      if (otherObligationsInput) otherObligationsInput.value = "";
+      if (familyResponsibilityNotesInput) familyResponsibilityNotesInput.value = "";
+      if (currentSupportNotesInput) currentSupportNotesInput.value = "";
+      if (protectionPriorityNotesInput) protectionPriorityNotesInput.value = "";
+      setPriorityCheckboxSelections([]);
       if (premiumInput) premiumInput.value = "";
       if (draftDateInput) draftDateInput.value = "";
       if (medicalSummaryInput) medicalSummaryInput.value = "";
@@ -1842,10 +2558,75 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       });
     });
 
-    [clientNameInput, clientStateInput, beneficiaryNameInput, draftDateInput].forEach((input) => {
+    [clientNameInput, clientStateInput, draftDateInput].forEach((input) => {
       input?.addEventListener("input", () => {
         renderSection(currentSection);
         saveSession();
+      });
+    });
+
+    beneficiaryNameInput?.addEventListener("input", () => {
+      syncDecisionMakerName(beneficiaryNameInput.value, "beneficiary");
+      renderSection(currentSection);
+      saveSession();
+    });
+
+    maritalStatusInput?.addEventListener("change", () => {
+      setDiscoveryField("maritalStatus", maritalStatusInput.value);
+    });
+
+    [
+      [spousePartnerInput, "spousePartner"],
+      [childrenInfoInput, "childrenInfo"],
+      [reliesOnThemInput, "reliesOnThem"],
+      [familyContextNotesInput, "familyContextNotes"],
+      [lossExperienceNotesInput, "lossExperienceNotes"],
+      [funeralConcernInput, "funeralConcern"],
+      [debtsInput, "debtConcerns"],
+      [householdBillsInput, "householdBills"],
+      [dependentsInput, "dependentsConcern"],
+      [otherObligationsInput, "otherObligations"],
+      [familyResponsibilityNotesInput, "familyResponsibilityNotes"],
+      [currentSupportNotesInput, "currentSupportNotes"]
+    ].forEach(([input, key]) => {
+      input?.addEventListener("input", () => {
+        setDiscoveryField(key, input.value);
+      });
+    });
+
+    decisionMakerInput?.addEventListener("input", () => {
+      syncDecisionMakerName(decisionMakerInput.value, "discovery");
+      renderSection(currentSection);
+      saveSession();
+    });
+
+    decisionMakerRelationInput?.addEventListener("change", () => {
+      setBranchSelection("relationType", decisionMakerRelationInput.value);
+    });
+
+    protectionPriorityNotesInput?.addEventListener("input", () => {
+      setDiscoveryField("protectionPriorityNotes", protectionPriorityNotesInput.value, true);
+    });
+
+    discoveryInlineNotesInput?.addEventListener("input", () => {
+      const discoveryKey = discoveryInlineNotesInput.dataset.discoveryKey || "";
+      if (!discoveryKey) return;
+
+      const linkedField = getDiscoveryNotesFieldByKey(discoveryKey);
+      if (linkedField && linkedField.value !== discoveryInlineNotesInput.value) {
+        linkedField.value = discoveryInlineNotesInput.value;
+      }
+
+      setDiscoveryField(discoveryKey, discoveryInlineNotesInput.value, false, "inline");
+    });
+
+    priorityCheckboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", () => {
+        sessionState.discovery = {
+          ...sessionState.discovery,
+          protectionPriorities: getSelectedPriorities()
+        };
+        renderSection(currentSection);
       });
     });
 
@@ -1901,6 +2682,13 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
     callNotes?.addEventListener("input", () => {
       saveSession();
+    });
+
+    discoveryHandoffButton?.addEventListener("click", () => {
+      const nextStepSection = scriptSections.find((section) => section.id === 11);
+      if (nextStepSection) {
+        renderSection(nextStepSection);
+      }
     });
 
     backButton?.addEventListener("click", () => {

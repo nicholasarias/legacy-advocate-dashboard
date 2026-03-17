@@ -58,489 +58,290 @@ export const scriptSections = [
   },
   {
     id: 2,
-    title: "Warm Discovery",
+    title: "Family & Life Context",
     qaRequired: false,
     script: [
-      "I noticed you're in [ClientState]. Born and raised, or did you move there at some point?",
-      "[Insert your own here]",
-      "Is most of your family nearby, or are they spread out these days?",
-      "What do you enjoy most about living there?"
+      "Tell me a little about your family these days.",
+      "Who are the most important people in your life right now?",
+      "Who depends on you the most, even in small ways?",
+      "That gives me a better feel for what matters most to you."
     ],
     prompt: {
-      goal: "Get them talking early and create a calm, natural tone",
+      goal: "Build trust naturally and understand who matters most in their life",
       notes: [
-        "Let them talk for 30 to 60 seconds before steering the call.",
-        "Listen for family support, pace of life, and emotional hooks you can revisit later."
+        "Keep this conversational",
+        "Listen for who matters most",
+        "Pause and listen"
       ]
     }
   },
   {
     id: 3,
-    title: "Coverage Snapshot",
+    title: "Who Matters Most",
     qaRequired: false,
     script: [
-      "Let me ask you this so I know how to help you best.",
-      "Do you already have any life insurance or final expense coverage in place right now?"
+      "Who would you most want looked after if something happened to you?",
+      "Who would likely be the person helping make calls or decisions?",
+      "You'd want that to be as easy on them as possible, right?"
     ],
-    branchControl: {
-      stateKey: "coverageStatus",
-      label: "Coverage Direction",
-      helpText: "Pick the path that matches the answer and the follow-up lines will adjust.",
-      options: [
-        {
-          value: "has-coverage",
-          label: "Need More",
-          description: "Use this when they already have protection in force but there still seems to be a gap.",
-          script: [
-            "Who is that policy with?",
-            "About how much coverage is it?",
-            "About how much is the monthly premium?",
-            "What did you want that policy to take care of for your family?",
-            "That helps. My job today isn't to tear apart what you already did. It's to see whether there's still a gap that could land on your family."
-          ],
-          helperLines: [
-            "Get the reason they bought it, not just the numbers.",
-            "If they are proud of what they have, validate that first before talking about gaps."
-          ],
-          promptNotes: [
-            "Find the original buying reason so you can tie back to it later."
-          ]
-        },
-        {
-          value: "wants-extra",
-          label: "Leave Extra",
-          description: "Use this when they already have coverage but want to leave loved ones more than the basics.",
-          script: [
-            "Who is that policy with?",
-            "About how much coverage is it?",
-            "About how much is the monthly premium?",
-            "What did you want that policy to take care of for your family?",
-            "That makes sense.",
-            "So this isn't really about replacing what you already did.",
-            "It's about making sure [BeneficiaryName] has extra breathing room on top of it instead of just enough to get through the immediate expenses."
-          ],
-          helperLines: [
-            "Validate the existing planning first.",
-            "Frame the new plan as extra room, not a contradiction to what they already bought."
-          ],
-          promptNotes: [
-            "Use this when they say the current coverage handles the basics, but they still want to leave more behind."
-          ]
-        },
-        {
-          value: "no-coverage",
-          label: "No Coverage",
-          description: "Use this when they do not have anything in place yet.",
-          script: [
-            "That is very common.",
-            "Was it something you meant to handle, or did life just keep moving?",
-            "What is usually the main reason people put it off, in your case?",
-            "I appreciate you being honest. That gives me a clear place to start."
-          ],
-          helperLines: [
-            "Let them explain without judgment.",
-            "People will usually give you the real objection if you sound curious instead of pushy."
-          ],
-          promptNotes: [
-            "Do not rush to fix it. Let them explain why it never got handled."
-          ]
-        }
-      ]
-    },
     prompt: {
-      goal: "Learn whether you are filling a gap, adding extra, or starting from zero",
+      goal: "Identify the likely decision maker and keep the tone personal",
       notes: [
-        "Ask this plainly. The less sales language here, the better.",
-        "This answer should shape the rest of the call."
+        "Keep this warm and respectful",
+        "Let them answer fully",
+        "Use follow-up only if it feels natural"
       ]
     }
   },
   {
     id: 4,
-    title: "Responsibility Anchor",
+    title: "Life Experiences With Loss",
     qaRequired: false,
     script: [
-      "If something happened down the road, who would actually be the person making the calls and handling everything?",
-      "What is their name?",
-      "What is your relationship to them?",
-      "So if that day ever came, [BeneficiaryName] would be the one carrying all of that.",
-      "That's who I want us thinking about as we go through this."
+      "Have you ever had to deal with losing someone close to you?"
     ],
+    branchControl: {
+      stateKey: "lossExperience",
+      label: "Loss Experience",
+      helpText: "Choose the path that matches whether they have lived through this personally.",
+      options: [
+        {
+          value: "experienced-loss",
+          label: "Experienced Loss",
+          description: "Use this when they have gone through losing someone close.",
+          script: [
+            "When that happened, what was hardest for the family afterward?",
+            "Did it create any stress around final arrangements or expenses?",
+            "Who ended up handling everything?",
+            "Was that an easy process or was it a lot on the family?",
+            "Did that situation shape how you think about this for your own family?",
+            "That kind of experience really stays with people, right?"
+          ],
+          helperLines: [
+            "Be warm here, but do not linger too long.",
+            "Let them tell you what mattered instead of filling the silence yourself."
+          ],
+          promptNotes: [
+            "Keep this gentle and brief."
+          ]
+        },
+        {
+          value: "no-personal-experience",
+          label: "No Personal Experience With Loss",
+          description: "Use this when they have not gone through it personally yet.",
+          script: [
+            "A lot of folks haven't had to deal with that personally yet.",
+            "If something unexpected happened, who do you think would be the one trying to handle everything?",
+            "What do you think that first few days would look like for them?",
+            "That can put a lot on one person all at once, right?"
+          ],
+          helperLines: [
+            "Use gentle imagination here, not heavy emotion.",
+            "Keep this warm, simple, and easy to picture."
+          ],
+          promptNotes: [
+            "Be warm here, but do not linger too long."
+          ]
+        }
+      ]
+    },
     prompt: {
-      goal: "Lock onto the one real person who would have to carry the burden",
+      goal: "Help the client connect the topic to real life in a natural way",
       notes: [
-        "Slow down after they say the name.",
-        "Once you have the name, keep bringing the conversation back to that person."
+        "Be warm here, but do not linger too long",
+        "Keep this gentle and brief",
+        "Do not let this feel like therapy"
       ]
     }
   },
   {
     id: 5,
-    title: "Beneficiary Lens",
+    title: "Family Responsibility",
     qaRequired: false,
     script: [
-      "Tell me a little about [BeneficiaryName].",
-      "I want to understand the person this would really fall on."
+      "If something happened tomorrow, who would be the one making the calls and handling everything?",
+      "Would that be a smooth situation financially, or would it put pressure on them?",
+      "Are there any bills or responsibilities you would not want left on someone else?",
+      "What would you most want taken care of right away?",
+      "If those pieces were already handled, that would make things a lot easier to deal with, right?"
     ],
-    branchControl: {
-      stateKey: "relationType",
-      label: "Relationship Direction",
-      helpText: "Choose the relationship so the follow-up stays personal instead of generic.",
-      options: [
-        {
-          value: "spouse",
-          label: "Spouse",
-          description: "Use when the beneficiary is a spouse or partner.",
-          script: [
-            "How long have you two been together?",
-            "What do you appreciate most about them?",
-            "If something happened to you, what do you think that day would feel like for them?",
-            "That's exactly why people put something in place, so their spouse isn't grieving and trying to figure everything out alone."
-          ],
-          helperLines: [
-            "Spouse conversations land best when they feel steady, warm, and protective."
-          ],
-          promptNotes: [
-            "Get them talking about the relationship first, then bring it back to the burden."
-          ]
-        },
-        {
-          value: "child",
-          label: "Child",
-          description: "Use when the burden would fall on a son or daughter.",
-          script: [
-            "Do they live nearby or would they have to drop everything and come in?",
-            "What kind of person are they when the family needs something handled?",
-            "If this landed on them, they'd be trying to hold it together and handle everything at the same time.",
-            "Parents never stop trying to make things easier on their kids. That's usually why this matters so much."
-          ],
-          helperLines: [
-            "This path works best when you keep the tone protective, not guilty."
-          ],
-          promptNotes: [
-            "Let them describe the child. That creates stronger ownership than you explaining it for them."
-          ]
-        },
-        {
-          value: "sibling",
-          label: "Sibling",
-          description: "Use when a brother or sister would be the one handling things.",
-          script: [
-            "Have you two always been pretty close?",
-            "If this landed on them tomorrow, do you think they'd handle it calmly, or would it hit them pretty hard?",
-            "When it's someone you've been through life with, most people want to leave things easier, not heavier."
-          ],
-          helperLines: [
-            "Keep this path practical and familiar. Sibling conversations usually land better with realism than sentiment."
-          ]
-        },
-        {
-          value: "friend",
-          label: "Friend / Other",
-          description: "Use when the trusted person is a friend, partner, or someone outside the immediate family.",
-          script: [
-            "How long have you known them?",
-            "What makes them the person you'd trust with something this important?",
-            "If this fell on them, they'd be stepping in because they care about you.",
-            "Most people don't want that kindness to turn into a burden."
-          ],
-          helperLines: [
-            "This path is strongest when you validate the trust before talking about the burden."
-          ]
-        },
-        {
-          value: "noone",
-          label: "No One",
-          description: "Use when they initially say nobody would be responsible.",
-          script: [
-            "A lot of people say that at first.",
-            "Usually someone still ends up being the person the calls fall on.",
-            "It might be a niece, nephew, church friend, neighbor, or whoever steps in first.",
-            "Who do you think would realistically be the one trying to handle it?",
-            "That's the person we need to keep in mind."
-          ],
-          helperLines: [
-            "Do not argue. Just help them think through who would actually get the phone calls."
-          ],
-          promptNotes: [
-            "Keep this calm. If you sound confrontational, they will shut down."
-          ]
-        }
-      ]
-    },
     prompt: {
-      goal: "Turn the beneficiary into a real person with a real life that would be interrupted",
+      goal: "Move from emotional awareness into practical responsibility",
       notes: [
-        "Use the relationship buttons to keep the follow-up specific.",
-        "This section should feel personal, not generic."
+        "Let the client describe the burden in their own words",
+        "Let them answer fully",
+        "Do not rush to solve it yet"
       ]
     }
   },
   {
     id: 6,
-    title: "Experience Path",
+    title: "Current Support In Place",
     qaRequired: false,
     script: [
-      "Let me ask you something important.",
-      "Have you ever had to help with a funeral or final arrangements for someone close to you?"
+      "Some people I speak with already have something set aside for this, and some don't.",
+      "Have you set anything aside yet to help your family with those expenses?"
     ],
     branchControl: {
-      stateKey: "funeralExperience",
-      label: "Experience Direction",
-      helpText: "Choose whether they have lived through this before or would be imagining it for the first time.",
+      stateKey: "coverageStatus",
+      label: "Current Support",
+      helpText: "Use the softer path that matches whether they already have something set aside.",
       options: [
         {
-          value: "handled",
-          label: "Handled One",
-          description: "Use this when they have helped with a funeral before.",
+          value: "has-coverage",
+          label: "Some Coverage, May Need More",
+          description: "Use this when they already have something set aside but it may not fully handle the burden.",
           script: [
-            "Who was that for?",
-            "What part of that day stayed with you the most?",
-            "Was the family grieving and still trying to make decisions, or had some of it already been figured out?",
-            "Was the money side already handled, or did people have to come up with it quickly?",
-            "That's the part families remember. It's emotional, and it's a lot of pressure all at once."
+            "That makes sense.",
+            "What did you want that to help with the most?",
+            "Do you feel like it would fully handle things, or would there still be some pressure left on the family?",
+            "Even a small gap can become a lot to deal with in that moment, right?"
           ],
           helperLines: [
-            "Let them tell the story. This is where your call length should come from.",
-            "Do not interrupt too quickly. The emotion is stronger when it comes from them."
+            "Keep this matter-of-fact and respectful.",
+            "Do not make them defend what they already did."
           ],
           promptNotes: [
-            "Keep them in the memory long enough to feel the pressure without turning it into a monologue from you."
+            "This is information gathering, not pressure."
           ]
         },
         {
-          value: "no-experience",
-          label: "No Experience",
-          description: "Use this when they have never had to handle a funeral directly.",
+          value: "wants-extra",
+          label: "Already Set Aside, Wants Extra",
+          description: "Use this when they already have something in place but want to leave a little more behind.",
           script: [
-            "Most people haven't until it lands in their lap out of nowhere.",
-            "And that's what I'm getting at here.",
-            "Can you picture [BeneficiaryName] trying to answer questions from the funeral home, family, and everybody else while they're still grieving?",
-            "Do you think they'd know exactly what you want and how you'd want everything handled?",
-            "That's a lot to put on one person all at once."
+            "That makes sense.",
+            "Sometimes people already have something in place and still want to leave a little more breathing room.",
+            "That just gives the family one less thing to worry about, right?"
           ],
           helperLines: [
-            "Make them picture the confusion, not just the cost.",
-            "This path works best when your tone is calm and matter-of-fact."
+            "Validate the planning that's already there.",
+            "Keep this centered on extra peace of mind, not replacement."
+          ]
+        },
+        {
+          value: "no-coverage",
+          label: "Nothing Set Aside Yet",
+          description: "Use this when nothing has been set aside for those expenses yet.",
+          script: [
+            "That's very common.",
+            "A lot of people mean to get to it, and life just keeps moving.",
+            "That doesn't mean it isn't important. It just means it hasn't been handled yet."
+          ],
+          helperLines: [
+            "Ask this softly. No shame, no pressure."
           ]
         }
       ]
     },
     prompt: {
-      goal: "Make them either relive the pressure or picture it clearly for the first time",
+      goal: "Capture whether they already have something in place without making discovery feel like a funnel",
       notes: [
-        "This section should feel human, not theatrical.",
-        "The story should come from them, not from you."
+        "Keep this gentle and matter-of-fact",
+        "This is information gathering, not a pitch",
+        "Use tie-downs naturally if it fits"
       ]
     }
   },
   {
     id: 7,
-    title: "Burden Clarifier",
+    title: "What Would You Want Protected",
     qaRequired: false,
     script: [
-      "When that day comes, [BeneficiaryName] isn't just getting one bill and making one phone call.",
-      "They're getting hit with decisions before they've even had time to breathe.",
-      "It's the funeral home, transportation, paperwork, death certificates, family questions, and figuring out what gets paid first.",
-      "So the real question isn't whether [BeneficiaryName] would show up.",
-      "It's whether they'd have to carry all of that while they're grieving.",
-      "If that happened tomorrow, would they already have money set aside for it, or would they be scrambling to pull it together in the middle of all that?"
+      "If you could make one part of this easier on your family, what would you want handled?",
+      "What would you want your loved ones to not have to worry about?",
+      "Would your priority be covering final expenses, avoiding family stress, or leaving something behind?",
+      "What feels most important to take care of?"
     ],
-    branchControl: {
-      stateKey: "fundingStatus",
-      label: "Money Direction",
-      helpText: "Use this after they tell you whether money is already earmarked for the problem.",
-      options: [
-        {
-          value: "set-aside",
-          label: "Money Set Aside",
-          description: "Use when they say there is already money available.",
-          script: [
-            "That's good planning.",
-            "But is that money truly set aside for that day, or is it the same money your family might need for travel, bills, or time off work too?",
-            "Because when one pot of money has to do everything, [BeneficiaryName] still ends up under pressure trying to decide what gets paid first.",
-            "That's where people realize general savings and protected money aren't always the same thing."
-          ],
-          helperLines: [
-            "Do not attack their savings. Just help them see that general money is not always protected money."
-          ],
-          promptNotes: [
-            "Your job here is to create doubt about whether the funds are truly dedicated."
-          ]
-        },
-        {
-          value: "would-scramble",
-          label: "Would Scramble",
-          description: "Use when they admit the family would have to figure it out in the moment.",
-          script: [
-            "That's what most families face.",
-            "It isn't because they don't care. It's because everything hits at once.",
-            "And once those calls start coming in, [BeneficiaryName] is the one trying to hold it together and figure out the money at the same time.",
-            "That's why even a simple plan can completely change what that day looks like for them."
-          ],
-          helperLines: [
-            "This is a good moment to slow down and let the reality sink in."
-          ]
-        }
-      ]
-    },
     prompt: {
-      goal: "Shift the picture from emotion alone to the real pressure of that day",
+      goal: "Let the client define what matters most before any recommendation talk",
       notes: [
-        "Stay conversational. Let them answer before you frame it for them.",
-        "Keep the focus on what [BeneficiaryName] would be carrying in that moment.",
-        "This is where the scene starts feeling real."
+        "Confirm what matters most before moving on",
+        "Use follow-up only if it feels natural",
+        "Keep this simple and easy to scan"
       ]
     }
   },
   {
     id: 8,
-    title: "Arrangement Fit",
+    title: "Priority Confirmation",
     qaRequired: false,
     script: [
-      "Let me ask you this. If [BeneficiaryName] had to make those arrangements tomorrow, would they know whether you'd want burial, cremation, or something simple?"
+      "So the main thing you'd want is making sure your family doesn't have to scramble with [PrioritySummary], right?",
+      "And if that part were already handled, that would take a lot of pressure off of them, right?"
     ],
-    branchControl: {
-      stateKey: "arrangementPreference",
-      label: "Arrangement Direction",
-      helpText: "Choose the arrangement path that matches their answer.",
-      options: [
-        {
-          value: "burial",
-          label: "Burial",
-          description: "Use when they prefer a traditional burial.",
-          script: [
-            "Traditional burial is usually the more expensive route.",
-            "So if that's what you want, I don't want [BeneficiaryName] finding that out in the middle of grief and then wondering how they're going to pay for it.",
-            "Do they already know that's what you'd want?",
-            "And would the money already be there to carry it out the way you'd want?"
-          ],
-          helperLines: [
-            "Use their own preference to make the cost feel real without lecturing."
-          ]
-        },
-        {
-          value: "cremation",
-          label: "Cremation",
-          description: "Use when they prefer cremation or a simpler service.",
-          script: [
-            "Cremation can be less expensive, but once you add the service, transportation, paperwork, and everything around it, it still becomes real money fast.",
-            "If that's your preference, I want [BeneficiaryName] knowing that ahead of time instead of making guesses under pressure.",
-            "Do they already know that's what you'd want?",
-            "Even the simpler option is a lot easier on family when the money side is already handled."
-          ],
-          helperLines: [
-            "Do not let the lower cost remove urgency. Simpler does not mean free."
-          ]
-        },
-        {
-          value: "not-sure",
-          label: "Not Sure",
-          description: "Use when they have not made up their mind or have never talked about it.",
-          script: [
-            "That's common.",
-            "But when nothing's decided, [BeneficiaryName] is the one left trying to guess what you'd have wanted while everyone's emotional and looking at them for answers.",
-            "Then on top of that, they're still trying to figure out what they can afford to do.",
-            "That's exactly the kind of situation I'm trying to keep [BeneficiaryName] out of."
-          ],
-          helperLines: [
-            "This path is about confusion and decision fatigue, not just price."
-          ]
-        }
-      ]
-    },
     prompt: {
-      goal: "Make the burden concrete by tying it to the actual choices family would face",
+      goal: "Confirm the priority in the client's own language before moving on",
       notes: [
-        "Keep this practical and personal.",
-        "Tie the arrangement choice back to what [BeneficiaryName] would be trying to handle.",
-        "This is where the scene becomes real, not abstract."
+        "Pause and get agreement here",
+        "This is the anchor before the bridge",
+        "Keep it warm and simple"
       ]
     }
   },
   {
     id: 9,
-    title: "Why It Matters",
+    title: "Advisor Bridge",
     qaRequired: false,
     script: [
-      "The reason I'm asking you all of this isn't to make the conversation heavy.",
-      "It's because I want you to picture [BeneficiaryName] trying to answer questions, make calls, sign papers, and come up with the money while they're still trying to process losing you.",
-      "That isn't just a bill. That's pressure, confusion, and heartbreak all hitting them at once.",
-      "What I'm trying to protect [BeneficiaryName] from is having to grieve and carry all of that at the same time."
+      "Choose the bridge that fits the tone of the call."
     ],
     branchControl: {
-      stateKey: "coverageStatus",
-      label: "Need Summary",
-      helpText: "Reuse the earlier coverage answer so the summary matches their situation.",
+      stateKey: "bridgeStyle",
+      label: "Bridge Options",
+      helpText: "Use the softer or steadier transition that feels most natural in the conversation.",
+      replaceBaseOnSelect: true,
       options: [
         {
-          value: "has-coverage",
-          label: "Need More",
-          description: "Use when the call is about confirming or filling a gap in existing coverage.",
+          value: "steady-bridge",
+          label: "Steady Bridge",
+          description: "Use this when you want a calm and direct transition.",
           script: [
-            "You already did something responsible by putting coverage in place.",
-            "What I need to figure out now is whether it fully protects [BeneficiaryName] in that moment, or whether there's still a gap that leaves them exposed.",
-            "Because if there's a gap, they're still the one standing there grieving, making calls, and trying to figure out how to cover the rest.",
-            "I'd rather help you close that now than leave them carrying it later under that kind of pressure."
+            "Based on what you've shared with me, my role is to help make sure your family wouldn't be left carrying that burden alone."
           ],
-          helperLines: [
-            "This keeps their dignity intact while giving you room to position additional protection."
+        },
+        {
+          value: "soft-bridge",
+          label: "Softer Transition",
+          description: "Use this when you want the gentlest move into protection options.",
+          script: [
+            "What I can do from here is walk you through a few protection options that are designed to help with exactly those kinds of final expenses, and then we can see what feels comfortable for you."
           ]
         },
         {
-          value: "wants-extra",
-          label: "Leave Extra",
-          description: "Use when they already have coverage but want to leave more than the basics behind.",
+          value: "guided-bridge",
+          label: "Guided Bridge",
+          description: "Use this when the client is engaged and ready for a simple next-step frame.",
           script: [
-            "You already did something responsible by putting coverage in place.",
-            "Sometimes the issue isn't that nothing is there. It's that when [BeneficiaryName] is grieving, what's there may only cover the basics and still leave them counting every dollar.",
-            "A little extra can mean they're not just paying the immediate bills. It can mean breathing room, time off work, travel, and one less thing to worry about while they're hurting.",
-            "If I can help you add that kind of cushion on top of what you've already done, that's worth looking at."
-          ],
-          helperLines: [
-            "Do not position this like their current policy failed.",
-            "Frame it as adding room to breathe, not fixing a mistake."
-          ]
-        },
-        {
-          value: "no-coverage",
-          label: "No Coverage",
-          description: "Use when they have not put anything in place yet.",
-          script: [
-            "You haven't ignored this because you don't care. Most people just don't feel the weight of it until they picture exactly who it would fall on.",
-            "Now that we've talked it through, you can see what [BeneficiaryName] would really be walking into.",
-            "And I don't want them grieving, getting hit with questions, and scrambling to find the money all in the same moment.",
-            "If I can help you put something simple in place that takes that burden off of them, that's worth looking at."
-          ],
-          helperLines: [
-            "Keep the tone constructive. Shame will kill momentum."
+            "From here, I'll walk you through a few simple options built to help with the priorities you just shared, and then we can see what feels like the right next step."
           ]
         }
       ]
     },
     prompt: {
-      goal: "Make the protection pivot explicit before you move into permission",
+      goal: "Transition naturally from discovery into recommendation without sounding like a pitch",
       notes: [
-        "This is the big-picture pivot.",
-        "Paint the moment: calls, paperwork, decisions, and money while they're grieving.",
-        "Say plainly what you're trying to protect the beneficiary from."
+        "Keep this calm and respectful",
+        "Do not use the word insurance unless it feels necessary",
+        "Choose the bridge that sounds most human in the moment"
       ]
     }
   },
   {
     id: 10,
-    title: "Permission to Solve It",
+    title: "Permission To Continue",
     qaRequired: false,
     script: [
-      "So let me ask you this.",
-      "If I can help you put something in place that fits your budget and either closes a gap or gives [BeneficiaryName] extra breathing room, would you be open to looking at it today?",
-      "Because that's really what we're solving for."
+      "If I show you a few protection options that line up with what you just shared, would you be open to taking a look?",
+      "We don't have to force anything. I just want to see what would fit the priorities that matter most to you.",
+      "Fair enough?"
     ],
     prompt: {
-      goal: "Get agreement on the big-picture reason to move forward",
+      goal: "Get a natural yes before moving into the next step of the call",
       notes: [
-        "Get a real answer before you move on.",
-        "If there is hesitation here, isolate it before entering the next phase."
+        "Keep this light and easy",
+        "A simple yes is enough here",
+        "This should feel like a natural handoff, not a close"
       ]
     }
   },

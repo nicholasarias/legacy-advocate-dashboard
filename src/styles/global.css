@@ -249,6 +249,106 @@ select {
   color: rgb(156 163 175);
 }
 
+.workflow-grid-discovery {
+  align-items: start;
+}
+
+.script-panel-discovery {
+  border-color: rgb(56 189 248 / 0.25);
+  background:
+    radial-gradient(circle at top left, rgb(14 165 233 / 0.09), transparent 28%),
+    linear-gradient(180deg, rgb(17 24 39), rgb(10 15 26));
+  box-shadow:
+    0 18px 40px rgb(2 6 23 / 0.32),
+    inset 0 0 0 1px rgb(56 189 248 / 0.08);
+}
+
+.discovery-focus-shell {
+  margin-bottom: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgb(56 189 248 / 0.18);
+  background:
+    linear-gradient(180deg, rgb(8 47 73 / 0.24), rgb(15 23 42 / 0.82)),
+    rgb(15 23 42);
+  padding: 1rem 1.1rem;
+}
+
+.discovery-focus-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.discovery-focus-kicker {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(148 163 184);
+}
+
+.discovery-reminder {
+  margin: 0.4rem 0 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgb(224 242 254);
+}
+
+.discovery-pacing {
+  min-width: min(100%, 15rem);
+}
+
+.discovery-pacing-text {
+  margin: 0.4rem 0 0;
+  font-size: 0.92rem;
+  color: rgb(191 219 254);
+}
+
+.discovery-focus-meta {
+  margin-top: 1rem;
+  border-top: 1px solid rgb(51 65 85 / 0.65);
+  padding-top: 0.95rem;
+}
+
+.discovery-focus-title {
+  margin: 0.35rem 0 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgb(255 255 255);
+}
+
+.secondary-rail-discovery .panel {
+  transition:
+    opacity 150ms ease,
+    border-color 150ms ease,
+    background-color 150ms ease,
+    transform 150ms ease;
+}
+
+.panel-quiet {
+  border-color: rgb(31 41 55 / 0.68);
+  background-color: rgb(13 18 30 / 0.92);
+  opacity: 0.72;
+}
+
+.panel-quiet:hover,
+.panel-quiet:focus-within {
+  opacity: 1;
+}
+
+.panel-quiet-soft {
+  opacity: 0.82;
+}
+
+@media (min-width: 1024px) {
+  .workflow-grid-discovery {
+    grid-template-columns: minmax(0, 1.08fr) 340px;
+  }
+}
+
 .form-input {
   width: 100%;
   border-radius: 0.5rem;
