@@ -817,12 +817,12 @@ body {
 
 @media (min-width: 1024px) {
   .workflow-grid-cockpit {
-    grid-template-columns: 32% 48% 20%;
+    grid-template-columns: 36% 44% 20%;
     min-height: calc(100vh - 16rem);
   }
 
   .workflow-grid-cockpit.workflow-grid-no-toolkit {
-    grid-template-columns: 32% 68%;
+    grid-template-columns: 40% 60%;
   }
 
   #hud-column {
@@ -833,6 +833,8 @@ body {
   #script-panel {
     position: sticky;
     top: 2rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 
   #secondary-rail {

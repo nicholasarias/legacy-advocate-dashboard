@@ -61,19 +61,18 @@ export const scriptSections = [
     title: "Warm Discovery",
     qaRequired: false,
     script: [
-      "I noticed you're in [ClientState]. Born and raised there, or did life take you there?",
-      "What do you enjoy most about living there these days?",
-      "Is most of your family nearby, or are they kind of spread out now?",
+      "And [ClientName], I do want to respect your time, because I know it's important to you, just like it is to me.",
+      "So let me get right to the heart of this.",
       "When you think about why you wanted to look into this, who comes to mind first?",
       "What is their name?",
       "Tell me a little about [BeneficiaryName]."
     ],
     prompt: {
-      goal: "Break the ice first, then transition naturally into the person who matters most",
+      goal: "Respect their time, then get directly to the person who matters most",
       notes: [
-        "Let this feel easy and local before you steer it deeper.",
+        "Deliver the first two lines calmly and with respect.",
         "Use their name as soon as you have it",
-        "Listen for warmth, family closeness, and emotional hooks you can revisit later.",
+        "Listen for warmth, responsibility, and emotional hooks you can revisit later.",
         "PAUSE: Let them answer and sit in the silence."
       ]
     }
