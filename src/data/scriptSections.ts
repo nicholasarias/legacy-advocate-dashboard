@@ -58,20 +58,22 @@ export const scriptSections = [
   },
   {
     id: 2,
-    title: "The Person",
+    title: "Warm Discovery",
     qaRequired: false,
     script: [
+      "I noticed you're in [ClientState]. Born and raised there, or did life take you there?",
+      "What do you enjoy most about living there these days?",
+      "Is most of your family nearby, or are they kind of spread out now?",
       "When you think about why you wanted to look into this, who comes to mind first?",
       "What is their name?",
-      "Tell me a little about [BeneficiaryName].",
-      "That gives me a better feel for who this is really about."
+      "Tell me a little about [BeneficiaryName]."
     ],
     prompt: {
-      goal: "Get to one real person right away instead of starting broad",
+      goal: "Break the ice first, then transition naturally into the person who matters most",
       notes: [
-        "Keep this conversational",
+        "Let this feel easy and local before you steer it deeper.",
         "Use their name as soon as you have it",
-        "Listen for warmth, responsibility, and closeness",
+        "Listen for warmth, family closeness, and emotional hooks you can revisit later.",
         "PAUSE: Let them answer and sit in the silence."
       ]
     }
