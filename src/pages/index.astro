@@ -248,65 +248,113 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
               <div>
                 <h3 class="panel-title !mb-2">Pricing Workspace</h3>
                 <p class="text-sm text-gray-300">
-                  Keep pricing, coverage, and rebuttals beside the script while you present numbers.
+                  Use the three-option protected-bucket comparison while you present the numbers.
                 </p>
               </div>
             </div>
 
             <div id="quote-workspace-group" class="mt-5 space-y-3">
-              <div class="space-y-3">
-                <div class="quote-card" data-quote-card="1">
-                  <div class="flex items-center justify-between gap-3">
-                    <label for="quote-option-1" class="form-label !mb-0">Option 1</label>
-                    <button
-                      type="button"
-                      class="quote-chip quote-chip-idle"
-                      data-recommend-quote="1"
-                    >
-                      Recommend
-                    </button>
+              <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                <div
+                  class="quote-card quote-comparison-card"
+                  data-quote-card="1"
+                  tabindex="0"
+                  role="button"
+                  aria-pressed="false"
+                >
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500" data-quote-label>
+                        Option 1
+                      </p>
+                      <h4 class="mt-2 text-lg font-semibold text-slate-100" data-quote-title>
+                        The Anchor
+                      </h4>
+                    </div>
+
+                    <div class="flex flex-col items-end gap-2">
+                      <span data-quote-badge class="quote-badge hidden">Best Value</span>
+                      <span data-quote-selected class="quote-selected hidden">Selected</span>
+                    </div>
                   </div>
 
-                  <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                  <p data-quote-summary class="mt-3 text-sm leading-6 text-slate-300">
+                    Build the larger protected bucket first.
+                  </p>
+                  <p
+                    data-quote-bucket
+                    class="mt-3 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-300"
+                  >
+                    Protected Bucket
+                  </p>
+
+                  <div class="mt-4 grid gap-3 sm:grid-cols-2">
                     <div>
                       <label for="coverage-option-1" class="form-label">Coverage</label>
                       <input
                         id="coverage-option-1"
                         type="text"
-                        placeholder="10000"
+                        placeholder="20000"
                         class="form-input"
                       />
                     </div>
 
                     <div>
-                      <label for="quote-option-1" class="form-label">Premium</label>
+                      <label for="quote-option-1" class="form-label">Monthly Premium</label>
                       <input
                         id="quote-option-1"
                         type="text"
-                        placeholder="55.00"
+                        placeholder="82.00"
                         class="form-input"
                       />
                     </div>
                   </div>
 
-                  <div class="mt-3 flex justify-end">
-                    <button type="button" class="btn" data-use-quote="1">Use As Premium</button>
+                  <div class="quote-price-panel mt-4">
+                    <p class="text-xs uppercase tracking-wide text-slate-500">Monthly Price</p>
+                    <p data-quote-price-display class="mt-2 text-2xl font-semibold text-slate-100">
+                      Enter premium
+                    </p>
+                    <p data-quote-daily-display class="mt-1 text-sm text-slate-400">
+                      Daily math will appear here.
+                    </p>
                   </div>
                 </div>
 
-                <div class="quote-card" data-quote-card="2">
-                  <div class="flex items-center justify-between gap-3">
-                    <label for="quote-option-2" class="form-label !mb-0">Option 2</label>
-                    <button
-                      type="button"
-                      class="quote-chip quote-chip-idle"
-                      data-recommend-quote="2"
-                    >
-                      Recommend
-                    </button>
+                <div
+                  class="quote-card quote-comparison-card"
+                  data-quote-card="2"
+                  tabindex="0"
+                  role="button"
+                  aria-pressed="false"
+                >
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500" data-quote-label>
+                        Option 2
+                      </p>
+                      <h4 class="mt-2 text-lg font-semibold text-slate-100" data-quote-title>
+                        The Complete Solution
+                      </h4>
+                    </div>
+
+                    <div class="flex flex-col items-end gap-2">
+                      <span data-quote-badge class="quote-badge hidden">Best Value</span>
+                      <span data-quote-selected class="quote-selected hidden">Selected</span>
+                    </div>
                   </div>
 
-                  <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                  <p data-quote-summary class="mt-3 text-sm leading-6 text-slate-300">
+                    Solve the whole funding gap with protected money.
+                  </p>
+                  <p
+                    data-quote-bucket
+                    class="mt-3 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-300"
+                  >
+                    Protected Bucket
+                  </p>
+
+                  <div class="mt-4 grid gap-3 sm:grid-cols-2">
                     <div>
                       <label for="coverage-option-2" class="form-label">Coverage</label>
                       <input
@@ -318,7 +366,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
                     </div>
 
                     <div>
-                      <label for="quote-option-2" class="form-label">Premium</label>
+                      <label for="quote-option-2" class="form-label">Monthly Premium</label>
                       <input
                         id="quote-option-2"
                         type="text"
@@ -328,55 +376,88 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
                     </div>
                   </div>
 
-                  <div class="mt-3 flex justify-end">
-                    <button type="button" class="btn" data-use-quote="2">Use As Premium</button>
+                  <div class="quote-price-panel mt-4">
+                    <p class="text-xs uppercase tracking-wide text-slate-500">Monthly Price</p>
+                    <p data-quote-price-display class="mt-2 text-2xl font-semibold text-slate-100">
+                      Enter premium
+                    </p>
+                    <p data-quote-daily-display class="mt-1 text-sm text-slate-400">
+                      Daily math will appear here.
+                    </p>
                   </div>
                 </div>
 
-                <div class="quote-card" data-quote-card="3">
-                  <div class="flex items-center justify-between gap-3">
-                    <label for="quote-option-3" class="form-label !mb-0">Option 3</label>
-                    <button
-                      type="button"
-                      class="quote-chip quote-chip-idle"
-                      data-recommend-quote="3"
-                    >
-                      Recommend
-                    </button>
+                <div
+                  class="quote-card quote-comparison-card"
+                  data-quote-card="3"
+                  tabindex="0"
+                  role="button"
+                  aria-pressed="false"
+                >
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500" data-quote-label>
+                        Option 3
+                      </p>
+                      <h4 class="mt-2 text-lg font-semibold text-slate-100" data-quote-title>
+                        The Safety Net
+                      </h4>
+                    </div>
+
+                    <div class="flex flex-col items-end gap-2">
+                      <span data-quote-badge class="quote-badge hidden">Best Value</span>
+                      <span data-quote-selected class="quote-selected hidden">Selected</span>
+                    </div>
                   </div>
 
-                  <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                  <p data-quote-summary class="mt-3 text-sm leading-6 text-slate-300">
+                    Cover the basic funeral-home costs with protected money.
+                  </p>
+                  <p
+                    data-quote-bucket
+                    class="mt-3 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-300"
+                  >
+                    Protected Bucket
+                  </p>
+
+                  <div class="mt-4 grid gap-3 sm:grid-cols-2">
                     <div>
                       <label for="coverage-option-3" class="form-label">Coverage</label>
                       <input
                         id="coverage-option-3"
                         type="text"
-                        placeholder="20000"
+                        placeholder="10000"
                         class="form-input"
                       />
                     </div>
 
                     <div>
-                      <label for="quote-option-3" class="form-label">Premium</label>
+                      <label for="quote-option-3" class="form-label">Monthly Premium</label>
                       <input
                         id="quote-option-3"
                         type="text"
-                        placeholder="82.00"
+                        placeholder="55.00"
                         class="form-input"
                       />
                     </div>
                   </div>
 
-                  <div class="mt-3 flex justify-end">
-                    <button type="button" class="btn" data-use-quote="3">Use As Premium</button>
+                  <div class="quote-price-panel mt-4">
+                    <p class="text-xs uppercase tracking-wide text-slate-500">Monthly Price</p>
+                    <p data-quote-price-display class="mt-2 text-2xl font-semibold text-slate-100">
+                      Enter premium
+                    </p>
+                    <p data-quote-daily-display class="mt-1 text-sm text-slate-400">
+                      Daily math will appear here.
+                    </p>
                   </div>
                 </div>
               </div>
 
               <div class="rounded-xl border border-gray-800 bg-gray-950 p-4">
-                <p class="text-xs uppercase tracking-wide text-gray-500">Recommended Quote</p>
+                <p class="text-xs uppercase tracking-wide text-gray-500">Comparison Snapshot</p>
                 <p id="recommended-quote-display" class="mt-2 text-sm text-gray-200">
-                  No recommendation selected yet.
+                  Option 2 is positioned as the best-value path until you select a card.
                 </p>
               </div>
             </div>
@@ -1014,6 +1095,8 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         coverageOption3: "",
         quoteOption3: "",
         recommendedQuote: "",
+        selectedPricingOption: "",
+        selectedCoverageAmount: "",
         policyNumber: "",
         secondaryPhone: "",
         beneficiaryPhone: "",
@@ -1106,6 +1189,8 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           coverageOption3: String(parsed.coverageOption3 ?? ""),
           quoteOption3: String(parsed.quoteOption3 ?? ""),
           recommendedQuote: String(parsed.recommendedQuote ?? ""),
+          selectedPricingOption: String(parsed.selectedPricingOption ?? ""),
+          selectedCoverageAmount: String(parsed.selectedCoverageAmount ?? ""),
           policyNumber: String(parsed.policyNumber ?? ""),
           secondaryPhone: String(parsed.secondaryPhone ?? ""),
           beneficiaryPhone: String(parsed.beneficiaryPhone ?? ""),
@@ -1190,6 +1275,8 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           coverageOption3: coverageOption3Input?.value ?? "",
           quoteOption3: quoteOption3Input?.value ?? "",
           recommendedQuote: sessionState.recommendedQuote,
+          selectedPricingOption: sessionState.selectedPricingOption,
+          selectedCoverageAmount: sessionState.selectedCoverageAmount,
           policyNumber: policyNumberInput?.value ?? "",
           secondaryPhone: secondaryPhoneInput?.value ?? "",
           beneficiaryPhone: beneficiaryPhoneInput?.value ?? "",
@@ -1315,27 +1402,81 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       return "";
     }
 
+    function applyPricingTokens(value) {
+      return String(value || "")
+        .replaceAll("[BeneficiaryName]", getAdvisorFocusName())
+        .replaceAll("[PrimaryConcern]", getPrimaryConcern());
+    }
+
+    function getPricePresentationRouteOption() {
+      const pricePresentationSection = scriptSections.find((section) => section.id === 20);
+      const branch = pricePresentationSection?.branchControl;
+
+      if (!branch) return null;
+
+      return (
+        branch.options.find((option) => option.value === getBranchSelection(branch.stateKey)) || null
+      );
+    }
+
+    function getRawPriceComparisonOptions() {
+      const routeOption = getPricePresentationRouteOption();
+      return Array.isArray(routeOption?.comparisonOptions) ? routeOption.comparisonOptions : [];
+    }
+
+    function getPriceComparisonOptions() {
+      return getRawPriceComparisonOptions().map((option) => ({
+        ...option,
+        label: applyPricingTokens(option.label),
+        title: applyPricingTokens(option.title),
+        subtitle: applyPricingTokens(option.subtitle),
+        bucketText: applyPricingTokens(option.bucketText),
+        badge: applyPricingTokens(option.badge || "")
+      }));
+    }
+
+    function getRecommendedPricingOptionNumber() {
+      return (
+        getRawPriceComparisonOptions().find((option) => option.recommendation)?.value ||
+        sessionState.recommendedQuote ||
+        "2"
+      );
+    }
+
+    function formatDailyMathDisplay(value) {
+      const parsed = parsePremium(value);
+      if (!parsed) return "Daily math will appear here.";
+
+      return `About ${formatCurrency(parsed / 30)}/day`;
+    }
+
     function getRecommendedQuoteText() {
-      const recommendedQuote = sessionState.recommendedQuote || "";
+      const recommendedQuote = getRecommendedPricingOptionNumber();
       const quoteValue = getQuoteValue(recommendedQuote);
       const coverageValue = getCoverageValue(recommendedQuote);
+      const recommendedMeta = getPriceComparisonOptions().find(
+        (option) => option.value === recommendedQuote
+      );
 
       if (recommendedQuote && quoteValue && coverageValue) {
-        return `Option ${recommendedQuote} at ${formatMoneyDisplay(
+        return `${recommendedMeta?.label || `Option ${recommendedQuote}`} at ${formatMoneyDisplay(
           quoteValue,
           quoteValue
         )} for ${formatCoverageDisplay(coverageValue, coverageValue)} in coverage`;
       }
 
       if (recommendedQuote && quoteValue) {
-        return `Option ${recommendedQuote} at ${formatMoneyDisplay(quoteValue, quoteValue)}`;
+        return `${recommendedMeta?.label || `Option ${recommendedQuote}`} at ${formatMoneyDisplay(
+          quoteValue,
+          quoteValue
+        )}`;
       }
 
       if (recommendedQuote) {
-        return `Option ${recommendedQuote}`;
+        return recommendedMeta?.label || `Option ${recommendedQuote}`;
       }
 
-      return "The middle option";
+      return "Option 2";
     }
 
     let settings = loadSettings();
@@ -1429,8 +1570,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     const coverageOption3Input = document.getElementById("coverage-option-3");
     const quoteOption3Input = document.getElementById("quote-option-3");
     const recommendedQuoteDisplay = document.getElementById("recommended-quote-display");
-    const recommendQuoteButtons = document.querySelectorAll("[data-recommend-quote]");
-    const useQuoteButtons = document.querySelectorAll("[data-use-quote]");
     const quoteCards = document.querySelectorAll("[data-quote-card]");
     const pricingObjectionsGroup = document.getElementById("pricing-objections-group");
     const quickObjectionButtons = document.querySelectorAll(".quick-objection-button");
@@ -2288,27 +2427,116 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       return branch.options.find((option) => option.value === getBranchSelection(branch.stateKey)) || null;
     }
 
+    function syncSelectedPricingChoiceFromInputs() {
+      const selectedOption = sessionState.selectedPricingOption || "";
+      if (!selectedOption) return;
+
+      sessionState.selectedCoverageAmount = getCoverageValue(selectedOption);
+
+      if (premiumInput) {
+        const selectedQuoteValue = getQuoteValue(selectedOption);
+        premiumInput.value = selectedQuoteValue
+          ? formatMoneyDisplay(selectedQuoteValue, selectedQuoteValue)
+          : "";
+        sessionState.premium = premiumInput.value;
+      }
+
+      syncCountedApWithPremium();
+    }
+
+    function selectQuoteOption(optionNumber) {
+      sessionState.selectedPricingOption = optionNumber;
+      sessionState.selectedCoverageAmount = getCoverageValue(optionNumber);
+
+      if (premiumInput) {
+        const quoteValue = getQuoteValue(optionNumber);
+        premiumInput.value = quoteValue ? formatMoneyDisplay(quoteValue, quoteValue) : "";
+        sessionState.premium = premiumInput.value;
+      }
+
+      syncCountedApWithPremium();
+      renderSection(currentSection);
+    }
+
     function updateRecommendedQuoteUI() {
-      const recommendedQuote = sessionState.recommendedQuote || "";
+      const recommendedQuote = getRecommendedPricingOptionNumber();
+      const selectedQuote = sessionState.selectedPricingOption || "";
+      const comparisonOptions = getPriceComparisonOptions();
 
       quoteCards.forEach((card) => {
-        const isActive = card instanceof HTMLElement && card.dataset.quoteCard === recommendedQuote;
-        card.classList.toggle("quote-card-active", isActive);
-      });
+        if (!(card instanceof HTMLElement)) return;
 
-      recommendQuoteButtons.forEach((button) => {
-        if (!(button instanceof HTMLElement)) return;
+        const optionNumber = card.dataset.quoteCard || "";
+        const optionMeta = comparisonOptions.find((option) => option.value === optionNumber);
+        const isRecommended = Boolean(optionMeta?.recommendation);
+        const isSelected = optionNumber === selectedQuote;
+        const coverageValue = getCoverageValue(optionNumber);
+        const quoteValue = getQuoteValue(optionNumber);
+        const labelEl = card.querySelector("[data-quote-label]");
+        const titleEl = card.querySelector("[data-quote-title]");
+        const summaryEl = card.querySelector("[data-quote-summary]");
+        const bucketEl = card.querySelector("[data-quote-bucket]");
+        const badgeEl = card.querySelector("[data-quote-badge]");
+        const selectedEl = card.querySelector("[data-quote-selected]");
+        const priceEl = card.querySelector("[data-quote-price-display]");
+        const dailyEl = card.querySelector("[data-quote-daily-display]");
 
-        const isActive = button.dataset.recommendQuote === recommendedQuote;
-        button.classList.toggle("quote-chip-active", isActive);
-        button.classList.toggle("quote-chip-idle", !isActive);
-        button.textContent = isActive ? "Recommended" : "Recommend";
+        card.classList.toggle("quote-card-recommended", isRecommended);
+        card.classList.toggle("quote-card-selected", isSelected);
+        card.setAttribute("aria-pressed", String(isSelected));
+
+        if (labelEl) {
+          labelEl.textContent = optionMeta?.label || `Option ${optionNumber}`;
+        }
+
+        if (titleEl) {
+          titleEl.textContent = optionMeta?.title || `Option ${optionNumber}`;
+        }
+
+        if (summaryEl) {
+          summaryEl.textContent = optionMeta?.subtitle || "Protected bucket option";
+        }
+
+        if (bucketEl) {
+          bucketEl.textContent = optionMeta?.bucketText || "Protected Bucket";
+        }
+
+        if (badgeEl instanceof HTMLElement) {
+          badgeEl.textContent = optionMeta?.badge || "Best Value";
+          badgeEl.classList.toggle("hidden", !isRecommended);
+        }
+
+        if (selectedEl instanceof HTMLElement) {
+          selectedEl.textContent = isSelected ? "Selected ✓" : "Selected";
+          selectedEl.classList.toggle("hidden", !isSelected);
+        }
+
+        if (priceEl) {
+          priceEl.textContent = quoteValue
+            ? formatMoneyDisplay(quoteValue, quoteValue)
+            : "Enter premium";
+        }
+
+        if (dailyEl) {
+          dailyEl.textContent = formatDailyMathDisplay(quoteValue);
+        }
       });
 
       if (recommendedQuoteDisplay) {
-        recommendedQuoteDisplay.textContent = recommendedQuote
-          ? `${getRecommendedQuoteText()} is marked as the preferred quote.`
-          : "No recommendation selected yet.";
+        const selectedQuoteValue = getQuoteValue(selectedQuote);
+        const selectedCoverageValue = getCoverageValue(selectedQuote);
+
+        if (selectedQuote) {
+          recommendedQuoteDisplay.textContent = `Selected Option ${selectedQuote} at ${formatMoneyDisplay(
+            selectedQuoteValue,
+            selectedQuoteValue || "___"
+          )} for ${formatCoverageDisplay(
+            selectedCoverageValue,
+            selectedCoverageValue || "___"
+          )}. Best value remains ${getRecommendedQuoteText()}.`;
+        } else {
+          recommendedQuoteDisplay.textContent = `${getRecommendedQuoteText()} is positioned as the best-value option until you select a card.`;
+        }
       }
     }
 
@@ -2798,21 +3026,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       updateToolkitVisibility();
     }
 
-    function setRecommendedQuote(optionNumber) {
-      sessionState.recommendedQuote = optionNumber;
-      renderSection(currentSection);
-    }
-
-    function useQuoteAsPremium(optionNumber) {
-      const quoteValue = getQuoteValue(optionNumber);
-      if (!quoteValue || !premiumInput) return;
-
-      premiumInput.value = formatMoneyDisplay(quoteValue, quoteValue);
-      syncCountedApWithPremium();
-      renderSection(currentSection);
-      saveSession();
-    }
-
     function filterRebuttals(query) {
       const normalized = query.trim().toLowerCase();
 
@@ -3003,40 +3216,52 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     });
 
     premiumInput?.addEventListener("input", () => {
+      sessionState.premium = premiumInput.value;
       syncCountedApWithPremium();
       renderSection(currentSection);
       saveSession();
     });
 
+    [medicalSummaryInput, policyNumberInput, secondaryPhoneInput, beneficiaryPhoneInput].forEach(
+      (input) => {
+        input?.addEventListener("input", () => {
+          renderSection(currentSection);
+          saveSession();
+        });
+      }
+    );
+
     [
-      medicalSummaryInput,
       coverageOption1Input,
       quoteOption1Input,
       coverageOption2Input,
       quoteOption2Input,
       coverageOption3Input,
-      quoteOption3Input,
-      policyNumberInput,
-      secondaryPhoneInput,
-      beneficiaryPhoneInput
+      quoteOption3Input
     ].forEach((input) => {
       input?.addEventListener("input", () => {
+        syncSelectedPricingChoiceFromInputs();
         renderSection(currentSection);
         saveSession();
       });
     });
 
-    recommendQuoteButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        if (!(button instanceof HTMLElement)) return;
-        setRecommendedQuote(button.dataset.recommendQuote || "");
-      });
-    });
+    quoteCards.forEach((card) => {
+      if (!(card instanceof HTMLElement)) return;
 
-    useQuoteButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        if (!(button instanceof HTMLElement)) return;
-        useQuoteAsPremium(button.dataset.useQuote || "");
+      const optionNumber = card.dataset.quoteCard || "";
+
+      card.addEventListener("click", () => {
+        if (!optionNumber) return;
+        selectQuoteOption(optionNumber);
+      });
+
+      card.addEventListener("keydown", (event) => {
+        if (isTypingInField(event.target)) return;
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        if (!optionNumber) return;
+        selectQuoteOption(optionNumber);
       });
     });
 

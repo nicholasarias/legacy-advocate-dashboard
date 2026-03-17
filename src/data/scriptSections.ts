@@ -31,6 +31,50 @@ function createProductOutcomeOption<T extends Record<string, unknown>>(
   };
 }
 
+function createPriceComparisonOptions() {
+  return [
+    {
+      value: "1",
+      label: "Option 1",
+      title: "The Anchor",
+      subtitle: "Funeral, headstone, and extra breathing room",
+      bucketText:
+        "A larger protected bucket that handles the full send-off and leaves [BeneficiaryName] extra breathing room.",
+      recommendation: false
+    },
+    {
+      value: "2",
+      label: "Option 2",
+      title: "The Complete Solution",
+      subtitle: "Solves the whole funding gap",
+      bucketText:
+        "A protected bucket built to solve [PrimaryConcern] without forcing [BeneficiaryName] to lean on general savings.",
+      recommendation: true,
+      badge: "Best Value"
+    },
+    {
+      value: "3",
+      label: "Option 3",
+      title: "The Safety Net",
+      subtitle: "Basic funeral home costs",
+      bucketText:
+        "A smaller protected bucket for the funeral home and immediate first costs so [BeneficiaryName] is not starting from zero.",
+      recommendation: false
+    }
+  ];
+}
+
+function createPricePresentationScript() {
+  return [
+    "Based on what you shared with me, I want to show you three ways to build the protected bucket so [BeneficiaryName] is not pulling from general money when that day comes.",
+    "Option 1 is the larger protected bucket. It covers the funeral, the headstone, and leaves [BeneficiaryName] extra breathing room. That comes in at [Quote1] per month for [Coverage1] in coverage.",
+    "Option 2 is the complete solution. It gives [BeneficiaryName] the protected bucket that solves [PrimaryConcern] without reaching into general savings. That comes in at [Quote2] per month for [Coverage2] in coverage.",
+    "Option 3 is the safety net. It gives [BeneficiaryName] a smaller protected bucket for the basic funeral home costs, so they are not scrambling right away. That comes in at [Quote3] per month for [Coverage3] in coverage.",
+    "Most people I work with go with Option 2 because it solves the whole problem without breaking the bank. Which of those three sounds like the best fit for your budget?",
+    "[PAUSE]"
+  ];
+}
+
 export const scriptSections = [
   {
     id: 1,
@@ -803,34 +847,16 @@ export const scriptSections = [
       replaceBaseOnSelect: true,
       options: [
         createProductOutcomeOption("easy-life", {
-          script: [
-            "Based on what qualified, I have three options in front of me, and whether this is your first coverage, filling a gap, or giving [BeneficiaryName] extra breathing room, I want to keep this comfortable for you.",
-            "Option 1 gives you [Coverage1] in coverage and comes in at [Quote1] per month.",
-            "Option 2 gives you [Coverage2] in coverage and comes in at [Quote2] per month.",
-            "Option 3 gives you [Coverage3] in coverage and comes in at [Quote3] per month.",
-            "[RecommendedQuote] is the one I like best for value based on what you told me.",
-            "Which of those feels the most comfortable to start with today?"
-          ]
+          comparisonOptions: createPriceComparisonOptions(),
+          script: createPricePresentationScript()
         }),
         createProductOutcomeOption("emc-graded", {
-          script: [
-            "Based on what qualified, I have three options in front of me, and whether this is your first coverage, filling a gap, or giving [BeneficiaryName] extra breathing room, I want to keep this comfortable for you.",
-            "Option 1 gives you [Coverage1] in coverage and comes in at [Quote1] per month.",
-            "Option 2 gives you [Coverage2] in coverage and comes in at [Quote2] per month.",
-            "Option 3 gives you [Coverage3] in coverage and comes in at [Quote3] per month.",
-            "[RecommendedQuote] is the one I like best for value based on what you told me.",
-            "Which of those feels the most comfortable to start with today?"
-          ]
+          comparisonOptions: createPriceComparisonOptions(),
+          script: createPricePresentationScript()
         }),
         createProductOutcomeOption("eternal-legacy", {
-          script: [
-            "Based on what qualified, I have three options in front of me, and whether this is your first coverage, filling a gap, or giving [BeneficiaryName] extra breathing room, I want to keep this comfortable for you.",
-            "Option 1 gives you [Coverage1] in coverage and comes in at [Quote1] per month.",
-            "Option 2 gives you [Coverage2] in coverage and comes in at [Quote2] per month.",
-            "Option 3 gives you [Coverage3] in coverage and comes in at [Quote3] per month.",
-            "[RecommendedQuote] is the one I like best for value based on what you told me.",
-            "Which of those feels the most comfortable to start with today?"
-          ]
+          comparisonOptions: createPriceComparisonOptions(),
+          script: createPricePresentationScript()
         }),
         createProductOutcomeOption("no-option", {
           script: [
@@ -840,9 +866,10 @@ export const scriptSections = [
       ]
     },
     prompt: {
-      goal: "Guide the client to a comfortable same-day premium instead of inviting delay",
+      goal: "Use a three-option comparison to anchor the budget and guide them toward the complete protected-bucket solution",
       notes: [
-        "Use the quote workspace to store all three numbers so you do not lose them.",
+        "Option 1 is the anchor, Option 2 is the target, and Option 3 is the safety net.",
+        "Keep the language centered on protected money versus general money.",
         "Use the quick objection buttons the moment they give you a reason not to move forward."
       ]
     }
