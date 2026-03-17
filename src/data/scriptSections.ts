@@ -221,7 +221,7 @@ export const scriptSections = [
             "A lot of people haven't had to face that personally until it's suddenly on them.",
             "Think about [BeneficiaryName] for a second.",
             "If they got that call tomorrow, would they know exactly who to call and where the money would come from?",
-            "Or would they be sitting at a kitchen table, upset, trying to figure out an $11,000 problem under pressure?",
+            "Or would they be sitting at a kitchen table, upset, trying to figure out who to call, what needs to be paid first, and where the money is supposed to come from?",
             "That uncertainty is the kind of burden we're trying to take off [BeneficiaryName]."
           ],
           helperLines: [
@@ -328,49 +328,50 @@ export const scriptSections = [
   },
   {
     id: 9,
-    title: "Medical Bridge",
+    title: "Bridge Tone",
     qaRequired: false,
     script: [
-      "Choose the bridge that fits the tone of the call."
+      "Pick the tone below for how you want to deliver the next section.",
+      "Section 10 is the actual spoken bridge into the medical questions."
     ],
     branchControl: {
       stateKey: "bridgeStyle",
-      label: "Bridge Options",
-      helpText: "Use the softer or steadier transition that feels most natural in the conversation.",
+      label: "Bridge Tone",
+      helpText: "Choose the delivery style you want, then use section 10 as the read-aloud hinge.",
       replaceBaseOnSelect: true,
       options: [
         {
           value: "steady-bridge",
           label: "Steady Bridge",
-          description: "Use this when you want a calm and direct transition into qualification.",
+          description: "Use this when you want the next section to land calm and direct.",
           script: [
-            "Based on everything you've shared, asking a few medical questions is simply how I narrow this down the right way for [BeneficiaryName]."
+            "Advisor cue: keep your tone calm, direct, and matter-of-fact."
           ]
         },
         {
           value: "soft-bridge",
-          label: "Softer Transition",
-          description: "Use this when you want the gentlest move into medical qualification.",
+          label: "Soft Bridge",
+          description: "Use this when you want the next section to feel gentler and more reassuring.",
           script: [
-            "What I'll do from here is ask a few brief health questions so I can see which protection options line up best with what you want handled for [BeneficiaryName]."
+            "Advisor cue: lower your tone and make the transition feel reassuring, not procedural."
           ]
         },
         {
           value: "guided-bridge",
           label: "Guided Bridge",
-          description: "Use this when the client is engaged and ready for a clear next step.",
+          description: "Use this when the client is engaged and ready for you to lead them forward clearly.",
           script: [
-            "From here, I'll guide you through a short medical qualification step so I can match the right protection to the priorities you just shared with me."
+            "Advisor cue: sound certain and lead them step-by-step into the next part."
           ]
         }
       ]
     },
     prompt: {
-      goal: "Make the medical questions feel like part of the advocacy process",
+      goal: "Set the delivery style for the hinge bridge without repeating the bridge itself.",
       notes: [
-        "Keep this calm and respectful",
-        "Do not sound like you're switching into a script",
-        "Choose the bridge that sounds most human in the moment"
+        "This is advisor guidance, not a second spoken pivot.",
+        "Section 10 should be the only full read-aloud bridge into medical.",
+        "Choose the tone that sounds most human in the moment."
       ]
     }
   },
