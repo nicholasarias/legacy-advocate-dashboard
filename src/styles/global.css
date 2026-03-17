@@ -249,6 +249,32 @@ select {
   color: rgb(156 163 175);
 }
 
+.workflow-grid-cockpit {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.cockpit-glass-panel {
+  background:
+    linear-gradient(180deg, rgb(15 23 42 / 0.88), rgb(10 15 26 / 0.82)),
+    rgb(15 23 42 / 0.86);
+  backdrop-filter: blur(14px);
+  box-shadow:
+    0 14px 30px rgb(2 6 23 / 0.18),
+    inset 0 0 0 1px rgb(148 163 184 / 0.04);
+}
+
+.cockpit-input {
+  background:
+    linear-gradient(180deg, rgb(15 23 42 / 0.72), rgb(15 23 42 / 0.58)),
+    rgb(15 23 42 / 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.cockpit-preview-card {
+  box-shadow: inset 0 0 0 1px rgb(16 185 129 / 0.08);
+}
+
 .workflow-grid-discovery {
   align-items: start;
 }
@@ -418,8 +444,61 @@ select {
 }
 
 @media (min-width: 1024px) {
-  .workflow-grid-discovery {
-    grid-template-columns: minmax(0, 1.08fr) 340px;
+  .cockpit-flow-group {
+    display: contents;
+  }
+
+  .workflow-grid-cockpit {
+    grid-template-columns: minmax(0, 38%) minmax(0, 62%);
+    align-items: start;
+  }
+
+  #script-panel {
+    grid-column: 1;
+    position: sticky;
+    top: 1.5rem;
+  }
+
+  #advisor-capture-panel,
+  #branch-panel,
+  #prompt-panel,
+  #discovery-workspace-panel,
+  #premium-estimate-panel,
+  #objections-panel,
+  #pricing-action-panel,
+  #sales-workspace-panel,
+  #call-notes-panel,
+  #outcome-panel,
+  #shortcuts-panel {
+    grid-column: 2;
+  }
+
+}
+
+@media (min-width: 1440px) {
+  .workflow-grid-cockpit {
+    grid-template-columns: 35% 45% 20%;
+  }
+
+  #script-panel {
+    grid-column: 1;
+  }
+
+  #advisor-capture-panel,
+  #branch-panel,
+  #prompt-panel,
+  #discovery-workspace-panel {
+    grid-column: 2;
+  }
+
+  #premium-estimate-panel,
+  #objections-panel,
+  #pricing-action-panel,
+  #sales-workspace-panel,
+  #call-notes-panel,
+  #outcome-panel,
+  #shortcuts-panel {
+    grid-column: 3;
   }
 }
 

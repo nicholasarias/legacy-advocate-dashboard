@@ -95,8 +95,8 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         </div>
       </div>
 
-      <div id="workflow-grid" class="grid gap-6 p-8 lg:grid-cols-[minmax(0,1fr)_380px]">
-        <div class="space-y-6">
+      <div id="workflow-grid" class="workflow-grid-cockpit p-8">
+        <div class="cockpit-flow-group space-y-6">
           <div id="branch-panel" class="panel hidden p-6">
             <div class="space-y-4">
               <div>
@@ -214,7 +214,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
                 </p>
               </div>
             </div>
-            <div id="script-lines" class="space-y-5 text-lg leading-8 text-gray-100">
+            <div id="script-lines" class="space-y-5 text-xl leading-relaxed text-gray-100">
               {firstSection.script.map((line) => (
                 <p>{line}</p>
               ))}
@@ -416,7 +416,63 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           </div>
         </div>
 
-        <div id="secondary-rail" class="self-start space-y-6 lg:sticky lg:top-6">
+        <div id="secondary-rail" class="cockpit-flow-group self-start space-y-6">
+          <div id="advisor-capture-panel" class="panel cockpit-glass-panel p-6">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <h3 class="panel-title !mb-2">Discovery Intake</h3>
+                <p class="text-sm text-gray-300">
+                  Keep the person, the why, and the current step in one place.
+                </p>
+              </div>
+
+              <div class="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-300">
+                <span id="cockpit-step-readout">Section 1 of 24</span>
+              </div>
+            </div>
+
+            <div class="mt-5 grid gap-4">
+              <div class="grid gap-4 xl:grid-cols-2">
+                <div>
+                  <label for="cockpit-client-name" class="form-label">Client Name</label>
+                  <input
+                    id="cockpit-client-name"
+                    type="text"
+                    placeholder="Client name"
+                    class="form-input cockpit-input"
+                  />
+                </div>
+
+                <div>
+                  <label for="cockpit-person-name" class="form-label">Person Who Matters Most</label>
+                  <input
+                    id="cockpit-person-name"
+                    type="text"
+                    placeholder="Who are we protecting?"
+                    class="form-input cockpit-input"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="cockpit-why-input" class="form-label">The Why</label>
+                <textarea
+                  id="cockpit-why-input"
+                  rows="3"
+                  placeholder="What would be hardest for them to carry in those first few months?"
+                  class="form-input cockpit-input"
+                ></textarea>
+              </div>
+
+              <div class="cockpit-preview-card rounded-2xl border border-emerald-500/15 bg-emerald-500/5 p-4">
+                <p class="text-xs uppercase tracking-wide text-emerald-300">HUD Preview</p>
+                <p id="cockpit-hud-preview" class="mt-2 text-sm leading-6 text-emerald-50">
+                  What would this mean for the person they care about most?
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div id="prompt-panel" class="panel p-6" data-quiet-during-discovery="true">
             <h3 class="panel-title">Prompts</h3>
 
@@ -717,6 +773,31 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
               <button id="discovery-handoff-button" type="button" class="btn-blue">
                 Continue To Next Step
               </button>
+            </div>
+          </div>
+
+          <div
+            id="premium-estimate-panel"
+            class="panel cockpit-glass-panel p-6"
+            data-quiet-during-discovery="true"
+          >
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <h3 class="panel-title !mb-2">Premium Estimate</h3>
+                <p class="text-sm text-gray-300">
+                  Keep the current premium and annualized snapshot visible while you work.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-5 rounded-2xl border border-emerald-500/20 bg-emerald-500/8 p-4">
+              <p class="text-xs uppercase tracking-wide text-emerald-300">Current Premium</p>
+              <p id="premium-estimate-display" class="mt-2 text-2xl font-semibold text-white">
+                No estimate yet
+              </p>
+              <p id="premium-estimate-detail" class="mt-2 text-sm text-emerald-50/90">
+                Enter or select a premium to populate this estimate.
+              </p>
             </div>
           </div>
 
@@ -1312,6 +1393,13 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     const clientStateInput = document.getElementById("clientState");
     const beneficiaryNameInput = document.getElementById("beneficiaryName");
     const premiumInput = document.getElementById("premiumInput");
+    const cockpitClientNameInput = document.getElementById("cockpit-client-name");
+    const cockpitPersonNameInput = document.getElementById("cockpit-person-name");
+    const cockpitWhyInput = document.getElementById("cockpit-why-input");
+    const cockpitStepReadout = document.getElementById("cockpit-step-readout");
+    const cockpitHudPreview = document.getElementById("cockpit-hud-preview");
+    const premiumEstimateDisplay = document.getElementById("premium-estimate-display");
+    const premiumEstimateDetail = document.getElementById("premium-estimate-detail");
     const draftDateInput = document.getElementById("draftDateInput");
     const pricingActionPanel = document.getElementById("pricing-action-panel");
     const workflowGrid = document.getElementById("workflow-grid");
@@ -1454,6 +1542,11 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     if (clientNameInput) clientNameInput.value = sessionState.clientName;
     if (clientStateInput) clientStateInput.value = sessionState.clientState;
     if (beneficiaryNameInput) beneficiaryNameInput.value = sessionState.beneficiaryName;
+    if (cockpitClientNameInput) cockpitClientNameInput.value = sessionState.clientName;
+    if (cockpitPersonNameInput) {
+      cockpitPersonNameInput.value = sessionState.discovery.decisionMaker || sessionState.beneficiaryName;
+    }
+    if (cockpitWhyInput) cockpitWhyInput.value = sessionState.discovery.primaryConcern;
     if (maritalStatusInput) maritalStatusInput.value = sessionState.discovery.maritalStatus;
     if (spousePartnerInput) spousePartnerInput.value = sessionState.discovery.spousePartner;
     if (childrenInfoInput) childrenInfoInput.value = sessionState.discovery.childrenInfo;
@@ -1633,6 +1726,62 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       return responsibilityFallback || "those first expenses";
     }
 
+    function getAdvisorFocusName() {
+      return (
+        decisionMakerInput?.value.trim() ||
+        beneficiaryNameInput?.value.trim() ||
+        sessionState.discovery?.decisionMaker?.trim() ||
+        "the person they care about most"
+      );
+    }
+
+    function updateAdvisorCockpit(section = currentSection) {
+      const clientName = clientNameInput?.value.trim() || "";
+      const focusName = getAdvisorFocusName();
+      const defaultFocusName = "the person they care about most";
+      const nextPersonValue = focusName === defaultFocusName ? "" : focusName;
+      const primaryConcern = getPrimaryConcern();
+      const cockpitWhyValue =
+        sessionState.discovery?.primaryConcern || sessionState.discovery?.protectionPriorityNotes || "";
+      const premiumValue = premiumInput?.value.trim() || "";
+      const annualPremium = getAnnualPremium();
+
+      if (cockpitClientNameInput && cockpitClientNameInput.value !== clientName) {
+        cockpitClientNameInput.value = clientName;
+      }
+
+      if (cockpitPersonNameInput && cockpitPersonNameInput.value !== nextPersonValue) {
+        cockpitPersonNameInput.value = nextPersonValue;
+      }
+
+      if (cockpitWhyInput && cockpitWhyInput.value !== cockpitWhyValue) {
+        cockpitWhyInput.value = cockpitWhyValue;
+      }
+
+      if (cockpitStepReadout) {
+        cockpitStepReadout.textContent = `Section ${section.id} of ${scriptSections.length}`;
+      }
+
+      if (cockpitHudPreview) {
+        const nameForPreview = focusName === defaultFocusName ? "them" : focusName;
+        cockpitHudPreview.textContent = `What would this mean for ${nameForPreview} if ${primaryConcern} landed on them?`;
+      }
+
+      if (premiumEstimateDisplay) {
+        premiumEstimateDisplay.textContent = premiumValue
+          ? formatMoneyDisplay(premiumValue, premiumValue)
+          : "No estimate yet";
+      }
+
+      if (premiumEstimateDetail) {
+        if (premiumValue) {
+          premiumEstimateDetail.textContent = `Annualized premium: ${formatCurrency(annualPremium)}.`;
+        } else {
+          premiumEstimateDetail.textContent = "Enter or select a premium to populate this estimate.";
+        }
+      }
+    }
+
     function joinNaturalList(items) {
       if (!items.length) return "";
       if (items.length === 1) return items[0];
@@ -1785,10 +1934,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       if (!bridgePrioritySummary) return;
 
       const prioritySummary = getPrimaryConcern();
-      const personName =
-        beneficiaryNameInput?.value.trim() ||
-        decisionMakerInput?.value.trim() ||
-        "the person they care about most";
+      const personName = getAdvisorFocusName();
 
       bridgePrioritySummary.textContent =
         prioritySummary === "those first expenses"
@@ -1885,6 +2031,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       if (source !== "inline") {
         updateDiscoveryInlineNotes(currentSection);
       }
+      updateAdvisorCockpit(currentSection);
       updateDiscoveryWorkspace(currentSection);
       saveSession();
     }
@@ -1913,10 +2060,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         ClientName: clientNameInput?.value.trim() || "Client Name",
         ClientLastName: getClientLastName(),
         ClientState: clientStateInput?.value.trim().toUpperCase() || "Client State",
-        BeneficiaryName:
-          beneficiaryNameInput?.value.trim() ||
-          decisionMakerInput?.value.trim() ||
-          "Beneficiary Name",
+        BeneficiaryName: getAdvisorFocusName(),
         BeneficiaryRelationship: getBeneficiaryRelationshipLabel(),
         PrimaryConcern: getPrimaryConcern(),
         PrioritySummary: getPrioritySummary(),
@@ -2334,6 +2478,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
       updatePromptNotes(section);
       renderBranchPanel(section);
+      updateAdvisorCockpit(section);
       updateDiscoveryFocusCard(section);
       updateDiscoveryWorkspace(section);
       updateSalesWorkspace(section);
@@ -2374,6 +2519,9 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       if (clientNameInput) clientNameInput.value = "";
       if (clientStateInput) clientStateInput.value = "";
       if (beneficiaryNameInput) beneficiaryNameInput.value = "";
+      if (cockpitClientNameInput) cockpitClientNameInput.value = "";
+      if (cockpitPersonNameInput) cockpitPersonNameInput.value = "";
+      if (cockpitWhyInput) cockpitWhyInput.value = "";
       if (maritalStatusInput) maritalStatusInput.value = "";
       if (spousePartnerInput) spousePartnerInput.value = "";
       if (childrenInfoInput) childrenInfoInput.value = "";
@@ -2659,6 +2807,12 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       });
     });
 
+    cockpitClientNameInput?.addEventListener("input", () => {
+      if (clientNameInput) clientNameInput.value = cockpitClientNameInput.value;
+      renderSection(currentSection);
+      saveSession();
+    });
+
     beneficiaryNameInput?.addEventListener("input", () => {
       syncDecisionMakerName(beneficiaryNameInput.value, "beneficiary");
       renderSection(currentSection);
@@ -2694,12 +2848,36 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       saveSession();
     });
 
+    cockpitPersonNameInput?.addEventListener("input", () => {
+      syncDecisionMakerName(cockpitPersonNameInput.value, "cockpit");
+      if (decisionMakerInput && decisionMakerInput.value !== cockpitPersonNameInput.value) {
+        decisionMakerInput.value = cockpitPersonNameInput.value;
+      }
+      renderSection(currentSection);
+      saveSession();
+    });
+
     decisionMakerRelationInput?.addEventListener("change", () => {
       setBranchSelection("relationType", decisionMakerRelationInput.value);
     });
 
     protectionPriorityNotesInput?.addEventListener("input", () => {
       setDiscoveryField("protectionPriorityNotes", protectionPriorityNotesInput.value, true);
+    });
+
+    cockpitWhyInput?.addEventListener("input", () => {
+      sessionState.discovery = {
+        ...sessionState.discovery,
+        primaryConcern: cockpitWhyInput.value,
+        protectionPriorities: [],
+        protectionPriorityNotes: cockpitWhyInput.value
+      };
+
+      if (protectionPriorityNotesInput && protectionPriorityNotesInput.value !== cockpitWhyInput.value) {
+        protectionPriorityNotesInput.value = cockpitWhyInput.value;
+      }
+
+      renderSection(currentSection);
     });
 
     discoveryInlineNotesInput?.addEventListener("input", () => {
