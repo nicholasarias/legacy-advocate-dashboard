@@ -932,6 +932,8 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     function createEmptyBranchSelections() {
       return {
         coverageStatus: "",
+        fundingStatus: "",
+        funeralExperience: "",
         relationType: "",
         lossExperience: "",
         bridgeStyle: "",
@@ -1140,6 +1142,12 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           },
           branchSelections: {
             coverageStatus: String(parsedBranchSelections.coverageStatus ?? ""),
+            fundingStatus: String(
+              parsedBranchSelections.fundingStatus ?? parsedBranchSelections.coverageStatus ?? ""
+            ),
+            funeralExperience: String(
+              parsedBranchSelections.funeralExperience ?? parsedBranchSelections.lossExperience ?? ""
+            ),
             relationType: String(parsedBranchSelections.relationType ?? parsed.relationType ?? ""),
             lossExperience: String(
               parsedBranchSelections.lossExperience ?? parsedBranchSelections.funeralExperience ?? ""
@@ -2055,26 +2063,42 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       }
 
       if (sectionId === 6) {
-        discoveryPanelTitle.textContent = "Support & Priorities";
+        discoveryPanelTitle.textContent = "Experience Path";
         discoveryPanelText.textContent =
-          "Capture what is already set aside and the one pressure point they most want handled.";
+          "Use their lived experience or imagination to surface chaos, uncertainty, and pressure.";
+        lossExperienceGroup?.classList.remove("hidden");
+        return;
+      }
+
+      if (sectionId === 7) {
+        discoveryPanelTitle.textContent = "The Funding Gap";
+        discoveryPanelText.textContent =
+          "Separate general savings from money that is truly protected for the bills.";
         currentSupportGroup?.classList.remove("hidden");
         protectionPriorityGroup?.classList.remove("hidden");
         return;
       }
 
-      if (sectionId === 7) {
-        discoveryPanelTitle.textContent = "Advisor Bridge";
+      if (sectionId === 8) {
+        discoveryPanelTitle.textContent = "Concern Confirmation";
         discoveryPanelText.textContent =
-          "Summarize the person and the pressure point before you pivot.";
+          "Confirm the main burden in simple language before you pivot.";
+        protectionPriorityGroup?.classList.remove("hidden");
+        return;
+      }
+
+      if (sectionId === 9) {
+        discoveryPanelTitle.textContent = "Medical Bridge";
+        discoveryPanelText.textContent =
+          "Keep the handoff steady. The medical step should feel earned, not abrupt.";
         protectionPriorityGroup?.classList.remove("hidden");
         discoveryBridgeGroup?.classList.remove("hidden");
         return;
       }
 
-      discoveryPanelTitle.textContent = "Medical Qualification";
+      discoveryPanelTitle.textContent = "The Hinge Bridge";
       discoveryPanelText.textContent =
-        "Keep the handoff steady. The medical step should feel earned, not abrupt.";
+        "Tie back to the burden they named, then earn the move into medical.";
       discoveryBridgeGroup?.classList.remove("hidden");
     }
 

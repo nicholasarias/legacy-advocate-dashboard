@@ -178,92 +178,132 @@ export const scriptSections = [
   },
   {
     id: 6,
-    title: "Support & Priorities",
+    title: "Experience Path",
     qaRequired: false,
     script: [
-      "Some people I speak with already have something set aside for this, and some don't.",
-      "Have you set anything aside yet to help [BeneficiaryName] with those expenses?",
-      "If you could make one part of this easier on [BeneficiaryName], what would you want handled first?",
-      "That just gives [BeneficiaryName] one less thing to carry, right?"
+      "Let me ask you something important, because this usually shapes why people want to get this handled.",
+      "Have you ever had to help with a funeral or handle final arrangements for someone close to you?"
     ],
     branchControl: {
-      stateKey: "coverageStatus",
-      label: "Current Support",
-      helpText: "Use the softer path that matches whether they already have something set aside.",
+      stateKey: "funeralExperience",
+      label: "Experience Path",
+      helpText: "Pick the path that matches whether they have lived through this personally.",
       options: [
         {
-          value: "has-coverage",
-          label: "Some Coverage, May Need More",
-          description: "Use this when they already have something set aside but it may not fully handle the burden.",
+          value: "handled",
+          label: "Handled One",
+          description: "Use this when they have already lived through handling arrangements for someone.",
           script: [
-            "That makes sense.",
-            "Was that meant to cover the funeral itself, the bills at home, or just give [BeneficiaryName] some breathing room?",
-            "Do you feel like it fully covers that first stretch, or would [BeneficiaryName] still feel some pressure?",
-            "Even a small gap can become a lot to deal with in that moment, right?"
+            "Who was that for?",
+            "[PAUSE]",
+            "When you were going through that, what part of the process felt the most chaotic?",
+            "Was the money side already handled, or did the family have to figure that out under pressure too?",
+            "That kind of money pressure is exactly what [BeneficiaryName] should not have to deal with while they're grieving you."
           ],
           helperLines: [
-            "Keep this matter-of-fact and respectful.",
-            "Do not make them defend what they already did."
+            "Let the silence sit after they name the person.",
+            "If they mention stress, ask what made it stressful before moving on.",
+            "Listen for friction like upfront payment, missing paperwork, family disagreement, or last-minute borrowing."
           ],
           promptNotes: [
-            "This is information gathering, not pressure."
+            "Slow down here.",
+            "Do not rescue the silence after [PAUSE].",
+            "Mirror their wording when they describe the chaotic part."
           ]
         },
         {
-          value: "wants-extra",
-          label: "Already Set Aside, Wants Extra",
-          description: "Use this when they already have something in place but want to leave a little more behind.",
+          value: "no-experience",
+          label: "No Experience",
+          description: "Use this when they have not personally had to help with arrangements yet.",
           script: [
-            "That makes sense.",
-            "Sometimes people already have something in place and still want to leave [BeneficiaryName] a little more breathing room.",
-            "That can make those first few months feel a lot steadier, right?"
+            "A lot of people haven't had to face that personally until it's suddenly on them.",
+            "Think about [BeneficiaryName] for a second.",
+            "If they got that call tomorrow, would they know exactly who to call and where the money would come from?",
+            "Or would they be sitting at a kitchen table, upset, trying to figure out an $11,000 problem under pressure?",
+            "That uncertainty is the kind of burden we're trying to take off [BeneficiaryName]."
           ],
           helperLines: [
-            "Validate the planning that's already there.",
-            "Keep this centered on extra peace of mind, not replacement."
-          ]
-        },
-        {
-          value: "no-coverage",
-          label: "Nothing Set Aside Yet",
-          description: "Use this when nothing has been set aside for those expenses yet.",
-          script: [
-            "That's very common.",
-            "A lot of people mean to get to it, and life just keeps moving.",
-            "That doesn't mean it isn't important. It just means it hasn't been handled yet."
+            "Keep this gentle, not dramatic.",
+            "Paint the picture, then stop talking.",
+            "Listen for hesitation, distance, or concern about who would really take charge."
           ],
-          helperLines: [
-            "Ask this softly. No shame, no pressure."
+          promptNotes: [
+            "Use [BeneficiaryName] naturally.",
+            "Ask the kitchen-table line slowly.",
+            "Let them answer fully before moving on."
           ]
         }
       ]
     },
     prompt: {
-      goal: "Capture current support while identifying the one pressure point that matters most",
+      goal: "Use memory or imagination to surface the friction, uncertainty, and pressure a family feels without a plan.",
       notes: [
-        "Keep this gentle and matter-of-fact",
-        "Listen for the one thing they most want handled first",
-        "This is information gathering, not a pitch"
+        "You are not collecting funeral details for their own sake.",
+        "You are helping them see what [BeneficiaryName] could be left carrying."
       ]
     }
   },
   {
     id: 7,
-    title: "Advisor Bridge",
+    title: "The Funding Gap",
     qaRequired: false,
     script: [
-      "*slow down here*",
-      "So from what you've shared with me, if something happened, [BeneficiaryName] would be the one carrying [PrimaryConcern] while everything still feels raw.",
-      "That is really what I'm trying to protect [BeneficiaryName] from.",
-      "The next step for me is to see what you can medically qualify for, because that determines which protection options I can honestly put in front of you.",
-      "If that's alright with you, I'll walk through a few brief health questions and see what we can earn for [BeneficiaryName] today."
+      "When families are in that situation, it's rarely just one bill.",
+      "It's the funeral home, the transport, the service, and those last household expenses that don't stop just because someone passed.",
+      "If something happened tomorrow, is there money specifically set aside for this, or would [BeneficiaryName] have to pull from general savings?"
     ],
+    branchControl: {
+      stateKey: "fundingStatus",
+      label: "Funding Gap",
+      helpText: "Choose whether the money is specifically set aside or would need to come from general savings.",
+      options: [
+        {
+          value: "set-aside",
+          label: "Money Set Aside",
+          description: "Use this when they do have money available, but it may just be general savings.",
+          script: [
+            "That's good. Most people don't have that kind of cushion.",
+            "Let me ask you this. Is that money already protected and meant just for this, or is it part of general savings that could get pulled in different directions?",
+            "General money is meant to stay with your family. Protected money is meant to handle the bills.",
+            "My job is to help make sure the money meant for [BeneficiaryName] stays with [BeneficiaryName]."
+          ],
+          helperLines: [
+            "Do not argue with their savings.",
+            "Create the distinction between general savings and protected money.",
+            "Listen for phrases like 'it's just in the bank,' 'we'd pull from savings,' or 'it's not really earmarked.'"
+          ],
+          promptNotes: [
+            "Keep this calm and matter-of-fact.",
+            "The goal is not to discredit savings. The goal is to separate family money from bill money."
+          ]
+        },
+        {
+          value: "would-scramble",
+          label: "Would Scramble",
+          description: "Use this when they admit the family would have to figure it out under pressure.",
+          script: [
+            "I appreciate you being real about that. That's exactly why this matters.",
+            "When there isn't a plan, the family has to make financial decisions at the same time they're carrying the emotional weight of losing you.",
+            "That just puts [BeneficiaryName] under decision pressure at the worst possible moment.",
+            "I'd rather help you put something in place than leave [BeneficiaryName] to sort that out alone."
+          ],
+          helperLines: [
+            "Validate their honesty before moving forward.",
+            "Listen for burden words like 'scramble,' 'borrow,' 'credit card,' 'figure it out,' or 'hope for the best.'",
+            "If they sound embarrassed, lower your tone and slow down."
+          ],
+          promptNotes: [
+            "This is about pressure, not blame.",
+            "Let the emotional and financial burden sit together."
+          ]
+        }
+      ]
+    },
     prompt: {
-      goal: "Use their own concerns as the reason for the medical qualification step",
+      goal: "Distinguish between general savings and protected money so the need feels practical and personal.",
       notes: [
-        "Sound like a family advocate, not a closer",
-        "Tie the medical step back to the person they named",
-        "Keep the tone grounded and steady"
+        "Even if they have money, explore whether it is truly meant for this.",
+        "Keep [BeneficiaryName] at the center of the conversation."
       ]
     }
   },
@@ -334,21 +374,33 @@ export const scriptSections = [
   },
   {
     id: 10,
-    title: "Permission To Continue",
+    title: "The Hinge Bridge",
     qaRequired: false,
     script: [
-      "We'll keep it simple.",
-      "If I ask you a few health questions so I can narrow this down correctly, would that be alright?",
-      "Fair enough?"
+      "Based on what you've shared with me, the main thing is making sure [BeneficiaryName] isn't left trying to sort this out while they're grieving you, right?",
+      "[PAUSE]",
+      "So from here, my job is to narrow this down the right way for you.",
+      "The only way I can point you toward the right programs is by asking a few medical questions first.",
+      "Once I have that, I can guide you toward the protection options that fit what you want handled for [BeneficiaryName]."
     ],
     prompt: {
-      goal: "Get a natural yes before moving into the medical part of the call",
+      goal: "Make the move into medical feel earned, personal, and necessary.",
       notes: [
-        "Keep this light and easy",
-        "A simple yes is enough here",
-        "This should feel like a natural handoff, not a close"
+        "Tie back to the burden they described in their own words.",
+        "Get agreement before moving into medical.",
+        "Present the medical questions as a sorting tool, not an obstacle."
       ]
-    }
+    },
+    helperLines: [
+      "Use their exact concern if they gave you one: confusion, pressure, chaos, or burden.",
+      "Pause after the tie-down and wait for agreement.",
+      "If they hesitate, restate the reason before moving on."
+    ],
+    promptNotes: [
+      "This is the pivot from emotion to process.",
+      "Stay warm and certain.",
+      "Do not sound procedural here."
+    ]
   },
   {
     id: 11,
