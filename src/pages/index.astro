@@ -7,6 +7,7 @@ import { rebuttals } from "../data/rebuttals";
 
 const firstSection = scriptSections[0];
 const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
+const firstSectionDisplayNumber = 1;
 ---
 
 <Layout>
@@ -25,7 +26,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           <div>
             <h2 class="text-lg font-semibold">Script Sections</h2>
             <p class="text-xs text-gray-400">
-              <span id="progress-text">1 / 24</span>
+              <span id="progress-text">1 / {scriptSections.length}</span>
             </p>
           </div>
         </div>
@@ -37,18 +38,19 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
       <nav id="sidebar-nav" class="max-h-[calc(100vh-230px)] overflow-y-auto p-2">
         <ul class="space-y-1">
-          {scriptSections.map((section) => (
+          {scriptSections.map((section, index) => (
             <li>
               <button
                 class:list={[
                   "section-button w-full rounded-lg px-3 py-3 text-left text-sm transition",
+                  section.highlightStyle === "paint-picture" ? "section-button-highlight" : "",
                   section.id === firstSection.id ? "sidebar-button-active" : "sidebar-button-idle"
                 ]}
                 data-section-id={section.id}
                 type="button"
               >
                 <span class="block font-medium">
-                  {section.id}. {section.title}
+                  {index + 1}. {section.title}
                 </span>
 
                 {section.qaRequired && (
@@ -91,7 +93,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
           <div>
             <p id="section-number" class="text-sm uppercase tracking-wide text-gray-400">
-              Section {firstSection.id}
+              Section {firstSectionDisplayNumber}
             </p>
 
             <h2 id="section-title" class="mt-1 text-3xl font-bold">
@@ -108,7 +110,11 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
               Quick Path
             </p>
           </div>
-          <p id="branch-toolbar-current" class="text-xs font-semibold uppercase tracking-[0.14em] text-emerald-300">
+          <p
+            id="branch-toolbar-current"
+            data-guided-copy
+            class="text-xs font-semibold uppercase tracking-[0.14em] text-emerald-300"
+          >
             Pick the line that fits the conversation.
           </p>
         </div>
@@ -148,31 +154,34 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
               <button id="close-objections-button" type="button" class="btn">Close</button>
             </div>
 
-            <div class="mt-4">
-              <input
-                id="objection-search"
-                type="text"
-                placeholder="Search objections by keyword..."
-                class="form-input"
-              />
-            </div>
+            <div class="mt-5 grid gap-4 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+              <div>
+                <p class="text-xs uppercase tracking-wide text-gray-500">Search</p>
+                <input
+                  id="objection-search"
+                  type="text"
+                  placeholder="Search objections by keyword..."
+                  class="form-input mt-3"
+                />
+              </div>
 
-            <div class="mt-4">
-              <p class="text-xs uppercase tracking-wide text-gray-500">Favorites</p>
-              <div class="mt-3 flex flex-wrap gap-2">
-                {favoriteRebuttals.map((item) => (
-                  <button
-                    type="button"
-                    class="favorite-rebuttal-button rounded-full border border-gray-700 bg-gray-950 px-3 py-1 text-xs text-gray-200 hover:bg-gray-800"
-                    data-rebuttal-id={item.id}
-                  >
-                    {item.title}
-                  </button>
-                ))}
+              <div>
+                <p class="text-xs uppercase tracking-wide text-gray-500">Favorites</p>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  {favoriteRebuttals.map((item) => (
+                    <button
+                      type="button"
+                      class="favorite-rebuttal-button rounded-full border border-gray-700 bg-gray-950 px-3 py-1 text-xs text-gray-200 hover:bg-gray-800"
+                      data-rebuttal-id={item.id}
+                    >
+                      {item.title}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
-            <div class="mt-4 grid gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+            <div class="mt-5 grid gap-4 xl:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
               <div>
                 <p class="text-xs uppercase tracking-wide text-gray-500">Results</p>
                 <div id="objection-results" class="mt-3 max-h-80 space-y-2 overflow-y-auto">
@@ -207,33 +216,28 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           <div id="script-panel" class="panel p-6 xl:p-7">
             <h3 class="panel-title">Read Aloud Script</h3>
             <div id="discovery-focus-shell" class="discovery-focus-shell hidden">
-              <div class="discovery-focus-header">
-                <div>
-                  <p class="discovery-focus-kicker">Discovery Focus</p>
-                  <p id="discovery-reminder" class="discovery-reminder">
-                    Listen more than you speak. Let the client answer fully.
-                  </p>
+              <div class="discovery-focus-actions">
+                <div class="discovery-mode-shell">
+                  <p class="discovery-focus-kicker">View Mode</p>
+                  <div class="discovery-mode-button-group">
+                    <button
+                      id="discovery-mode-performance"
+                      type="button"
+                      class="discovery-mode-button discovery-mode-button-active"
+                      data-discovery-mode="performance"
+                    >
+                      Performance
+                    </button>
+                    <button
+                      id="discovery-mode-guided"
+                      type="button"
+                      class="discovery-mode-button discovery-mode-button-idle"
+                      data-discovery-mode="guided"
+                    >
+                      Guided
+                    </button>
+                  </div>
                 </div>
-                <div class="discovery-pacing">
-                  <p class="discovery-focus-kicker">Pacing Cue</p>
-                  <p id="discovery-pacing-cue" class="discovery-pacing-text">
-                    Keep this conversational.
-                  </p>
-                </div>
-              </div>
-
-              <div class="discovery-focus-meta">
-                <p class="discovery-focus-kicker">Current Conversation Step</p>
-                <p id="discovery-focus-title" class="discovery-focus-title">
-                  {firstSection.title}
-                </p>
-              </div>
-
-              <div class="discovery-visual-cue">
-                <p class="discovery-focus-kicker">Visual Cue</p>
-                <p class="discovery-visual-cue-text">
-                  PAUSE: Let them answer and sit in the silence.
-                </p>
               </div>
             </div>
             <div id="script-lines" class="space-y-5 text-xl leading-relaxed text-gray-100">
@@ -273,13 +277,13 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
                     </div>
 
                     <div class="flex flex-col items-end gap-2">
-                      <span data-quote-badge class="quote-badge hidden">Best Value</span>
+                      <span data-quote-badge class="quote-badge hidden">Recommended</span>
                       <span data-quote-selected class="quote-selected hidden">Selected</span>
                     </div>
                   </div>
 
                   <p data-quote-summary class="mt-3 text-sm leading-6 text-slate-300">
-                    Build the larger protected bucket first.
+                    Funeral, headstone, and extra breathing room.
                   </p>
                   <p
                     data-quote-bucket
@@ -339,13 +343,13 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
                     </div>
 
                     <div class="flex flex-col items-end gap-2">
-                      <span data-quote-badge class="quote-badge hidden">Best Value</span>
+                      <span data-quote-badge class="quote-badge hidden">Recommended</span>
                       <span data-quote-selected class="quote-selected hidden">Selected</span>
                     </div>
                   </div>
 
                   <p data-quote-summary class="mt-3 text-sm leading-6 text-slate-300">
-                    Solve the whole funding gap with protected money.
+                    Solves the whole funding gap.
                   </p>
                   <p
                     data-quote-bucket
@@ -405,13 +409,13 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
                     </div>
 
                     <div class="flex flex-col items-end gap-2">
-                      <span data-quote-badge class="quote-badge hidden">Best Value</span>
+                      <span data-quote-badge class="quote-badge hidden">Recommended</span>
                       <span data-quote-selected class="quote-selected hidden">Selected</span>
                     </div>
                   </div>
 
                   <p data-quote-summary class="mt-3 text-sm leading-6 text-slate-300">
-                    Cover the basic funeral-home costs with protected money.
+                    Basic funeral home costs.
                   </p>
                   <p
                     data-quote-bucket
@@ -457,7 +461,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
               <div class="rounded-xl border border-gray-800 bg-gray-950 p-4">
                 <p class="text-xs uppercase tracking-wide text-gray-500">Comparison Snapshot</p>
                 <p id="recommended-quote-display" class="mt-2 text-sm text-gray-200">
-                  Option 2 is positioned as the best-value path until you select a card.
+                  Most people I work with go with Option 2 because it solves the whole problem without breaking the bank.
                 </p>
               </div>
             </div>
@@ -486,6 +490,8 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
               </div>
             </div>
 
+            <div id="pricing-objections-panel-host" class="hidden mt-5"></div>
+
           </div>
         </div>
 
@@ -495,12 +501,12 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
               <div>
                 <h3 class="panel-title !mb-2">Discovery Intake</h3>
                 <p class="text-sm text-gray-300">
-                  Keep the person, the why, and the current step in one place.
+                  Keep the person, the main concern, and the current step in one place.
                 </p>
               </div>
 
               <div class="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-300">
-                <span id="cockpit-step-readout">Section 1 of 24</span>
+                <span id="cockpit-step-readout">Section 1 of {scriptSections.length}</span>
               </div>
             </div>
 
@@ -528,7 +534,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
               </div>
 
               <div>
-                <label for="cockpit-why-input" class="form-label">The Why</label>
+                <label for="cockpit-why-input" class="form-label">Primary Concern</label>
                 <textarea
                   id="cockpit-why-input"
                   rows="3"
@@ -549,16 +555,16 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           <div id="prompt-panel" class="panel p-5" data-quiet-during-discovery="true">
             <div>
               <h3 class="panel-title !mb-2">Quick Notes</h3>
-              <p class="text-sm text-gray-300">
-                Keep the why and your running notes close while you move through the call.
+              <p data-guided-copy class="text-sm text-gray-300">
+                Keep the main concern and your running notes close while you move through the call.
               </p>
             </div>
 
             <div class="mt-4 space-y-4">
               <div class="rounded-xl border border-emerald-500/15 bg-emerald-500/6 p-4">
-                <p class="text-xs uppercase tracking-wide text-emerald-300">The Why</p>
+                <p class="text-xs uppercase tracking-wide text-emerald-300">Primary Concern</p>
                 <p id="reference-why-readout" class="mt-2 text-sm leading-6 text-emerald-50">
-                  Capture the why and it will stay here for the rest of the call.
+                  Capture the main concern and it will stay here for the rest of the call.
                 </p>
               </div>
 
@@ -577,12 +583,12 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           <div id="discovery-workspace-panel" class="panel hidden p-6" data-quiet-during-discovery="true">
             <div>
               <h3 id="discovery-panel-title" class="panel-title !mb-2">Discovery Workspace</h3>
-              <p id="discovery-panel-text" class="text-sm text-gray-300">
+              <p id="discovery-panel-text" data-guided-copy class="text-sm text-gray-300">
                 Capture family priorities and notes while you listen.
               </p>
             </div>
 
-            <div class="mt-4 rounded-xl border border-sky-500/20 bg-sky-950/20 p-4">
+            <div data-guided-copy class="mt-4 rounded-xl border border-sky-500/20 bg-sky-950/20 p-4">
               <p class="text-xs uppercase tracking-wide text-sky-200">Visual Cue</p>
               <p class="mt-2 text-sm text-sky-50">
                 PAUSE: Let them answer and sit in the silence.
@@ -673,16 +679,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
             <div id="family-responsibility-group" class="mt-5 hidden space-y-4">
               <div class="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label for="funeral-concern-input" class="form-label">Funeral / Burial Concern</label>
-                  <input
-                    id="funeral-concern-input"
-                    type="text"
-                    placeholder="What concerns them most?"
-                    class="form-input"
-                  />
-                </div>
-
-                <div>
                   <label for="debts-input" class="form-label">Debts</label>
                   <input
                     id="debts-input"
@@ -733,6 +729,18 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
                   placeholder="Capture the burden in their own words"
                   class="form-input"
                 ></textarea>
+              </div>
+            </div>
+
+            <div id="burial-cremation-group" class="mt-5 hidden space-y-4">
+              <div>
+                <label for="funeral-concern-input" class="form-label">Burial / Cremation Concern</label>
+                <input
+                  id="funeral-concern-input"
+                  type="text"
+                  placeholder="Burial, cremation, service, cemetery, or arrangement notes"
+                  class="form-input"
+                />
               </div>
             </div>
 
@@ -833,7 +841,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
                 </p>
               </div>
 
-              <div class="rounded-xl border border-gray-800 bg-gray-950 p-4">
+              <div data-guided-copy class="rounded-xl border border-gray-800 bg-gray-950 p-4">
                 <p class="text-xs uppercase tracking-wide text-gray-500">Next Step</p>
                 <p class="mt-2 text-sm text-gray-300">
                   Use the bridge above, then continue into the medical qualification step. The pricing workspace stays connected later in the call.
@@ -1001,8 +1009,10 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     function createEmptyBranchSelections() {
       return {
         coverageStatus: "",
+        closeResponseFlow: "",
         fundingStatus: "",
         funeralExperience: "",
+        arrangementPreference: "",
         relationType: "",
         lossExperience: "",
         bridgeStyle: "",
@@ -1068,6 +1078,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     function createFreshSession() {
       return {
         currentSectionId: scriptSections[0]?.id ?? 1,
+        discoveryMode: "performance",
         notes: "",
         outcome: "",
         clientName: "",
@@ -1159,9 +1170,13 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         const parsedDiscovery =
           parsed.discovery && typeof parsed.discovery === "object" ? parsed.discovery : {};
         const decisionMaker = String(parsedDiscovery.decisionMaker ?? parsed.beneficiaryName ?? "");
+        const parsedSectionId = Number(parsed.currentSectionId ?? (scriptSections[0]?.id ?? 1));
+        const currentSectionId = parsedSectionId === 9 ? 10 : parsedSectionId;
 
         return {
-          currentSectionId: Number(parsed.currentSectionId ?? (scriptSections[0]?.id ?? 1)),
+          currentSectionId,
+          discoveryMode:
+            parsed.discoveryMode === "guided" ? "guided" : "performance",
           notes: String(parsed.notes ?? parsedDiscovery.familyContextNotes ?? ""),
           outcome: String(parsed.outcome ?? ""),
           clientName: String(parsed.clientName ?? ""),
@@ -1216,16 +1231,23 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           branchSelections: {
             coverageStatus: String(parsedBranchSelections.coverageStatus ?? ""),
             fundingStatus: String(
-              parsedBranchSelections.fundingStatus ?? parsedBranchSelections.coverageStatus ?? ""
+              parsedBranchSelections.fundingStatus ??
+                (["set-aside", "would-scramble"].includes(
+                  String(parsedBranchSelections.coverageStatus ?? "")
+                )
+                  ? parsedBranchSelections.coverageStatus
+                  : "")
             ),
             funeralExperience: String(
               parsedBranchSelections.funeralExperience ?? parsedBranchSelections.lossExperience ?? ""
             ),
+            arrangementPreference: String(parsedBranchSelections.arrangementPreference ?? ""),
             relationType: String(parsedBranchSelections.relationType ?? parsed.relationType ?? ""),
             lossExperience: String(
               parsedBranchSelections.lossExperience ?? parsedBranchSelections.funeralExperience ?? ""
             ),
             bridgeStyle: String(parsedBranchSelections.bridgeStyle ?? ""),
+            closeResponseFlow: String(parsedBranchSelections.closeResponseFlow ?? ""),
             medicalReview: String(parsedBranchSelections.medicalReview ?? ""),
             productOutcome: String(parsedBranchSelections.productOutcome ?? "")
           }
@@ -1248,6 +1270,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         SESSION_STORAGE_KEY,
         JSON.stringify({
           currentSectionId: currentSection.id,
+          discoveryMode: sessionState.discoveryMode,
           notes: familyContextNotesInput?.value ?? sessionState.discovery.familyContextNotes ?? "",
           outcome: sessionState.outcome,
           clientName: clientNameInput?.value ?? "",
@@ -1470,10 +1493,22 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     let settings = loadSettings();
     let stats = loadStats();
     let sessionState = loadSession();
-
     let currentSection =
       scriptSections.find((section) => section.id === sessionState.currentSectionId) ??
       scriptSections[0];
+
+    function getSectionIndex(section) {
+      return scriptSections.findIndex((item) => item.id === section?.id);
+    }
+
+    function getSectionDisplayNumber(section) {
+      const index = getSectionIndex(section);
+      return index === -1 ? String(section?.id ?? "") : String(index + 1);
+    }
+
+    function getDiscoveryMode() {
+      return sessionState.discoveryMode === "guided" ? "guided" : "performance";
+    }
 
     let timerSeconds = 0;
     let timerInterval = null;
@@ -1512,8 +1547,8 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     const referenceWhyReadout = document.getElementById("reference-why-readout");
     const quietDuringDiscoveryPanels = document.querySelectorAll("[data-quiet-during-discovery]");
     const discoveryFocusShell = document.getElementById("discovery-focus-shell");
-    const discoveryPacingCue = document.getElementById("discovery-pacing-cue");
-    const discoveryFocusTitle = document.getElementById("discovery-focus-title");
+    const discoveryModeButtons = document.querySelectorAll("[data-discovery-mode]");
+    const guidedCopyNodes = document.querySelectorAll("[data-guided-copy]");
     const discoveryInlineNotesShell = document.getElementById("discovery-inline-notes-shell");
     const discoveryInlineNotesLabel = document.getElementById("discovery-inline-notes-label");
     const discoveryInlineNotesInput = document.getElementById("discovery-inline-notes-input");
@@ -1524,6 +1559,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     const familyContextGroup = document.getElementById("family-context-group");
     const lossExperienceGroup = document.getElementById("loss-experience-group");
     const familyResponsibilityGroup = document.getElementById("family-responsibility-group");
+    const burialCremationGroup = document.getElementById("burial-cremation-group");
     const currentSupportGroup = document.getElementById("current-support-group");
     const protectionPriorityGroup = document.getElementById("protection-priority-group");
     const discoveryBridgeGroup = document.getElementById("discovery-bridge-group");
@@ -1560,6 +1596,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     const recommendedQuoteDisplay = document.getElementById("recommended-quote-display");
     const quoteCards = document.querySelectorAll("[data-quote-card]");
     const pricingObjectionsGroup = document.getElementById("pricing-objections-group");
+    const pricingObjectionsPanelHost = document.getElementById("pricing-objections-panel-host");
     const quickObjectionButtons = document.querySelectorAll(".quick-objection-button");
     const enrollmentWorkspaceGroup = document.getElementById("enrollment-workspace-group");
     const policyNumberInput = document.getElementById("policy-number-input");
@@ -1650,10 +1687,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       }
 
       if (toolkitColumn) {
-        [
-          objectionsPanel,
-          shortcutsPanel
-        ]
+        [shortcutsPanel]
           .filter((panel) => panel instanceof HTMLElement)
           .forEach((panel) => {
             if (panel.parentElement !== toolkitColumn) {
@@ -1661,6 +1695,43 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
             }
           });
       }
+    }
+
+    function shouldDockObjectionsPanel(section = currentSection) {
+      return Boolean(
+        section?.id === 20 &&
+          getBranchSelection("productOutcome") !== "no-option" &&
+          objectionsPanel &&
+          pricingObjectionsPanelHost &&
+          toolkitColumn
+      );
+    }
+
+    function isObjectionsDockedInPricing() {
+      return Boolean(
+        pricingObjectionsPanelHost &&
+          objectionsPanel &&
+          objectionsPanel.parentElement === pricingObjectionsPanelHost
+      );
+    }
+
+    function updateObjectionsPlacement(section = currentSection) {
+      if (!objectionsPanel || !toolkitColumn || !pricingObjectionsPanelHost) {
+        return;
+      }
+
+      const dockInPricing = shouldDockObjectionsPanel(section);
+      const targetParent = dockInPricing ? pricingObjectionsPanelHost : toolkitColumn;
+
+      if (objectionsPanel.parentElement !== targetParent) {
+        targetParent.appendChild(objectionsPanel);
+      }
+
+      objectionsPanel.classList.toggle("objections-panel-docked", dockInPricing);
+      pricingObjectionsPanelHost.classList.toggle(
+        "hidden",
+        !dockInPricing || objectionsPanel.classList.contains("hidden")
+      );
     }
 
     function updateToolkitVisibility() {
@@ -1677,6 +1748,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     }
 
     configureCockpitLayout();
+    updateObjectionsPlacement();
     updateToolkitVisibility();
 
     if (clientNameInput) clientNameInput.value = sessionState.clientName;
@@ -1761,7 +1833,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     }
 
     function emphasizeToolkit(transient = false) {
-      if (!toolkitColumn) return;
+      if (!toolkitColumn || isObjectionsDockedInPricing()) return;
 
       toolkitColumn.classList.add("toolkit-column-active");
 
@@ -1942,7 +2014,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       }
 
       if (cockpitStepReadout) {
-        cockpitStepReadout.textContent = `Section ${section.id} of ${scriptSections.length}`;
+        cockpitStepReadout.textContent = `Section ${getSectionDisplayNumber(section)} of ${scriptSections.length}`;
       }
 
       if (cockpitHudPreview) {
@@ -1962,7 +2034,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       promptPanel?.classList.toggle("hidden", !showQuickNotes);
 
       if (referenceStepReadout) {
-        referenceStepReadout.textContent = `Section ${section.id}`;
+        referenceStepReadout.textContent = `Section ${getSectionDisplayNumber(section)}`;
       }
 
       if (referencePersonReadout) {
@@ -1975,7 +2047,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       if (referenceWhyReadout) {
         referenceWhyReadout.textContent = hasWhy
           ? `${focusName === "the person they care about most" ? "They" : focusName} would be carrying ${primaryConcern} if nothing was set aside.`
-          : "Capture the why and it will stay here for the rest of the call.";
+          : "Capture the main concern and it will stay here for the rest of the call.";
       }
     }
 
@@ -1999,7 +2071,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     }
 
     function isDiscoverySection(section) {
-      return section.id >= 2 && section.id <= 10;
+      return section?.phase === "discovery";
     }
 
     function getPrimaryPacingCue(section) {
@@ -2012,52 +2084,13 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     }
 
     function getDiscoveryNotesConfig(section) {
-      if (section.id === 2 || section.id === 3) {
-        return {
-          key: "familyContextNotes",
-          label: "Family / Call Notes",
-          placeholder: "Capture family details and any running notes you want to keep"
-        };
-      }
-
-      if (section.id === 4) {
-        return {
-          key: "lossExperienceNotes",
-          label: "Loss Notes",
-          placeholder: "Who was lost, who handled things, and what felt hardest"
-        };
-      }
-
-      if (section.id === 5) {
-        return {
-          key: "familyResponsibilityNotes",
-          label: "90-Day Window Notes",
-          placeholder: "Capture what those first few months would look like"
-        };
-      }
-
-      if (section.id === 6) {
-        return {
-          key: "currentSupportNotes",
-          label: "Support Notes",
-          placeholder: "What is already set aside and where the pressure still lands"
-        };
-      }
-
-      if (section.id >= 7 && section.id <= 10) {
-        return {
-          key: "protectionPriorityNotes",
-          label: "Bridge Notes",
-          placeholder: "Capture the one pressure point you want to carry into the bridge"
-        };
-      }
-
-      return null;
+      return section.workspace?.notes || null;
     }
 
     function getDiscoveryNotesFieldByKey(key) {
       if (key === "familyContextNotes") return familyContextNotesInput;
       if (key === "lossExperienceNotes") return lossExperienceNotesInput;
+      if (key === "funeralConcern") return funeralConcernInput;
       if (key === "familyResponsibilityNotes") return familyResponsibilityNotesInput;
       if (key === "currentSupportNotes") return currentSupportNotesInput;
       if (key === "protectionPriorityNotes") return protectionPriorityNotesInput;
@@ -2084,20 +2117,63 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       discoveryInlineNotesInput.value = sessionState.discovery?.[notesConfig.key] || "";
     }
 
+    function updateDiscoveryModeButtons() {
+      const mode = getDiscoveryMode();
+
+      discoveryModeButtons.forEach((button) => {
+        if (!(button instanceof HTMLElement)) return;
+
+        const isActive = button.dataset.discoveryMode === mode;
+        button.classList.toggle("discovery-mode-button-active", isActive);
+        button.classList.toggle("discovery-mode-button-idle", !isActive);
+        button.setAttribute("aria-pressed", String(isActive));
+      });
+    }
+
+    function setDiscoveryMode(mode) {
+      if (mode !== "performance" && mode !== "guided") return;
+      if (getDiscoveryMode() === mode) {
+        updateDiscoveryModeButtons();
+        return;
+      }
+
+      sessionState.discoveryMode = mode;
+      renderSection(currentSection);
+      saveSession();
+    }
+
     function updateDiscoveryFocusCard(section) {
       const discoveryActive = isDiscoverySection(section);
+      const performanceMode = getDiscoveryMode() === "performance";
+      const guidedMode = getDiscoveryMode() === "guided";
+      const paintPictureSection = section.highlightStyle === "paint-picture";
 
       workflowGrid?.classList.toggle("workflow-grid-discovery", discoveryActive);
       scriptPanel?.classList.toggle("script-panel-discovery", discoveryActive);
+      scriptPanel?.classList.toggle("script-panel-paint-picture", discoveryActive && paintPictureSection);
       secondaryRail?.classList.toggle("secondary-rail-discovery", discoveryActive);
 
       quietDuringDiscoveryPanels.forEach((panel) => {
         panel.classList.toggle("panel-quiet", discoveryActive);
       });
 
-      promptPanel?.classList.toggle("panel-quiet-soft", discoveryActive);
+      guidedCopyNodes.forEach((node) => {
+        if (!(node instanceof HTMLElement)) return;
+        node.classList.toggle("hidden", discoveryActive && !guidedMode);
+      });
 
-      if (!discoveryFocusShell || !discoveryPacingCue || !discoveryFocusTitle) {
+      promptPanel?.classList.toggle("panel-quiet-soft", discoveryActive && performanceMode);
+      discoveryFocusShell?.classList.toggle(
+        "discovery-focus-paint-picture",
+        discoveryActive && paintPictureSection
+      );
+      discoveryFocusShell?.classList.toggle(
+        "discovery-focus-performance",
+        discoveryActive && performanceMode
+      );
+      updateDiscoveryModeButtons();
+
+      if (!discoveryFocusShell) {
         updateDiscoveryInlineNotes(section);
         return;
       }
@@ -2109,8 +2185,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       }
 
       discoveryFocusShell.classList.remove("hidden");
-      discoveryFocusTitle.textContent = section.title;
-      discoveryPacingCue.textContent = getPrimaryPacingCue(section);
       updateDiscoveryInlineNotes(section);
     }
 
@@ -2119,6 +2193,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         familyContextGroup,
         lossExperienceGroup,
         familyResponsibilityGroup,
+        burialCremationGroup,
         currentSupportGroup,
         protectionPriorityGroup,
         discoveryBridgeGroup
@@ -2144,90 +2219,41 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         return;
       }
 
-      const sectionId = section.id;
-      const showWorkspace = sectionId >= 2 && sectionId <= 10;
+      const workspace = section.workspace || null;
+      const groupMap = {
+        familyContext: familyContextGroup,
+        lossExperience: lossExperienceGroup,
+        familyResponsibility: familyResponsibilityGroup,
+        burialCremation: burialCremationGroup,
+        currentSupport: currentSupportGroup,
+        protectionPriority: protectionPriorityGroup,
+        discoveryBridge: discoveryBridgeGroup
+      };
+      const showWorkspace = isDiscoverySection(section) && Boolean(workspace);
 
       if (!showWorkspace) {
         discoveryWorkspacePanel.classList.add("hidden");
+        discoveryWorkspacePanel.classList.remove("discovery-workspace-highlighted");
         hideDiscoveryGroups();
         return;
       }
 
       discoveryWorkspacePanel.classList.remove("hidden");
+      discoveryWorkspacePanel.classList.toggle(
+        "discovery-workspace-highlighted",
+        workspace.highlight === "paint-picture"
+      );
       hideDiscoveryGroups();
       setImpactCardSelectionUI(sessionState.discovery?.primaryConcern || "");
       updateBridgePrioritySummary();
 
-      if (sectionId === 2) {
-        discoveryPanelTitle.textContent = "Warm Discovery";
-        discoveryPanelText.textContent =
-          "Respect their time, then get directly to the person who matters most.";
-        familyContextGroup?.classList.remove("hidden");
-        return;
-      }
-
-      if (sectionId === 3) {
-        discoveryPanelTitle.textContent = "The Why";
-        discoveryPanelText.textContent =
-          "Lock onto why this matters, then how it would actually land on them.";
-        familyContextGroup?.classList.remove("hidden");
-        return;
-      }
-
-      if (sectionId === 4) {
-        discoveryPanelTitle.textContent = "Life Experiences With Loss";
-        discoveryPanelText.textContent =
-          "Be warm here, but keep it gentle and brief.";
-        lossExperienceGroup?.classList.remove("hidden");
-        return;
-      }
-
-      if (sectionId === 5) {
-        discoveryPanelTitle.textContent = "The First 90 Days";
-        discoveryPanelText.textContent =
-          "Let them picture the first few months, not just the funeral bill.";
-        familyResponsibilityGroup?.classList.remove("hidden");
-        return;
-      }
-
-      if (sectionId === 6) {
-        discoveryPanelTitle.textContent = "Experience Path";
-        discoveryPanelText.textContent =
-          "Use their lived experience or imagination to surface chaos, uncertainty, and pressure.";
-        lossExperienceGroup?.classList.remove("hidden");
-        return;
-      }
-
-      if (sectionId === 7) {
-        discoveryPanelTitle.textContent = "The Funding Gap";
-        discoveryPanelText.textContent =
-          "Separate general savings from money that is truly protected for the bills.";
-        currentSupportGroup?.classList.remove("hidden");
-        protectionPriorityGroup?.classList.remove("hidden");
-        return;
-      }
-
-      if (sectionId === 8) {
-        discoveryPanelTitle.textContent = "Concern Confirmation";
-        discoveryPanelText.textContent =
-          "Confirm the main burden in simple language before you pivot.";
-        protectionPriorityGroup?.classList.remove("hidden");
-        return;
-      }
-
-      if (sectionId === 9) {
-        discoveryPanelTitle.textContent = "Bridge Tone";
-        discoveryPanelText.textContent =
-          "Choose the delivery style here. Section 10 is the actual spoken hinge into medical.";
-        protectionPriorityGroup?.classList.remove("hidden");
-        discoveryBridgeGroup?.classList.remove("hidden");
-        return;
-      }
-
-      discoveryPanelTitle.textContent = "The Hinge Bridge";
+      discoveryPanelTitle.textContent = workspace.title || section.title;
       discoveryPanelText.textContent =
-        "Tie back to the burden they named, then earn the move into medical.";
-      discoveryBridgeGroup?.classList.remove("hidden");
+        workspace.text || "Capture family priorities and notes while you listen.";
+
+      (workspace.groups || []).forEach((groupKey) => {
+        groupMap[groupKey]?.classList.remove("hidden");
+      });
     }
 
     function setDiscoveryField(key, value, render = false, source = "workspace") {
@@ -2491,7 +2517,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
         }
 
         if (badgeEl instanceof HTMLElement) {
-          badgeEl.textContent = optionMeta?.badge || "Best Value";
+          badgeEl.textContent = optionMeta?.badge || "Recommended";
           badgeEl.classList.toggle("hidden", !isRecommended);
         }
 
@@ -2522,9 +2548,9 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           )} for ${formatCoverageDisplay(
             selectedCoverageValue,
             selectedCoverageValue || "___"
-          )}. Best value remains ${getRecommendedQuoteText()}.`;
+          )}. Most people I work with still go with ${getRecommendedQuoteText()} because it solves the whole problem without breaking the bank.`;
         } else {
-          recommendedQuoteDisplay.textContent = `${getRecommendedQuoteText()} is positioned as the best-value option until you select a card.`;
+          recommendedQuoteDisplay.textContent = `Most people I work with go with ${getRecommendedQuoteText()} because it solves the whole problem without breaking the bank.`;
         }
       }
     }
@@ -2566,7 +2592,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       if (productOutcome) {
         summaryParts.push(`Product route: ${productMeta.label}`);
       } else if (sectionId >= 15) {
-        summaryParts.push("Product route: select a route in section 15");
+        summaryParts.push("Product route: select a route in Product Path");
       }
 
       if (premiumInput?.value.trim()) {
@@ -2603,6 +2629,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       pricingObjectionsGroup.classList.toggle("hidden", !showPanel);
 
       updateRecommendedQuoteUI();
+      updateObjectionsPlacement(section);
       updateToolkitVisibility();
     }
 
@@ -2628,6 +2655,18 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       renderSection(currentSection);
     }
 
+    function getScriptLinesForMode(item, section) {
+      const performanceMode =
+        Boolean(section?.modeSensitive || isDiscoverySection(section)) &&
+        getDiscoveryMode() === "performance";
+      const preferredLines =
+        performanceMode && Array.isArray(item?.performanceScript)
+          ? item.performanceScript
+          : item?.script || [];
+
+      return preferredLines;
+    }
+
     function getRenderableScriptBlocks(section) {
       const tokens = getTokens();
       const branch = getBranchConfig(section);
@@ -2638,18 +2677,43 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       if (!replaceBase) {
         blocks.push({
           type: "base",
-          lines: (section.script || []).map((line) => applyTokens(line, tokens))
+          lines: getScriptLinesForMode(section, section).map((line) => applyTokens(line, tokens))
         });
       }
 
-      if (selectedOption?.script?.length) {
+      const selectedOptionLines = getScriptLinesForMode(selectedOption, section);
+      const selectedOptionLevels = Array.isArray(selectedOption?.levels)
+        ? selectedOption.levels
+            .map((level) => ({
+              label: level.label || "Level",
+              lines: Array.isArray(level.lines)
+                ? level.lines.map((line) => applyTokens(line, tokens))
+                : []
+            }))
+            .filter((level) => level.lines.length)
+        : [];
+      const selectedOptionReinforcement = Array.isArray(selectedOption?.reinforcementLines)
+        ? selectedOption.reinforcementLines.map((line) => applyTokens(line, tokens))
+        : [];
+
+      if (selectedOptionLines.length || selectedOptionLevels.length) {
         blocks.push({
           type: "branch",
           heading: `${branch?.label || "Selected Path"}: ${selectedOption.label}`,
-          lines: selectedOption.script.map((line) => applyTokens(line, tokens)),
+          lines: selectedOptionLines.map((line) => applyTokens(line, tokens)),
+          levels: selectedOptionLevels,
+          status: selectedOption?.status || "",
           emphasize:
             pendingBranchHighlight?.stateKey === branch?.stateKey &&
             pendingBranchHighlight?.value === selectedOption.value
+        });
+      }
+
+      if (selectedOptionReinforcement.length) {
+        blocks.push({
+          type: "quick-insert",
+          heading: "Quick Insert",
+          lines: selectedOptionReinforcement
         });
       }
 
@@ -2657,8 +2721,6 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     }
 
     function renderBranchPanel(section) {
-      branchPanel?.classList.add("hidden");
-
       if (
         !branchToolbarShell ||
         !branchToolbarTitle ||
@@ -2700,6 +2762,105 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       branchToolbarCurrent.textContent = `Current: ${selectedOption.label}`;
     }
 
+    function renderGuidedSupportPanel(section) {
+      if (
+        !branchPanel ||
+        !branchPanelTitle ||
+        !branchPanelText ||
+        !branchButtonGroup ||
+        !branchHelperBox ||
+        !branchHelperContent
+      ) {
+        return;
+      }
+
+      const guidedMode = getDiscoveryMode() === "guided";
+      const discoveryActive = isDiscoverySection(section);
+      const branch = getBranchConfig(section);
+      const selectedOption = getSelectedBranchOption(section);
+      const supportGroups = [];
+
+      if (branch?.helpText) {
+        supportGroups.push({
+          label: selectedOption ? `Current Path: ${selectedOption.label}` : "Branch Guidance",
+          lines: [selectedOption?.description || branch.helpText]
+        });
+      }
+
+      if (selectedOption?.helperLines?.length) {
+        supportGroups.push({
+          label: "Path Notes",
+          lines: selectedOption.helperLines
+        });
+      }
+
+      if (selectedOption?.promptNotes?.length) {
+        supportGroups.push({
+          label: "Delivery Notes",
+          lines: selectedOption.promptNotes
+        });
+      }
+
+      if (section.helperLines?.length) {
+        supportGroups.push({
+          label: "Bridge Notes",
+          lines: section.helperLines
+        });
+      }
+
+      if (section.prompt?.notes?.length) {
+        supportGroups.push({
+          label: "Advisor Notes",
+          lines: section.prompt.notes
+        });
+      }
+
+      const showPanel = discoveryActive && guidedMode && (section.prompt?.goal || supportGroups.length);
+
+      branchPanel.classList.toggle("hidden", !showPanel);
+
+      if (!showPanel) {
+        branchButtonGroup.innerHTML = "";
+        branchButtonGroup.classList.add("hidden");
+        branchHelperBox.classList.add("hidden");
+        branchHelperContent.innerHTML = "";
+        return;
+      }
+
+      branchPanelTitle.textContent = "Guided Support";
+      branchPanelText.textContent =
+        section.prompt?.goal || "Use the support notes below to guide the conversation.";
+      branchButtonGroup.innerHTML = "";
+      branchButtonGroup.classList.add("hidden");
+      branchHelperContent.innerHTML = "";
+
+      if (!supportGroups.length) {
+        branchHelperBox.classList.add("hidden");
+        return;
+      }
+
+      branchHelperBox.classList.remove("hidden");
+
+      supportGroups.forEach((group) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "space-y-2 rounded-xl border border-slate-800/70 bg-slate-950/60 p-3";
+
+        const label = document.createElement("p");
+        label.className = "text-xs font-semibold uppercase tracking-[0.14em] text-slate-500";
+        label.textContent = group.label;
+        wrapper.appendChild(label);
+
+        group.lines.forEach((line) => {
+          const lineEl = document.createElement("p");
+          lineEl.className = "text-sm leading-6 text-slate-300";
+          lineEl.textContent = line;
+          wrapper.appendChild(lineEl);
+        });
+
+        branchHelperContent.appendChild(wrapper);
+      });
+    }
+
     function keepActiveSidebarItemVisible() {
       const activeButton = document.querySelector(".section-button.sidebar-button-active");
       if (!activeButton || !sidebarNav) return;
@@ -2714,7 +2875,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       const previousSectionId = currentSection?.id;
       currentSection = section;
 
-      if (sectionNumber) sectionNumber.textContent = `Section ${section.id}`;
+      if (sectionNumber) sectionNumber.textContent = `Section ${getSectionDisplayNumber(section)}`;
       if (sectionTitle) sectionTitle.textContent = section.title;
 
       if (qaBadge) {
@@ -2733,12 +2894,22 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
           blockEl.className =
             block.type === "branch"
               ? `script-block script-branch-block${block.emphasize ? " script-branch-block-flash" : ""}`
+              : block.type === "quick-insert"
+                ? "script-block script-branch-block script-quick-insert-block"
               : "script-block script-base-block";
 
-          if (block.type === "branch" && block.heading) {
+          if ((block.type === "branch" || block.type === "quick-insert") && block.heading) {
             const label = document.createElement("div");
             label.className = "script-branch-label";
             label.textContent = block.heading;
+
+             if (block.status) {
+              const status = document.createElement("span");
+              status.className = "script-branch-status";
+              status.textContent = block.status;
+              label.appendChild(status);
+            }
+
             blockEl.appendChild(label);
           }
 
@@ -2748,6 +2919,35 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
             p.innerHTML = formatScriptLine(line);
             blockEl.appendChild(p);
           });
+
+          if (Array.isArray(block.levels) && block.levels.length) {
+            const levelsOpen =
+              Boolean(section?.modeSensitive || isDiscoverySection(section)) &&
+              getDiscoveryMode() === "guided";
+
+            block.levels.forEach((level) => {
+              const details = document.createElement("details");
+              details.className = "close-response-level";
+              details.open = levelsOpen;
+
+              const summary = document.createElement("summary");
+              summary.textContent = level.label;
+              details.appendChild(summary);
+
+              const content = document.createElement("div");
+              content.className = "close-response-level-content";
+
+              level.lines.forEach((line) => {
+                const p = document.createElement("p");
+                p.className = "script-line";
+                p.innerHTML = formatScriptLine(line);
+                content.appendChild(p);
+              });
+
+              details.appendChild(content);
+              blockEl.appendChild(details);
+            });
+          }
 
           scriptLines.appendChild(blockEl);
         });
@@ -2768,6 +2968,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       });
 
       renderBranchPanel(section);
+      renderGuidedSupportPanel(section);
       updateAdvisorCockpit(section);
       updateReferencePanel(section);
       updateDiscoveryFocusCard(section);
@@ -2811,7 +3012,9 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     }
 
     function clearCallSession() {
+      const discoveryMode = getDiscoveryMode();
       sessionState = createFreshSession();
+      sessionState.discoveryMode = discoveryMode;
 
       if (clientNameInput) clientNameInput.value = "";
       if (clientStateInput) clientStateInput.value = "";
@@ -2995,6 +3198,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
       if (!objectionsPanel) return;
 
       objectionsPanel.classList.remove("hidden");
+      updateObjectionsPlacement(currentSection);
       emphasizeToolkit();
       updateToolkitVisibility();
       objectionsPanel.scrollIntoView({
@@ -3011,6 +3215,7 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
 
     function hideObjectionsPanel() {
       objectionsPanel?.classList.add("hidden");
+      updateObjectionsPlacement(currentSection);
       relaxToolkit();
       updateToolkitVisibility();
     }
@@ -3079,6 +3284,13 @@ const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
     favoriteRebuttalButtons.forEach((button) => {
       button.addEventListener("click", () => {
         selectRebuttal(button.dataset.rebuttalId);
+      });
+    });
+
+    discoveryModeButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (!(button instanceof HTMLElement)) return;
+        setDiscoveryMode(button.dataset.discoveryMode || "performance");
       });
     });
 

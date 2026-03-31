@@ -48,9 +48,9 @@ function createPriceComparisonOptions() {
       title: "The Complete Solution",
       subtitle: "Solves the whole funding gap",
       bucketText:
-        "A protected bucket built to solve [PrimaryConcern] without forcing [BeneficiaryName] to lean on general savings.",
+        "A protected bucket built to solve [PrimaryConcern] without forcing [BeneficiaryName] to pull from general money.",
       recommendation: true,
-      badge: "Best Value"
+      badge: "Recommended"
     },
     {
       value: "3",
@@ -66,12 +66,31 @@ function createPriceComparisonOptions() {
 
 function createPricePresentationScript() {
   return [
-    "Based on what you shared with me, I want to show you three ways to build the protected bucket so [BeneficiaryName] is not pulling from general money when that day comes.",
-    "Option 1 is the larger protected bucket. It covers the funeral, the headstone, and leaves [BeneficiaryName] extra breathing room. That comes in at [Quote1] per month for [Coverage1] in coverage.",
-    "Option 2 is the complete solution. It gives [BeneficiaryName] the protected bucket that solves [PrimaryConcern] without reaching into general savings. That comes in at [Quote2] per month for [Coverage2] in coverage.",
-    "Option 3 is the safety net. It gives [BeneficiaryName] a smaller protected bucket for the basic funeral home costs, so they are not scrambling right away. That comes in at [Quote3] per month for [Coverage3] in coverage.",
-    "Most people I work with go with Option 2 because it solves the whole problem without breaking the bank. Which of those three sounds like the best fit for your budget?",
-    "[PAUSE]"
+    "Okay, [ClientName] -- I've got some really good news for you.",
+    "Everything came back the way we were hoping.",
+    "So what I'm going to do is walk you through what this looks like, and then we'll get you set up the right way.",
+    "Based on what you shared with me, what I want to do is show you three ways to build the protected bucket so [BeneficiaryName] is not pulling from general money when that day comes.",
+    "You still have that pen handy?",
+    "Option 1 is the larger protected bucket.",
+    "It covers the funeral, the headstone, and leaves [BeneficiaryName] some extra breathing room.",
+    "That comes in at [Quote1] per month for [Coverage1] in coverage.",
+    "Option 2 is the complete solution.",
+    "This gives [BeneficiaryName] the protected bucket that solves those first expenses without having to pull from general money.",
+    "That comes in at [Quote2] per month for [Coverage2] in coverage.",
+    "Option 3 is the safety net.",
+    "It gives [BeneficiaryName] a smaller protected bucket for the funeral home and those immediate first costs, so they're not starting from zero.",
+    "That comes in at [Quote3] per month for [Coverage3] in coverage.",
+    "[PAUSE]",
+    "Most people I work with end up right there in the middle because it actually solves the whole problem without stretching things too far.",
+    "Now just so I don't overdo it or underdo it for you...",
+    "Out of those, where does that feel most comfortable for you?"
+  ];
+}
+
+function createCloseResponseReinforcement() {
+  return [
+    "The main thing you said was making sure [BeneficiaryName] is taken care of...",
+    "That's what this does."
   ];
 }
 
@@ -79,18 +98,37 @@ export const scriptSections = [
   {
     id: 1,
     title: "Introduction",
+    phase: "discovery",
     qaRequired: false,
     script: [
-      "Hello [ClientName], thank you for speaking with me today.",
+      "Oh, did you say your name was [ClientName]?",
+      "Okay, wonderful. Well, I appreciate you taking the time to speak with me today, [ClientName].",
       "Before we get started, I do need to let you know this call may be recorded for quality and training purposes. That makes sense, right?",
-      "Allow me to introduce myself, my name is [AdvisorName], and I'm a Senior Licensed Life Insurance Advisor here with Insurance Supermarket.",
+      "Wonderful. It's kind of a staple nowadays.",
+      "Allow me to introduce myself. My name is [AdvisorName], and I'm your senior licensed life insurance advisor here with Insurance Supermarket.",
       "To touch on that briefly, we're a one-stop shop for life insurance, which is great for you because I'm licensed in [ClientState] to shop multiple carriers at once.",
-      "Instead of you calling several companies yourself, I compare them all and find the best option for your situation.",
+      "Instead of you calling all these companies yourself, I compare them and find the best option for your situation.",
       "That just makes things a lot easier to deal with, right?",
-      "Now, all the plans we work with are final expense policies that have been state-approved and designed specifically for folks over the age of 50.",
-      "As we go through this I'll explain everything step-by-step, and if anything doesn't make sense just stop me and I'll clarify it.",
+      "All the plans we're looking at are final expense policies that have been state-approved and designed specifically for folks over the age of 50.",
+      "As we go through this, I'll explain everything step by step, and if anything doesn't make sense, just stop me and I'll clarify it.",
       "Fair enough?"
     ],
+    performanceScript: [
+      "Oh, did you say your name was [ClientName]?",
+      "Okay, wonderful. Well, I appreciate you taking the time to speak with me today, [ClientName].",
+      "Before we get started, I do need to let you know this call may be recorded for quality and training purposes. That makes sense, right?",
+      "Wonderful. It's kind of a staple nowadays.",
+      "Allow me to introduce myself. My name is [AdvisorName], and I'm your senior licensed life insurance advisor here with Insurance Supermarket.",
+      "To touch on that briefly, we're a one-stop shop for life insurance, which is great for you because I'm licensed in [ClientState] to shop multiple carriers at once.",
+      "Instead of you calling all these companies yourself, I compare them and find the best option for your situation.",
+      "That just makes things a lot easier to deal with, right?",
+      "All the plans we're looking at are final expense policies that have been state-approved and designed specifically for folks over the age of 50.",
+      "Fair enough?"
+    ],
+    focus: {
+      reminder: "Start calm, clear, and confident.",
+      visualCue: "Slow down on the recording disclosure."
+    },
     prompt: {
       goal: "Set authority, trust, and compliance early",
       notes: [
@@ -102,70 +140,267 @@ export const scriptSections = [
   },
   {
     id: 2,
-    title: "Warm Discovery",
+    title: "Rapport",
+    phase: "discovery",
     qaRequired: false,
     script: [
-      "And [ClientName], I do want to respect your time, because I know it's important to you, just like it is to me.",
-      "So let me get right to the heart of this.",
-      "When you think about why you wanted to look into this, who comes to mind first?",
-      "What is their name?",
-      "Tell me a little about [BeneficiaryName]."
+      "Were you born and raised in [ClientState], or did you move there?",
+      "[PAUSE]",
+      "Very nice.",
+      "I've bounced around a little myself. I was in Arizona for a while, then Oregon, and now I'm out here in Oklahoma.",
+      "Still getting used to the tornadoes out here. Arizona definitely didn't prepare me for that part."
     ],
+    performanceScript: [
+      "Were you born and raised in [ClientState], or did you move there?",
+      "I've bounced around a little myself. Arizona, then Oregon, now Oklahoma.",
+      "Still getting used to the tornadoes out here. Arizona definitely didn't prepare me for that part."
+    ],
+    focus: {
+      reminder: "Keep this light, brief, and human.",
+      visualCue: "Create a quick reset, then move forward."
+    },
     prompt: {
-      goal: "Respect their time, then get directly to the person who matters most",
+      goal: "Create a quick human reset before discovery without drifting off track",
       notes: [
-        "Deliver the first two lines calmly and with respect.",
-        "Use their name as soon as you have it",
-        "Listen for warmth, responsibility, and emotional hooks you can revisit later.",
-        "PAUSE: Let them answer and sit in the silence."
+        "Deliver this calmly and with respect.",
+        "Do not over-chat here.",
+        "Use this as a short runway into the current coverage snapshot."
+      ]
+    }
+  },
+  {
+    id: 2.5,
+    title: "Current Coverage Snapshot",
+    phase: "discovery",
+    qaRequired: false,
+    script: [
+      "[ClientName], I definitely want to respect your time.",
+      "And since we're already on the topic of life insurance, let me ask -- what company are you currently with?"
+    ],
+    performanceScript: [
+      "[ClientName], I definitely want to respect your time.",
+      "And since we're already on the topic of life insurance, let me ask -- what company are you currently with?"
+    ],
+    focus: {
+      reminder: "Get a quick snapshot of what they already have before going deeper.",
+      visualCue: "Listen for personal coverage, term or work coverage, or no coverage."
+    },
+    branchControl: {
+      stateKey: "coverageStatus",
+      label: "Current Coverage Snapshot",
+      helpText: "Pick the branch that matches what they have in place right now.",
+      options: [
+        {
+          value: "has-coverage",
+          label: "Has Coverage",
+          description: "Use this when they already have coverage in place and you need the quick snapshot.",
+          script: [
+            "That's great to hear. A lot of the people I work with already have something in place, but usually it's either not enough, or not the right type of plan. What would you say it is for you?",
+            "About how much coverage do you have?",
+            "Roughly what are you paying a month?",
+            "And about how long ago did you get it?",
+            "Got it -- that helps.",
+            "Now let me get right to the heart of this..."
+          ],
+          performanceScript: [
+            "That's great to hear. A lot of the people I work with already have something in place, but usually it's either not enough, or not the right type of plan. What would you say it is for you?",
+            "About how much coverage do you have, what are you paying a month, and about how long ago did you get it?",
+            "Got it -- that helps.",
+            "Now let me get right to the heart of this..."
+          ],
+          helperLines: [
+            "Keep this conversational, not like an audit.",
+            "You want carrier, amount, premium, and when it started."
+          ],
+          promptNotes: [
+            "Use this to understand whether the current plan really fits."
+          ]
+        },
+        {
+          value: "term-or-work",
+          label: "Term / Work Coverage",
+          description: "Use this when the coverage sounds term-based or tied to work.",
+          script: [
+            "That's great to hear. A lot of the people I work with already have something in place, but usually it's either not enough, or not the right type of plan. What would you say it is for you?",
+            "About how much coverage do you have?",
+            "Roughly what are you paying a month?",
+            "And about how long ago did you get it?",
+            "Got it. Those can be great for temporary coverage, especially if it's through work, but they don't always stay with you forever. That's where what we're doing today is a little different.",
+            "Got it -- that helps.",
+            "Now let me get right to the heart of this..."
+          ],
+          performanceScript: [
+            "That's great to hear. A lot of the people I work with already have something in place, but usually it's either not enough, or not the right type of plan. What would you say it is for you?",
+            "About how much coverage do you have, what are you paying a month, and about how long ago did you get it?",
+            "Got it. Those can be great for temporary coverage, especially if it's through work, but they don't always stay with you forever. That's where what we're doing today is a little different.",
+            "Got it -- that helps.",
+            "Now let me get right to the heart of this..."
+          ],
+          helperLines: [
+            "Keep the positioning line soft and matter-of-fact.",
+            "Do not attack the existing coverage."
+          ],
+          promptNotes: [
+            "Make the difference clear without sounding salesy."
+          ]
+        },
+        {
+          value: "no-coverage",
+          label: "No Coverage",
+          description: "Use this when they do not have anything in place right now.",
+          script: [
+            "Okay, well luckily nothing has happened.",
+            "That's exactly why we're having this conversation now.",
+            "Have you ever had coverage before?",
+            "Got it -- that helps.",
+            "Now let me get right to the heart of this..."
+          ],
+          performanceScript: [
+            "Okay, well luckily nothing has happened.",
+            "That's exactly why we're having this conversation now.",
+            "Got it -- that helps.",
+            "Now let me get right to the heart of this..."
+          ],
+          helperLines: [
+            "Keep this calm and matter-of-fact.",
+            "The goal is urgency without pressure."
+          ],
+          promptNotes: [
+            "You only need enough here to understand the snapshot and move on."
+          ]
+        },
+        {
+          value: "unclear",
+          label: "Needs Clarifying",
+          description: "Use this when they are not sure what kind of coverage they have.",
+          script: [
+            "Is it something through work, or something you set up personally?",
+            "Got it -- that helps.",
+            "Now let me get right to the heart of this..."
+          ],
+          performanceScript: [
+            "Is it something through work, or something you set up personally?",
+            "Got it -- that helps.",
+            "Now let me get right to the heart of this..."
+          ],
+          helperLines: [
+            "Get enough clarity to know whether it's personal or temporary coverage.",
+            "Do not get bogged down in the weeds."
+          ],
+          promptNotes: [
+            "Keep this moving."
+          ]
+        }
+      ]
+    },
+    workspace: {
+      title: "Current Coverage Snapshot",
+      text: "Capture what they already have, what it costs, and whether it's personal, temporary, or nothing at all.",
+      groups: ["currentSupport"],
+      notes: {
+        key: "currentSupportNotes",
+        label: "Coverage Snapshot Notes",
+        placeholder: "Carrier, coverage amount, monthly premium, when it started, and whether it's personal, term, or through work"
+      }
+    },
+    prompt: {
+      goal: "Get a quick useful snapshot of current coverage before moving into the deeper why.",
+      notes: [
+        "Keep it conversational, not like an audit.",
+        "If they already have something, find out whether it's enough and what kind of plan it is.",
+        "Use the final tie-in to move naturally back into the person anchor."
       ]
     }
   },
   {
     id: 3,
-    title: "The Why",
+    title: "Person Anchor",
+    phase: "discovery",
     qaRequired: false,
     script: [
-      "What is it about [BeneficiaryName] that makes you want to get this taken care of?",
+      "When you think about why you wanted to look into this, who comes to mind first?",
+      "And what's their name?",
+      "Tell me a little more about [BeneficiaryName].",
+      "Got it... I hear that a lot.",
+      "Yeah, I've got family too, so I completely get that.",
       "Would [BeneficiaryName] probably be the one handling things if something happened?",
-      "Are they nearby, or are they a little ways out?",
-      "So really, this is about making things easier on [BeneficiaryName], right?"
+      "So this is really about making things easier on [BeneficiaryName], right?"
     ],
+    performanceScript: [
+      "When you think about why you wanted to look into this, who comes to mind first?",
+      "And what's their name?",
+      "Tell me a little more about [BeneficiaryName].",
+      "Would [BeneficiaryName] probably be the one handling things if something happened?"
+    ],
+    focus: {
+      reminder: "Capture the name and make the conversation about that person.",
+      visualCue: "Pause after they say the name."
+    },
+    workspace: {
+      title: "Person Anchor",
+      text: "Lock onto the person who matters most and the family context around them.",
+      groups: ["familyContext"],
+      notes: {
+        key: "familyContextNotes",
+        label: "Family / Call Notes",
+        placeholder: "Capture family details and any running notes you want to keep"
+      }
+    },
     prompt: {
-      goal: "Find the emotional reason first, then the practical family context around it",
+      goal: "Get to the person who matters most and anchor the conversation there",
       notes: [
-        "Let them explain why this person matters",
-        "Let them answer fully",
-        "Keep this warm, simple, and grounded"
+        "Keep it person-first and easy.",
+        "Use their name naturally once you have it.",
+        "Do not make this sound heavy or therapeutic."
       ]
     }
   },
   {
     id: 4,
-    title: "Life Experiences With Loss",
+    title: "Loss / Experience Path",
+    phase: "discovery",
     qaRequired: false,
     script: [
-      "Have you ever had to deal with losing someone close to you?"
+      "Have you ever had to deal with losing someone close to you before?"
     ],
+    performanceScript: [
+      "Have you ever had to deal with losing someone close to you before?"
+    ],
+    focus: {
+      reminder: "Be warm, but do not linger too long.",
+      visualCue: "Use memory if they have it; use gentle imagination if they do not."
+    },
     branchControl: {
       stateKey: "lossExperience",
-      label: "Loss Experience",
-      helpText: "Choose the path that matches whether they have lived through this personally.",
+      label: "Loss / Experience Path",
+      helpText: "Choose the path that matches whether they have lived through this personally yet.",
       options: [
         {
           value: "experienced-loss",
           label: "Experienced Loss",
-          description: "Use this when they have gone through losing someone close.",
+          description: "Use this when they have personally gone through a loss or helped handle what came next.",
           script: [
+            "How long ago was that?",
+            "If you don't mind me asking, what did they pass away from?",
+            "Wow, that must have been hard. I'm sorry.",
+            "Yeah... I actually went through something similar in my own family.",
             "When that happened, what was hardest on the family afterward?",
-            "Who ended up carrying most of it?",
-            "Was the pressure mostly emotional, mostly financial, or a little of both?",
-            "Did that experience shape how you think about this for [BeneficiaryName]?",
+            "Was that pressure mostly emotional, mostly financial, or a little of both?",
+            "Did that experience really shape how you think about this for [BeneficiaryName]?",
             "That kind of experience really stays with people, right?"
+          ],
+          performanceScript: [
+            "How long ago was that?",
+            "If you don't mind me asking, what did they pass away from?",
+            "Wow, that must have been hard. I'm sorry.",
+            "When that happened, what was hardest on the family afterward?",
+            "Was that pressure mostly emotional, mostly financial, or a little of both?",
+            "Did that experience really shape how you think about this for [BeneficiaryName]?"
           ],
           helperLines: [
             "Be warm here, but do not linger too long.",
-            "Let them tell you what mattered instead of filling the silence yourself."
+            "Let them answer it in their own words.",
+            "Do not stack extra emotional questions if they already gave you enough."
           ],
           promptNotes: [
             "Keep this gentle and brief."
@@ -173,17 +408,20 @@ export const scriptSections = [
         },
         {
           value: "no-personal-experience",
-          label: "No Personal Experience With Loss",
+          label: "No Personal Experience Yet",
           description: "Use this when they have not gone through it personally yet.",
           script: [
             "A lot of folks haven't had to deal with that personally yet.",
-            "If something unexpected happened, do you think [BeneficiaryName] would be the one trying to hold things together?",
-            "What do you think those first few days would feel like for [BeneficiaryName]?",
-            "That can put a lot on one person all at once, right?"
+            "Even still, that's usually why they want to get ahead of it so [BeneficiaryName] isn't the one trying to figure it out."
+          ],
+          performanceScript: [
+            "A lot of folks haven't had to deal with that personally yet.",
+            "Even still, that's usually why they want to get ahead of it."
           ],
           helperLines: [
             "Use gentle imagination here, not heavy emotion.",
-            "Keep this warm, simple, and easy to picture."
+            "Keep it short and move on once they give you enough.",
+            "Do not turn this into a second Paint the Picture section."
           ],
           promptNotes: [
             "Be warm here, but do not linger too long."
@@ -191,112 +429,192 @@ export const scriptSections = [
         }
       ]
     },
+    workspace: {
+      title: "Loss / Experience Path",
+      text: "Use their lived experience, or lack of it, to surface who would really be carrying the weight.",
+      groups: ["lossExperience"],
+      notes: {
+        key: "lossExperienceNotes",
+        label: "Loss Notes",
+        placeholder: "Who was lost, who handled things, and what felt hardest"
+      }
+    },
     prompt: {
       goal: "Help the client connect the topic to real life in a natural way",
       notes: [
-        "Be warm here, but do not linger too long",
-        "Keep this gentle and brief",
-        "Do not let this feel like therapy"
+        "Keep this gentle and brief.",
+        "Do not let this feel like therapy.",
+        "You only need one clear experience path here."
       ]
     }
   },
   {
     id: 5,
-    title: "The First 90 Days",
+    title: "Paint the Picture",
+    phase: "discovery",
     qaRequired: false,
     script: [
       "*slow down here*",
-      "If you weren't here tomorrow, what do you think the first couple of months would really look like for [BeneficiaryName]?",
-      "Who would be trying to keep up with the house payment, utilities, or any other monthly bills while everything is still fresh?",
-      "What would need to be handled right away so [BeneficiaryName] isn't making hard decisions while grieving?",
-      "Those first 90 days are usually where families feel the pressure the most, aren't they?"
+      "Yeah... and that's exactly why people start thinking about this a little differently.",
+      "Because once you've seen what that looks like on the other side, it hits different.",
+      "Imagine for a moment that [BeneficiaryName] just lost you, and they're sitting at the funeral home talking to the funeral director.",
+      "The funeral director slides over a piece of paper, and it's a big number.",
+      "And now [BeneficiaryName] is trying to figure out how to deal with it.",
+      "Do I pull money from here or there?",
+      "Do I need to ask friends or family for help?",
+      "In some cases families even turn to a GoFundMe because it can get rough.",
+      "That's a lot to deal with when someone is already grieving.",
+      "Now imagine a different scenario.",
+      "Same funeral home, same piece of paper, but instead of anxiety, [BeneficiaryName] has peace of mind knowing the financial side is handled.",
+      "Now they can actually focus on remembering you, the memories, the laughter, the talks, and go through the healing process instead of being overwhelmed by money."
     ],
+    performanceScript: [
+      "Imagine for a moment that [BeneficiaryName] just lost you, and they're sitting at the funeral home talking to the funeral director.",
+      "The funeral director slides over a piece of paper, and it's a big number.",
+      "And now [BeneficiaryName] is trying to figure out how to deal with it while they're already grieving.",
+      "Now imagine a different scenario, where the financial side is handled and [BeneficiaryName] can focus on remembering you instead of being overwhelmed by money."
+    ],
+    focus: {
+      reminder: "This is the emotional anchor. Slow down and let them picture it.",
+      visualCue: "Ask the picture question, then stop talking.",
+      highlightLabel: "Key Emotional Anchor"
+    },
+    workspace: {
+      title: "Paint the Picture",
+      text: "Let them describe the pressure window so the burden feels real, not abstract.",
+      groups: ["familyResponsibility"],
+      notes: {
+        key: "familyResponsibilityNotes",
+        label: "Picture Notes",
+        placeholder: "Capture what those first few months would really look like"
+      },
+      highlight: "paint-picture"
+    },
+    highlightStyle: "paint-picture",
     prompt: {
       goal: "Expose the real pressure window after a death without sounding clinical",
       notes: [
-        "Use consequence-based language instead of checklist questions",
-        "Let them describe the burden in their own words",
-        "Let them answer fully",
-        "Do not rush to solve it yet"
+        "Stay close to the picture and let it land.",
+        "Do not over-perform this section.",
+        "This is the emotional anchor before the practical conversation."
       ]
     }
   },
   {
     id: 6,
-    title: "Experience Path",
+    title: "Burial / Cremation",
+    phase: "discovery",
     qaRequired: false,
     script: [
-      "Let me ask you something important, because this usually shapes why people want to get this handled.",
-      "Have you ever had to help with a funeral or handle final arrangements for someone close to you?"
+      "Did you prefer a traditional burial or cremation for yourself?"
     ],
+    performanceScript: [
+      "Did you prefer a traditional burial or cremation for yourself?"
+    ],
+    focus: {
+      reminder: "Keep this practical and easy to answer.",
+      visualCue: "Listen for burial costs, cremation costs, or uncertainty."
+    },
     branchControl: {
-      stateKey: "funeralExperience",
-      label: "Experience Path",
-      helpText: "Pick the path that matches whether they have lived through this personally.",
+      stateKey: "arrangementPreference",
+      label: "Burial / Cremation",
+      helpText: "Pick the path that best matches how they are picturing the arrangements right now.",
       options: [
         {
-          value: "handled",
-          label: "Handled One",
-          description: "Use this when they have already lived through handling arrangements for someone.",
+          value: "burial",
+          label: "Burial",
+          description: "Use this when they are picturing burial or cemetery-related costs.",
           script: [
-            "Who was that for?",
-            "[PAUSE]",
-            "When you were going through that, what part of the process felt the most chaotic?",
-            "Was the money side already handled, or did the family have to figure that out under pressure too?",
-            "That kind of money pressure is exactly what [BeneficiaryName] should not have to deal with while they're grieving you."
+            "Okay. And with a traditional burial, depending on how simple or how extravagant everything is, you're usually looking somewhere around fifteen to twenty-five thousand.",
+            "So that number can get up there pretty quick."
+          ],
+          performanceScript: [
+            "With a traditional burial, depending on how simple or how extravagant everything is, you're usually looking somewhere around fifteen to twenty-five thousand."
           ],
           helperLines: [
-            "Let the silence sit after they name the person.",
-            "If they mention stress, ask what made it stressful before moving on.",
-            "Listen for friction like upfront payment, missing paperwork, family disagreement, or last-minute borrowing."
+            "Let burial stay concrete, not dramatic.",
+            "Keep it tied to the piece-of-paper moment you just painted."
           ],
           promptNotes: [
-            "Slow down here.",
-            "Do not rescue the silence after [PAUSE].",
-            "Mirror their wording when they describe the chaotic part."
+            "Keep this easy to picture.",
+            "Stay practical here."
           ]
         },
         {
-          value: "no-experience",
-          label: "No Experience",
-          description: "Use this when they have not personally had to help with arrangements yet.",
+          value: "cremation",
+          label: "Cremation",
+          description: "Use this when they are picturing cremation but still want the first expenses handled.",
           script: [
-            "A lot of people haven't had to face that personally until it's suddenly on them.",
-            "Think about [BeneficiaryName] for a second.",
-            "If they got that call tomorrow, would they know exactly who to call and where the money would come from?",
-            "Or would they be sitting at a kitchen table, upset, trying to figure out who to call, what needs to be paid first, and where the money is supposed to come from?",
-            "That uncertainty is the kind of burden we're trying to take off [BeneficiaryName]."
+            "Okay. And with cremation, depending on the memorial, service, and even travel details, you're usually somewhere around five to fifteen thousand.",
+            "So even that can still be a pretty real number for a family."
+          ],
+          performanceScript: [
+            "With cremation, depending on the memorial, service, and even travel details, you're usually somewhere around five to fifteen thousand."
           ],
           helperLines: [
-            "Keep this gentle, not dramatic.",
-            "Paint the picture, then stop talking.",
-            "Listen for hesitation, distance, or concern about who would really take charge."
+            "Keep this simple and practical.",
+            "Do not let cremation become a minimizing move."
           ],
           promptNotes: [
-            "Use [BeneficiaryName] naturally.",
-            "Ask the kitchen-table line slowly.",
-            "Let them answer fully before moving on."
+            "Tie this back to the same burden, not a different topic.",
+            "Keep [BeneficiaryName] in the center of the answer."
+          ]
+        },
+        {
+          value: "undecided",
+          label: "Still Open",
+          description: "Use this when they have not decided yet and you just want to keep it practical.",
+          script: [
+            "If you haven't decided yet, that's okay.",
+            "I just want you to know burial can run around fifteen to twenty-five thousand, and cremation can still be around five to fifteen depending on the memorial, service, and travel details."
+          ],
+          performanceScript: [
+            "That's okay. Burial can run around fifteen to twenty-five thousand, and cremation can still be around five to fifteen depending on the memorial, service, and travel details."
+          ],
+          helperLines: [
+            "Do not force a decision here.",
+            "Use this to keep the funding conversation concrete."
+          ],
+          promptNotes: [
+            "Keep it practical and move forward."
           ]
         }
       ]
     },
+    workspace: {
+      title: "Burial / Cremation",
+      text: "Capture how they picture the arrangements so the next funding conversation stays concrete.",
+      groups: ["burialCremation"],
+      notes: {
+        key: "funeralConcern",
+        label: "Burial / Cremation Notes",
+        placeholder: "Burial, cremation, service, cemetery, or arrangement concerns"
+      }
+    },
     prompt: {
-      goal: "Use memory or imagination to surface the friction, uncertainty, and pressure a family feels without a plan.",
+      goal: "Clarify the arrangement picture before you move into the funding conversation.",
       notes: [
-        "You are not collecting funeral details for their own sake.",
-        "You are helping them see what [BeneficiaryName] could be left carrying."
+        "Keep this practical, not technical.",
+        "You are not trying to lock the exact plan.",
+        "Use the cost range to make the picture real."
       ]
     }
   },
   {
     id: 7,
-    title: "The Funding Gap",
+    title: "Funding Gap",
+    phase: "discovery",
     qaRequired: false,
     script: [
-      "When families are in that situation, it's rarely just one bill.",
-      "It's the funeral home, the transport, the service, and those last household expenses that don't stop just because someone passed.",
       "If something happened tomorrow, is there money specifically set aside for this, or would [BeneficiaryName] have to pull from general savings?"
     ],
+    performanceScript: [
+      "If something happened tomorrow, is there money specifically set aside for this, or would [BeneficiaryName] have to pull from general savings?"
+    ],
+    focus: {
+      reminder: "Separate protected money from general money.",
+      visualCue: "Do not argue with savings. Clarify what that money is really meant to do."
+    },
     branchControl: {
       stateKey: "fundingStatus",
       label: "Funding Gap",
@@ -307,19 +625,23 @@ export const scriptSections = [
           label: "Money Set Aside",
           description: "Use this when they do have money available, but it may just be general savings.",
           script: [
-            "That's good. Most people don't have that kind of cushion.",
-            "Let me ask you this. Is that money already protected and meant just for this, or is it part of general savings that could get pulled in different directions?",
-            "General money is meant to stay with your family. Protected money is meant to handle the bills.",
-            "My job is to help make sure the money meant for [BeneficiaryName] stays with [BeneficiaryName]."
+            "Okay, that's good.",
+            "Is that money really set aside for this, or is it more just general money that would have to be used if something happened?",
+            "The reason I ask is sometimes people do have money, but it's not really separated out for this.",
+            "Yeah... and that's what I see most of the time.",
+            "It just ends up putting everything on one person all at once."
+          ],
+          performanceScript: [
+            "Okay, that's good. Is that money really set aside for this, or is it more just general money that would have to be used if something happened?"
           ],
           helperLines: [
             "Do not argue with their savings.",
-            "Create the distinction between general savings and protected money.",
-            "Listen for phrases like 'it's just in the bank,' 'we'd pull from savings,' or 'it's not really earmarked.'"
+            "Keep the distinction simple and human.",
+            "Listen for whether it is truly earmarked or just sitting in a general account."
           ],
           promptNotes: [
             "Keep this calm and matter-of-fact.",
-            "The goal is not to discredit savings. The goal is to separate family money from bill money."
+            "Do not make this sound salesy."
           ]
         },
         {
@@ -327,19 +649,21 @@ export const scriptSections = [
           label: "Would Scramble",
           description: "Use this when they admit the family would have to figure it out under pressure.",
           script: [
-            "I appreciate you being real about that. That's exactly why this matters.",
-            "When there isn't a plan, the family has to make financial decisions at the same time they're carrying the emotional weight of losing you.",
-            "That just puts [BeneficiaryName] under decision pressure at the worst possible moment.",
-            "I'd rather help you put something in place than leave [BeneficiaryName] to sort that out alone."
+            "Okay, and that's exactly the kind of spot people are trying to avoid.",
+            "When nothing is specifically set aside, [BeneficiaryName] ends up trying to figure it out while they're already grieving."
+          ],
+          performanceScript: [
+            "Okay, and that's exactly the kind of spot people are trying to avoid.",
+            "When nothing is specifically set aside, [BeneficiaryName] ends up trying to figure it out while they're already grieving."
           ],
           helperLines: [
             "Validate their honesty before moving forward.",
-            "Listen for burden words like 'scramble,' 'borrow,' 'credit card,' 'figure it out,' or 'hope for the best.'",
+            "Keep the pressure practical, not dramatic.",
             "If they sound embarrassed, lower your tone and slow down."
           ],
           promptNotes: [
             "This is about pressure, not blame.",
-            "Let the emotional and financial burden sit together."
+            "Keep it conversational."
           ]
         }
       ]
@@ -350,16 +674,45 @@ export const scriptSections = [
         "Even if they have money, explore whether it is truly meant for this.",
         "Keep [BeneficiaryName] at the center of the conversation."
       ]
+    },
+    workspace: {
+      title: "Funding Gap",
+      text: "Separate general savings from money that is actually protected for those first expenses.",
+      groups: ["familyResponsibility", "currentSupport"],
+      notes: {
+        key: "currentSupportNotes",
+        label: "Funding Notes",
+        placeholder: "What is already set aside and where would the pressure still land?"
+      }
     }
   },
   {
     id: 8,
     title: "Concern Confirmation",
+    phase: "discovery",
     qaRequired: false,
     script: [
-      "So the main thing you'd want is making sure [BeneficiaryName] doesn't have to scramble with [PrimaryConcern], right?",
+      "So the main thing you want is making sure [BeneficiaryName] doesn't have to scramble with those first expenses, right?",
       "And if that part were already handled, that just makes things a lot easier to deal with, right?"
     ],
+    performanceScript: [
+      "So the main thing you want is making sure [BeneficiaryName] doesn't have to scramble with those first expenses, right?",
+      "And if that part were already handled, that just makes things a lot easier to deal with, right?"
+    ],
+    focus: {
+      reminder: "Lock one clear burden before the bridge.",
+      visualCue: "Get agreement in simple language."
+    },
+    workspace: {
+      title: "Concern Confirmation",
+      text: "Confirm the main burden in simple language before you pivot.",
+      groups: ["protectionPriority"],
+      notes: {
+        key: "protectionPriorityNotes",
+        label: "Bridge Notes",
+        placeholder: "Capture the one pressure point you want to carry into the bridge"
+      }
+    },
     prompt: {
       goal: "Confirm the priority in the client's own language before moving on",
       notes: [
@@ -370,65 +723,38 @@ export const scriptSections = [
     }
   },
   {
-    id: 9,
-    title: "Bridge Tone",
-    qaRequired: false,
-    script: [
-      "Pick the tone below for how you want to deliver the next section.",
-      "Section 10 is the actual spoken bridge into the medical questions."
-    ],
-    branchControl: {
-      stateKey: "bridgeStyle",
-      label: "Bridge Tone",
-      helpText: "Choose the delivery style you want, then use section 10 as the read-aloud hinge.",
-      replaceBaseOnSelect: true,
-      options: [
-        {
-          value: "steady-bridge",
-          label: "Steady Bridge",
-          description: "Use this when you want the next section to land calm and direct.",
-          script: [
-            "Advisor cue: keep your tone calm, direct, and matter-of-fact."
-          ]
-        },
-        {
-          value: "soft-bridge",
-          label: "Soft Bridge",
-          description: "Use this when you want the next section to feel gentler and more reassuring.",
-          script: [
-            "Advisor cue: lower your tone and make the transition feel reassuring, not procedural."
-          ]
-        },
-        {
-          value: "guided-bridge",
-          label: "Guided Bridge",
-          description: "Use this when the client is engaged and ready for you to lead them forward clearly.",
-          script: [
-            "Advisor cue: sound certain and lead them step-by-step into the next part."
-          ]
-        }
-      ]
-    },
-    prompt: {
-      goal: "Set the delivery style for the hinge bridge without repeating the bridge itself.",
-      notes: [
-        "This is advisor guidance, not a second spoken pivot.",
-        "Section 10 should be the only full read-aloud bridge into medical.",
-        "Choose the tone that sounds most human in the moment."
-      ]
-    }
-  },
-  {
     id: 10,
-    title: "The Hinge Bridge",
+    title: "Hinge Bridge",
+    phase: "discovery",
     qaRequired: false,
     script: [
-      "Based on what you've shared with me, the main thing is making sure [BeneficiaryName] isn't left trying to sort this out while they're grieving you, right?",
+      "Based on what you shared with me, the main thing is making sure [BeneficiaryName] isn't left trying to sort this out while they're grieving you, right?",
       "[PAUSE]",
       "So from here, my job is to narrow this down the right way for you.",
       "The only way I can point you toward the right programs is by asking a few medical questions first.",
       "Once I have that, I can guide you toward the protection options that fit what you want handled for [BeneficiaryName]."
     ],
+    performanceScript: [
+      "Based on what you shared with me, the main thing is making sure [BeneficiaryName] isn't left trying to sort this out while they're grieving you, right?",
+      "[PAUSE]",
+      "So from here, my job is to narrow this down the right way for you.",
+      "The only way I can point you toward the right programs is by asking a few medical questions first.",
+      "Once I have that, I can guide you toward the protection options that fit what you want handled for [BeneficiaryName]."
+    ],
+    focus: {
+      reminder: "This is the pivot from emotion to process.",
+      visualCue: "Pause after the tie-down and wait for agreement."
+    },
+    workspace: {
+      title: "Hinge Bridge",
+      text: "Tie back to the burden they named, then earn the move into medical.",
+      groups: ["discoveryBridge"],
+      notes: {
+        key: "protectionPriorityNotes",
+        label: "Bridge Notes",
+        placeholder: "Capture the one pressure point you want to carry into the bridge"
+      }
+    },
     prompt: {
       goal: "Make the move into medical feel earned, personal, and necessary.",
       notes: [
@@ -450,17 +776,30 @@ export const scriptSections = [
   },
   {
     id: 11,
-    title: "Trust Bridge",
+    title: "Trust Bridge / Qualification Setup",
+    phase: "discovery",
     qaRequired: false,
     script: [
-      "[ClientName], I can see how much you care about your family, and it's clear you don't want them left carrying this burden.",
-      "Now that I understand your situation, my goal is to see if we can get you qualified for one of the preferred plans. These plans aren't available to everyone, but if you do qualify, you'll be in great hands.",
-      "While I pull that up, go ahead and grab a pen and paper and let me know when you are ready.",
-      "I'm going to walk you through everything, step by step, so you know exactly what you're getting.",
+      "[ClientName], I really do appreciate the fact that you care enough about your family to get ahead of this.",
+      "What I'm going to do from here is see if I can get you qualified for one of the preferred plans.",
+      "If you do qualify, that's usually where the better value is.",
+      "While I pull that up, go ahead and grab a pen and paper and let me know when you're ready.",
       "My name again is [AdvisorName].",
-      "My direct line, if you have any questions or if there's anything I can help with, is [AdvisorPhone].",
-      "My National Producer Number is [AdvisorNPN]. If you ever need to verify my credentials, that number is the easiest way to do it."
+      "My direct line, if you need me for anything at all, is [AdvisorPhone].",
+      "My National Producer Number is [AdvisorNPN]. That's just my license number if you ever want to verify who you're speaking with.",
+      "And as your licensed advisor, I'll walk you through everything step by step."
     ],
+    performanceScript: [
+      "[ClientName], I really do appreciate the fact that you care enough about your family to get ahead of this.",
+      "What I'm going to do from here is see if I can get you qualified for one of the preferred plans.",
+      "While I pull that up, go ahead and grab a pen and paper and let me know when you're ready.",
+      "My name again is [AdvisorName], and my direct line is [AdvisorPhone].",
+      "My National Producer Number is [AdvisorNPN]. That's just my license number if you ever want to verify who you're speaking with."
+    ],
+    focus: {
+      reminder: "Keep this calm, confident, and reassuring.",
+      visualCue: "Qualification should feel like the next logical step, not a pitch reset."
+    },
     prompt: {
       goal: "Build trust and set up the qualification phase",
       notes: [
@@ -866,59 +1205,107 @@ export const scriptSections = [
       ]
     },
     prompt: {
-      goal: "Use a three-option comparison to anchor the budget and guide them toward the complete protected-bucket solution",
+      goal: "Use a three-option comparison that feels natural, clear, and easy to decide on",
       notes: [
-        "Option 1 is the anchor, Option 2 is the target, and Option 3 is the safety net.",
-        "Keep the language centered on protected money versus general money.",
+        "Lead with the good news, then walk them through what this looks like and get them set up the right way.",
+        "Show Option 1 first, Option 2 second, and Option 3 third.",
+        "Frame the middle as where most people land because it solves the problem without stretching them too far.",
+        "Close by asking where it feels most comfortable so you do not overdo it or underdo it.",
         "Use the quick objection buttons the moment they give you a reason not to move forward."
       ]
     }
   },
   {
     id: 21,
-    title: "Same-Day Commitment",
+    title: "Close Response Flow",
     qaRequired: false,
+    modeSensitive: true,
     script: [
-      "Select the current product route to load the right commitment language."
+      "Select the response path that matches what the client just said."
     ],
+    performanceScript: [],
     branchControl: {
-      stateKey: "productOutcome",
-      display: false,
+      stateKey: "closeResponseFlow",
+      label: "Close Response Flow",
       replaceBaseOnSelect: true,
       options: [
-        createProductOutcomeOption("easy-life", {
+        {
+          value: "picked-middle",
+          label: "Picked Middle Option",
+          status: "MOVE FORWARD",
           script: [
-            "Now most people want to start their coverage right away, so we'll go ahead and start yours today.",
-            "I'll collect your banking information shortly, right after we start by confirming your beneficiary specifics to make sure your [BeneficiaryRelationship] is set to receive these insurance payouts.",
-            "The biggest thing with life insurance is getting the first payment set up right away so there's no delay in protecting [BeneficiaryName]."
+            "Perfect -- that's exactly where most people land.",
+            "Let's go ahead and get that set up so [BeneficiaryName] is protected starting today."
           ]
-        }),
-        createProductOutcomeOption("emc-graded", {
+        },
+        {
+          value: "picked-lower",
+          label: "Picked Lower Option",
           script: [
-            "Now most people want to start their coverage right away, so we'll go ahead and start yours today.",
-            "I'll collect your banking information shortly, right after we start by confirming your beneficiary specifics to make sure your [BeneficiaryRelationship] is set to receive these insurance payouts.",
-            "The biggest thing with life insurance is getting the first payment set up right away so there's no delay in protecting [BeneficiaryName]."
-          ]
-        }),
-        createProductOutcomeOption("eternal-legacy", {
+            "Got it -- we can definitely do that.",
+            "Just so you know, that will handle the basics...",
+            "It just doesn't give quite the same breathing room we talked about.",
+            "(pause)",
+            "Is that what you feel comfortable with?"
+          ],
+          reinforcementLines: createCloseResponseReinforcement()
+        },
+        {
+          value: "picked-higher",
+          label: "Picked Higher Option",
           script: [
-            "Now most people want to start their coverage right away, so we'll go ahead and start yours today.",
-            "I'll collect your banking information shortly, right after we start by confirming your beneficiary specifics to make sure your [BeneficiaryRelationship] is set to receive these insurance payouts.",
-            "The biggest thing with life insurance is getting the first payment set up right away so there's no delay in protecting [BeneficiaryName]."
-          ]
-        }),
-        createProductOutcomeOption("no-option", {
+            "Got it -- that gives them full coverage and then some.",
+            "Most people just don't want to stretch themselves too far monthly...",
+            "(pause)",
+            "Is that something you feel comfortable maintaining long-term?"
+          ],
+          reinforcementLines: createCloseResponseReinforcement()
+        },
+        {
+          value: "hesitation",
+          label: "Hesitation / Unsure",
           script: [
-            "There is no same-day start on a no-option route. Use your follow-up, callback, or disposition workflow instead."
-          ]
-        })
-      ]
-    },
-    prompt: {
-      goal: "Normalize same-day action so payment today feels like the default move",
-      notes: [
-        "This is the commitment bridge into banking.",
-        "Same-day pay is the operational priority here."
+            "No worries.",
+            "Is it the monthly you're thinking about...",
+            "or just making sure we're not overdoing it?"
+          ],
+          reinforcementLines: createCloseResponseReinforcement()
+        },
+        {
+          value: "need-to-think",
+          label: "Need To Think About It",
+          levels: [
+            {
+              label: "Level 1",
+              lines: [
+                "I hear you.",
+                "Usually when someone says that, it's just because something doesn't feel 100% yet.",
+                "Is it the monthly... or just wanting to make sure this is the right fit?"
+              ]
+            },
+            {
+              label: "Level 2",
+              lines: [
+                "Got it.",
+                "Let me ask you something.",
+                "If everything we went over makes sense...",
+                "what specifically would you need to think through before getting this in place for [BeneficiaryName]?"
+              ]
+            },
+            {
+              label: "Level 3",
+              lines: [
+                "Look, I'll be straight with you.",
+                "The whole point here is making sure [BeneficiaryName] doesn't get stuck dealing with this financially.",
+                "We already found something that works.",
+                "And the longer this sits, the more likely it is something changes on you.",
+                "(pause)",
+                "So let's just take care of this today while it's here and while it fits."
+              ]
+            }
+          ],
+          reinforcementLines: createCloseResponseReinforcement()
+        }
       ]
     }
   },
@@ -936,23 +1323,23 @@ export const scriptSections = [
       options: [
         createProductOutcomeOption("easy-life", {
           script: [
-            "Now let's get the setup details locked in the right way.",
-            "We'll confirm your beneficiary specifics, choose the draft day you want, and make sure everything is lined up correctly for the policy.",
-            "Right after that, we'll finish the banking information so your same-day start keeps moving in the right direction."
+            "Perfect -- now let's get the final details locked in the right way.",
+            "We'll confirm your beneficiary details, lock in your draft date, and make sure everything is lined up correctly for the policy.",
+            "Then right after that, we'll finish the banking information so your start date keeps moving in the right direction."
           ]
         }),
         createProductOutcomeOption("emc-graded", {
           script: [
-            "Now let's get the setup details locked in the right way.",
-            "We'll confirm your beneficiary specifics, choose the draft day you want, and make sure everything is lined up correctly for the policy.",
-            "Right after that, we'll finish the banking information so your same-day start keeps moving in the right direction."
+            "Perfect -- now let's get the final details locked in the right way.",
+            "We'll confirm your beneficiary details, lock in your draft date, and make sure everything is lined up correctly for the policy.",
+            "Then right after that, we'll finish the banking information so your start date keeps moving in the right direction."
           ]
         }),
         createProductOutcomeOption("eternal-legacy", {
           script: [
-            "Now let's get the setup details locked in the right way.",
-            "We'll confirm your beneficiary specifics, choose the draft day you want, and make sure everything is lined up correctly for the policy.",
-            "Right after that, we'll finish the banking information so your same-day start keeps moving in the right direction."
+            "Perfect -- now let's get the final details locked in the right way.",
+            "We'll confirm your beneficiary details, lock in your draft date, and make sure everything is lined up correctly for the policy.",
+            "Then right after that, we'll finish the banking information so your start date keeps moving in the right direction."
           ]
         }),
         createProductOutcomeOption("no-option", {
@@ -963,10 +1350,11 @@ export const scriptSections = [
       ]
     },
     prompt: {
-      goal: "Move the client from commitment into beneficiary, draft-day, and payment setup",
+      goal: "Move the client from commitment into beneficiary, draft-date, and payment setup",
       notes: [
         "Do not reopen the whole sale here.",
-        "Keep momentum tight and procedural."
+        "Keep momentum tight and procedural.",
+        "Set the draft date instead of framing it like an open-ended choice."
       ]
     }
   },

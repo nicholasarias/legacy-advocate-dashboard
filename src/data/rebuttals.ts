@@ -96,7 +96,7 @@ export const rebuttals = [
     keywords: ["think about it", "think", "not sure"],
     favorite: true,
     response:
-      "I understand. Usually when someone says that, it means one of two things — either they’re unsure about the price or they’re unsure about the need. Which one is it for you? That makes sense. The reason most people don’t wait is because nothing improves by waiting. The price doesn’t get better, age doesn’t get better, and health doesn’t get better. So let’s make the responsible move while you qualify and put the smallest plan in place today."
+      "Level 1\nI hear you.\nUsually when someone says that, it's just because something doesn't feel 100% yet.\nIs it the monthly, or just wanting to make sure this is the right fit?\n\nLevel 2\nGot it.\nLet me ask you something.\nIf everything we went over makes sense, what specifically would you need to think through before getting this in place for [BeneficiaryName]?\n\nLevel 3\nLook, I'll be straight with you.\nThe whole point here is making sure [BeneficiaryName] doesn't get stuck dealing with this financially.\nWe already found something that works.\nAnd the longer this sits, the more likely it is that something changes on you.\nSo let's just take care of this today while it's here and while it fits."
   },
   {
     id: 12,
