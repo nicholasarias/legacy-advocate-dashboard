@@ -113,18 +113,6 @@ export const scriptSections = [
       "As we go through this, I'll explain everything step by step, and if anything doesn't make sense, just stop me and I'll clarify it.",
       "Fair enough?"
     ],
-    performanceScript: [
-      "Oh, did you say your name was [ClientName]?",
-      "Okay, wonderful. Well, I appreciate you taking the time to speak with me today, [ClientName].",
-      "Before we get started, I do need to let you know this call may be recorded for quality and training purposes. That makes sense, right?",
-      "Wonderful. It's kind of a staple nowadays.",
-      "Allow me to introduce myself. My name is [AdvisorName], and I'm your senior licensed life insurance advisor here with Insurance Supermarket.",
-      "To touch on that briefly, we're a one-stop shop for life insurance, which is great for you because I'm licensed in [ClientState] to shop multiple carriers at once.",
-      "Instead of you calling all these companies yourself, I compare them and find the best option for your situation.",
-      "That just makes things a lot easier to deal with, right?",
-      "All the plans we're looking at are final expense policies that have been state-approved and designed specifically for folks over the age of 50.",
-      "Fair enough?"
-    ],
     focus: {
       reminder: "Start calm, clear, and confident.",
       visualCue: "Slow down on the recording disclosure."
@@ -150,11 +138,6 @@ export const scriptSections = [
       "I've bounced around a little myself. I was in Arizona for a while, then Oregon, and now I'm out here in Oklahoma.",
       "Still getting used to the tornadoes out here. Arizona definitely didn't prepare me for that part."
     ],
-    performanceScript: [
-      "Were you born and raised in [ClientState], or did you move there?",
-      "I've bounced around a little myself. Arizona, then Oregon, now Oklahoma.",
-      "Still getting used to the tornadoes out here. Arizona definitely didn't prepare me for that part."
-    ],
     focus: {
       reminder: "Keep this light, brief, and human.",
       visualCue: "Create a quick reset, then move forward."
@@ -174,10 +157,6 @@ export const scriptSections = [
     phase: "discovery",
     qaRequired: false,
     script: [
-      "[ClientName], I definitely want to respect your time.",
-      "And since we're already on the topic of life insurance, let me ask -- what company are you currently with?"
-    ],
-    performanceScript: [
       "[ClientName], I definitely want to respect your time.",
       "And since we're already on the topic of life insurance, let me ask -- what company are you currently with?"
     ],
@@ -202,12 +181,6 @@ export const scriptSections = [
             "Got it -- that helps.",
             "Now let me get right to the heart of this..."
           ],
-          performanceScript: [
-            "That's great to hear. A lot of the people I work with already have something in place, but usually it's either not enough, or not the right type of plan. What would you say it is for you?",
-            "About how much coverage do you have, what are you paying a month, and about how long ago did you get it?",
-            "Got it -- that helps.",
-            "Now let me get right to the heart of this..."
-          ],
           helperLines: [
             "Keep this conversational, not like an audit.",
             "You want carrier, amount, premium, and when it started."
@@ -225,13 +198,6 @@ export const scriptSections = [
             "About how much coverage do you have?",
             "Roughly what are you paying a month?",
             "And about how long ago did you get it?",
-            "Got it. Those can be great for temporary coverage, especially if it's through work, but they don't always stay with you forever. That's where what we're doing today is a little different.",
-            "Got it -- that helps.",
-            "Now let me get right to the heart of this..."
-          ],
-          performanceScript: [
-            "That's great to hear. A lot of the people I work with already have something in place, but usually it's either not enough, or not the right type of plan. What would you say it is for you?",
-            "About how much coverage do you have, what are you paying a month, and about how long ago did you get it?",
             "Got it. Those can be great for temporary coverage, especially if it's through work, but they don't always stay with you forever. That's where what we're doing today is a little different.",
             "Got it -- that helps.",
             "Now let me get right to the heart of this..."
@@ -255,12 +221,6 @@ export const scriptSections = [
             "Got it -- that helps.",
             "Now let me get right to the heart of this..."
           ],
-          performanceScript: [
-            "Okay, well luckily nothing has happened.",
-            "That's exactly why we're having this conversation now.",
-            "Got it -- that helps.",
-            "Now let me get right to the heart of this..."
-          ],
           helperLines: [
             "Keep this calm and matter-of-fact.",
             "The goal is urgency without pressure."
@@ -274,11 +234,6 @@ export const scriptSections = [
           label: "Needs Clarifying",
           description: "Use this when they are not sure what kind of coverage they have.",
           script: [
-            "Is it something through work, or something you set up personally?",
-            "Got it -- that helps.",
-            "Now let me get right to the heart of this..."
-          ],
-          performanceScript: [
             "Is it something through work, or something you set up personally?",
             "Got it -- that helps.",
             "Now let me get right to the heart of this..."
@@ -326,12 +281,6 @@ export const scriptSections = [
       "Would [BeneficiaryName] probably be the one handling things if something happened?",
       "So this is really about making things easier on [BeneficiaryName], right?"
     ],
-    performanceScript: [
-      "When you think about why you wanted to look into this, who comes to mind first?",
-      "And what's their name?",
-      "Tell me a little more about [BeneficiaryName].",
-      "Would [BeneficiaryName] probably be the one handling things if something happened?"
-    ],
     focus: {
       reminder: "Capture the name and make the conversation about that person.",
       visualCue: "Pause after they say the name."
@@ -363,9 +312,6 @@ export const scriptSections = [
     script: [
       "Have you ever had to deal with losing someone close to you before?"
     ],
-    performanceScript: [
-      "Have you ever had to deal with losing someone close to you before?"
-    ],
     focus: {
       reminder: "Be warm, but do not linger too long.",
       visualCue: "Use memory if they have it; use gentle imagination if they do not."
@@ -389,14 +335,6 @@ export const scriptSections = [
             "Did that experience really shape how you think about this for [BeneficiaryName]?",
             "That kind of experience really stays with people, right?"
           ],
-          performanceScript: [
-            "How long ago was that?",
-            "If you don't mind me asking, what did they pass away from?",
-            "Wow, that must have been hard. I'm sorry.",
-            "When that happened, what was hardest on the family afterward?",
-            "Was that pressure mostly emotional, mostly financial, or a little of both?",
-            "Did that experience really shape how you think about this for [BeneficiaryName]?"
-          ],
           helperLines: [
             "Be warm here, but do not linger too long.",
             "Let them answer it in their own words.",
@@ -413,10 +351,6 @@ export const scriptSections = [
           script: [
             "A lot of folks haven't had to deal with that personally yet.",
             "Even still, that's usually why they want to get ahead of it so [BeneficiaryName] isn't the one trying to figure it out."
-          ],
-          performanceScript: [
-            "A lot of folks haven't had to deal with that personally yet.",
-            "Even still, that's usually why they want to get ahead of it."
           ],
           helperLines: [
             "Use gentle imagination here, not heavy emotion.",
@@ -468,12 +402,6 @@ export const scriptSections = [
       "Same funeral home, same piece of paper, but instead of anxiety, [BeneficiaryName] has peace of mind knowing the financial side is handled.",
       "Now they can actually focus on remembering you, the memories, the laughter, the talks, and go through the healing process instead of being overwhelmed by money."
     ],
-    performanceScript: [
-      "Imagine for a moment that [BeneficiaryName] just lost you, and they're sitting at the funeral home talking to the funeral director.",
-      "The funeral director slides over a piece of paper, and it's a big number.",
-      "And now [BeneficiaryName] is trying to figure out how to deal with it while they're already grieving.",
-      "Now imagine a different scenario, where the financial side is handled and [BeneficiaryName] can focus on remembering you instead of being overwhelmed by money."
-    ],
     focus: {
       reminder: "This is the emotional anchor. Slow down and let them picture it.",
       visualCue: "Ask the picture question, then stop talking.",
@@ -508,9 +436,6 @@ export const scriptSections = [
     script: [
       "Did you prefer a traditional burial or cremation for yourself?"
     ],
-    performanceScript: [
-      "Did you prefer a traditional burial or cremation for yourself?"
-    ],
     focus: {
       reminder: "Keep this practical and easy to answer.",
       visualCue: "Listen for burial costs, cremation costs, or uncertainty."
@@ -527,9 +452,6 @@ export const scriptSections = [
           script: [
             "Okay. And with a traditional burial, depending on how simple or how extravagant everything is, you're usually looking somewhere around fifteen to twenty-five thousand.",
             "So that number can get up there pretty quick."
-          ],
-          performanceScript: [
-            "With a traditional burial, depending on how simple or how extravagant everything is, you're usually looking somewhere around fifteen to twenty-five thousand."
           ],
           helperLines: [
             "Let burial stay concrete, not dramatic.",
@@ -548,9 +470,6 @@ export const scriptSections = [
             "Okay. And with cremation, depending on the memorial, service, and even travel details, you're usually somewhere around five to fifteen thousand.",
             "So even that can still be a pretty real number for a family."
           ],
-          performanceScript: [
-            "With cremation, depending on the memorial, service, and even travel details, you're usually somewhere around five to fifteen thousand."
-          ],
           helperLines: [
             "Keep this simple and practical.",
             "Do not let cremation become a minimizing move."
@@ -567,9 +486,6 @@ export const scriptSections = [
           script: [
             "If you haven't decided yet, that's okay.",
             "I just want you to know burial can run around fifteen to twenty-five thousand, and cremation can still be around five to fifteen depending on the memorial, service, and travel details."
-          ],
-          performanceScript: [
-            "That's okay. Burial can run around fifteen to twenty-five thousand, and cremation can still be around five to fifteen depending on the memorial, service, and travel details."
           ],
           helperLines: [
             "Do not force a decision here.",
@@ -608,9 +524,6 @@ export const scriptSections = [
     script: [
       "If something happened tomorrow, is there money specifically set aside for this, or would [BeneficiaryName] have to pull from general savings?"
     ],
-    performanceScript: [
-      "If something happened tomorrow, is there money specifically set aside for this, or would [BeneficiaryName] have to pull from general savings?"
-    ],
     focus: {
       reminder: "Separate protected money from general money.",
       visualCue: "Do not argue with savings. Clarify what that money is really meant to do."
@@ -631,9 +544,6 @@ export const scriptSections = [
             "Yeah... and that's what I see most of the time.",
             "It just ends up putting everything on one person all at once."
           ],
-          performanceScript: [
-            "Okay, that's good. Is that money really set aside for this, or is it more just general money that would have to be used if something happened?"
-          ],
           helperLines: [
             "Do not argue with their savings.",
             "Keep the distinction simple and human.",
@@ -649,10 +559,6 @@ export const scriptSections = [
           label: "Would Scramble",
           description: "Use this when they admit the family would have to figure it out under pressure.",
           script: [
-            "Okay, and that's exactly the kind of spot people are trying to avoid.",
-            "When nothing is specifically set aside, [BeneficiaryName] ends up trying to figure it out while they're already grieving."
-          ],
-          performanceScript: [
             "Okay, and that's exactly the kind of spot people are trying to avoid.",
             "When nothing is specifically set aside, [BeneficiaryName] ends up trying to figure it out while they're already grieving."
           ],
@@ -695,10 +601,6 @@ export const scriptSections = [
       "So the main thing you want is making sure [BeneficiaryName] doesn't have to scramble with those first expenses, right?",
       "And if that part were already handled, that just makes things a lot easier to deal with, right?"
     ],
-    performanceScript: [
-      "So the main thing you want is making sure [BeneficiaryName] doesn't have to scramble with those first expenses, right?",
-      "And if that part were already handled, that just makes things a lot easier to deal with, right?"
-    ],
     focus: {
       reminder: "Lock one clear burden before the bridge.",
       visualCue: "Get agreement in simple language."
@@ -728,13 +630,6 @@ export const scriptSections = [
     phase: "discovery",
     qaRequired: false,
     script: [
-      "Based on what you shared with me, the main thing is making sure [BeneficiaryName] isn't left trying to sort this out while they're grieving you, right?",
-      "[PAUSE]",
-      "So from here, my job is to narrow this down the right way for you.",
-      "The only way I can point you toward the right programs is by asking a few medical questions first.",
-      "Once I have that, I can guide you toward the protection options that fit what you want handled for [BeneficiaryName]."
-    ],
-    performanceScript: [
       "Based on what you shared with me, the main thing is making sure [BeneficiaryName] isn't left trying to sort this out while they're grieving you, right?",
       "[PAUSE]",
       "So from here, my job is to narrow this down the right way for you.",
@@ -788,13 +683,6 @@ export const scriptSections = [
       "My direct line, if you need me for anything at all, is [AdvisorPhone].",
       "My National Producer Number is [AdvisorNPN]. That's just my license number if you ever want to verify who you're speaking with.",
       "And as your licensed advisor, I'll walk you through everything step by step."
-    ],
-    performanceScript: [
-      "[ClientName], I really do appreciate the fact that you care enough about your family to get ahead of this.",
-      "What I'm going to do from here is see if I can get you qualified for one of the preferred plans.",
-      "While I pull that up, go ahead and grab a pen and paper and let me know when you're ready.",
-      "My name again is [AdvisorName], and my direct line is [AdvisorPhone].",
-      "My National Producer Number is [AdvisorNPN]. That's just my license number if you ever want to verify who you're speaking with."
     ],
     focus: {
       reminder: "Keep this calm, confident, and reassuring.",
@@ -1219,11 +1107,9 @@ export const scriptSections = [
     id: 21,
     title: "Close Response Flow",
     qaRequired: false,
-    modeSensitive: true,
     script: [
       "Select the response path that matches what the client just said."
     ],
-    performanceScript: [],
     branchControl: {
       stateKey: "closeResponseFlow",
       label: "Close Response Flow",

@@ -6,7 +6,8 @@ import { scriptSections } from "../data/scriptSections";
 import { rebuttals } from "../data/rebuttals";
 
 const firstSection = scriptSections[0];
-const favoriteRebuttals = rebuttals.filter((item) => item.favorite);
+const initialObjectionRebuttals = rebuttals.filter((item) => item.stageGroup === "early");
+const favoriteRebuttals = initialObjectionRebuttals.filter((item) => item.favorite);
 const firstSectionDisplayNumber = 1;
 ---
 
@@ -110,11 +111,7 @@ const firstSectionDisplayNumber = 1;
               Quick Path
             </p>
           </div>
-          <p
-            id="branch-toolbar-current"
-            data-guided-copy
-            class="text-xs font-semibold uppercase tracking-[0.14em] text-emerald-300"
-          >
+          <p id="branch-toolbar-current" class="text-xs font-semibold uppercase tracking-[0.14em] text-emerald-300">
             Pick the line that fits the conversation.
           </p>
         </div>
@@ -146,9 +143,9 @@ const firstSectionDisplayNumber = 1;
           <div id="objections-panel" class="panel hidden p-6">
             <div class="flex items-center justify-between gap-3">
               <div>
-                <h3 class="panel-title !mb-0">Master Rebuttals</h3>
+                <h3 class="panel-title !mb-0">Objections</h3>
                 <p class="mt-2 text-sm text-gray-300">
-                  Search, select, and read rebuttals without leaving the main workflow.
+                  Relevant objections for this stage of the call, with the next line to keep the process moving.
                 </p>
               </div>
               <button id="close-objections-button" type="button" class="btn">Close</button>
@@ -167,14 +164,14 @@ const firstSectionDisplayNumber = 1;
 
               <div>
                 <p class="text-xs uppercase tracking-wide text-gray-500">Favorites</p>
-                <div class="mt-3 flex flex-wrap gap-2">
+                <div id="favorite-rebuttals" class="mt-3 flex flex-wrap gap-2">
                   {favoriteRebuttals.map((item) => (
                     <button
                       type="button"
                       class="favorite-rebuttal-button rounded-full border border-gray-700 bg-gray-950 px-3 py-1 text-xs text-gray-200 hover:bg-gray-800"
                       data-rebuttal-id={item.id}
                     >
-                      {item.title}
+                      {item.label}
                     </button>
                   ))}
                 </div>
@@ -185,13 +182,13 @@ const firstSectionDisplayNumber = 1;
               <div>
                 <p class="text-xs uppercase tracking-wide text-gray-500">Results</p>
                 <div id="objection-results" class="mt-3 max-h-80 space-y-2 overflow-y-auto">
-                  {rebuttals.slice(0, 10).map((item) => (
+                  {initialObjectionRebuttals.slice(0, 10).map((item) => (
                     <button
                       type="button"
                       class="rebuttal-result-button block w-full rounded-lg border border-gray-800 bg-gray-950 px-3 py-2 text-left text-sm text-gray-200 hover:bg-gray-800"
                       data-rebuttal-id={item.id}
                     >
-                      <div class="font-semibold">{item.title}</div>
+                      <div class="font-semibold">{item.label}</div>
                       <div class="mt-1 text-xs text-gray-400">{item.category}</div>
                     </button>
                   ))}
@@ -209,35 +206,67 @@ const firstSectionDisplayNumber = 1;
                 >
                   Your selected rebuttal will appear here.
                 </div>
+                <div class="mt-5 border-t border-gray-800 pt-4">
+                  <p class="text-xs uppercase tracking-wide text-gray-500">Move Forward</p>
+                  <div
+                    id="selected-rebuttal-follow-up"
+                    class="mt-2 whitespace-pre-wrap text-sm font-medium leading-6 text-emerald-100"
+                  >
+                    The next step line will appear here.
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           <div id="script-panel" class="panel p-6 xl:p-7">
             <h3 class="panel-title">Read Aloud Script</h3>
-            <div id="discovery-focus-shell" class="discovery-focus-shell hidden">
-              <div class="discovery-focus-actions">
-                <div class="discovery-mode-shell">
-                  <p class="discovery-focus-kicker">View Mode</p>
-                  <div class="discovery-mode-button-group">
-                    <button
-                      id="discovery-mode-performance"
-                      type="button"
-                      class="discovery-mode-button discovery-mode-button-active"
-                      data-discovery-mode="performance"
-                    >
-                      Performance
-                    </button>
-                    <button
-                      id="discovery-mode-guided"
-                      type="button"
-                      class="discovery-mode-button discovery-mode-button-idle"
-                      data-discovery-mode="guided"
-                    >
-                      Guided
-                    </button>
-                  </div>
+            <div id="objection-trigger-bar" class="mb-5 space-y-3">
+              <div class="flex flex-wrap items-center gap-2">
+                <p class="text-xs uppercase tracking-wide text-gray-500">Quick Objection Triggers</p>
+                <div
+                  id="objection-suggestion-badge"
+                  class="hidden rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold text-emerald-200"
+                >
+                  Suggested: Think About It
                 </div>
+              </div>
+
+              <div class="flex flex-wrap gap-2">
+                <button type="button" class="objection-trigger-button" data-trigger-key="think-about-it">
+                  Think About It
+                </button>
+                <button type="button" class="objection-trigger-button" data-trigger-key="price">
+                  Price
+                </button>
+                <button type="button" class="objection-trigger-button" data-trigger-key="already-covered">
+                  Already Covered
+                </button>
+                <button type="button" class="objection-trigger-button" data-trigger-key="spouse">
+                  Spouse
+                </button>
+                <button type="button" class="objection-trigger-button" data-trigger-key="call-back">
+                  Call Back
+                </button>
+                <button type="button" class="objection-trigger-button" data-trigger-key="need-to-pray">
+                  Need To Pray
+                </button>
+                <button
+                  type="button"
+                  class="objection-trigger-button"
+                  data-trigger-key="need-to-talk-to-family"
+                >
+                  Need To Talk To Family
+                </button>
+                <button type="button" class="objection-trigger-button" data-trigger-key="not-sure">
+                  Not Sure
+                </button>
+                <button type="button" class="objection-trigger-button" data-trigger-key="employer-coverage">
+                  Employer Coverage
+                </button>
+                <button type="button" class="objection-trigger-button" data-trigger-key="term-policy">
+                  Term Policy
+                </button>
               </div>
             </div>
             <div id="script-lines" class="space-y-5 text-xl leading-relaxed text-gray-100">
@@ -469,22 +498,22 @@ const firstSectionDisplayNumber = 1;
             <div id="pricing-objections-group" class="mt-5">
               <p class="text-xs uppercase tracking-wide text-gray-500">Quick Objections</p>
               <div class="mt-3 flex flex-wrap gap-2">
-                <button type="button" class="quick-objection-button" data-rebuttal-id="1">
+                <button type="button" class="quick-objection-button" data-rebuttal-id="201">
                   Can't Afford It
                 </button>
-                <button type="button" class="quick-objection-button" data-rebuttal-id="11">
+                <button type="button" class="quick-objection-button" data-rebuttal-id="203">
                   Need To Think
                 </button>
-                <button type="button" class="quick-objection-button" data-rebuttal-id="16">
+                <button type="button" class="quick-objection-button" data-rebuttal-id="204">
                   Talk To Spouse
                 </button>
-                <button type="button" class="quick-objection-button" data-rebuttal-id="21">
+                <button type="button" class="quick-objection-button" data-rebuttal-id="211">
                   Has Savings
                 </button>
-                <button type="button" class="quick-objection-button" data-rebuttal-id="24">
+                <button type="button" class="quick-objection-button" data-rebuttal-id="212">
                   Family Will Pay
                 </button>
-                <button type="button" class="quick-objection-button" data-rebuttal-id="12">
+                <button type="button" class="quick-objection-button" data-rebuttal-id="207">
                   Call Back Later
                 </button>
               </div>
@@ -555,7 +584,7 @@ const firstSectionDisplayNumber = 1;
           <div id="prompt-panel" class="panel p-5" data-quiet-during-discovery="true">
             <div>
               <h3 class="panel-title !mb-2">Quick Notes</h3>
-              <p data-guided-copy class="text-sm text-gray-300">
+              <p class="text-sm text-gray-300">
                 Keep the main concern and your running notes close while you move through the call.
               </p>
             </div>
@@ -583,12 +612,12 @@ const firstSectionDisplayNumber = 1;
           <div id="discovery-workspace-panel" class="panel hidden p-6" data-quiet-during-discovery="true">
             <div>
               <h3 id="discovery-panel-title" class="panel-title !mb-2">Discovery Workspace</h3>
-              <p id="discovery-panel-text" data-guided-copy class="text-sm text-gray-300">
+              <p id="discovery-panel-text" class="text-sm text-gray-300">
                 Capture family priorities and notes while you listen.
               </p>
             </div>
 
-            <div data-guided-copy class="mt-4 rounded-xl border border-sky-500/20 bg-sky-950/20 p-4">
+            <div class="mt-4 rounded-xl border border-sky-500/20 bg-sky-950/20 p-4">
               <p class="text-xs uppercase tracking-wide text-sky-200">Visual Cue</p>
               <p class="mt-2 text-sm text-sky-50">
                 PAUSE: Let them answer and sit in the silence.
@@ -841,7 +870,7 @@ const firstSectionDisplayNumber = 1;
                 </p>
               </div>
 
-              <div data-guided-copy class="rounded-xl border border-gray-800 bg-gray-950 p-4">
+              <div class="rounded-xl border border-gray-800 bg-gray-950 p-4">
                 <p class="text-xs uppercase tracking-wide text-gray-500">Next Step</p>
                 <p class="mt-2 text-sm text-gray-300">
                   Use the bridge above, then continue into the medical qualification step. The pricing workspace stays connected later in the call.
@@ -1005,6 +1034,165 @@ const firstSectionDisplayNumber = 1;
     const SETTINGS_STORAGE_KEY = "legacy_dashboard_settings_v2";
     const STATS_STORAGE_KEY = "legacy_dashboard_stats_v7";
     const SESSION_STORAGE_KEY = "legacy_dashboard_session_v5";
+    const TALK_SIGNAL_WORDS = ["talk", "ask", "speak", "check", "run"];
+    const SPOUSE_SIGNAL_WORDS = ["spouse", "wife", "husband"];
+    const FAMILY_SIGNAL_WORDS = [
+      "family",
+      "son",
+      "daughter",
+      "brother",
+      "sister",
+      "kids",
+      "children",
+      "mom",
+      "dad",
+      "mother",
+      "father",
+      "parents"
+    ];
+    const objectionTriggerDefinitions = [
+      {
+        key: "think-about-it",
+        label: "Think About It",
+        rebuttalIds: {
+          early: 108,
+          late: 203
+        },
+        resultQueries: {
+          early: "think about it later",
+          late: "need to think about it"
+        },
+        phrases: ["think about it", "let me think", "sleep on it", "think it over", "later", "tomorrow"]
+      },
+      {
+        key: "price",
+        label: "Price",
+        rebuttalIds: {
+          early: 113,
+          late: 201
+        },
+        resultQueries: {
+          early: "price concern",
+          late: "too expensive"
+        },
+        phrases: ["too much", "too expensive", "can t afford", "cant afford", "expensive", "price", "cost"],
+        terms: ["afford", "cheaper", "monthly"]
+      },
+      {
+        key: "already-covered",
+        label: "Already Covered",
+        rebuttalIds: {
+          early: 101,
+          late: 202
+        },
+        resultQueries: {
+          early: "already have coverage",
+          late: "already have insurance"
+        },
+        phrases: ["already have", "already covered", "already insured", "have insurance", "have life insurance"],
+        terms: ["policy", "covered", "insurance"]
+      },
+      {
+        key: "spouse",
+        label: "Spouse",
+        rebuttalIds: {
+          early: 109,
+          late: 204
+        },
+        resultQueries: {
+          early: "talk to spouse",
+          late: "talk to spouse"
+        },
+        phrases: ["talk to my spouse", "talk to my wife", "talk to my husband", "my spouse", "my wife", "my husband"],
+        terms: ["spouse", "wife", "husband"],
+        matcher: "spouse-talk"
+      },
+      {
+        key: "call-back",
+        label: "Call Back",
+        rebuttalIds: {
+          early: 105,
+          late: 207
+        },
+        resultQueries: {
+          early: "busy right now",
+          late: "call me back"
+        },
+        phrases: ["call me back", "call back", "callback", "another time", "later today"]
+      },
+      {
+        key: "need-to-pray",
+        label: "Need To Pray",
+        rebuttalIds: {
+          early: 111,
+          late: 206
+        },
+        resultQueries: {
+          early: "need to pray about it",
+          late: "need to pray about it"
+        },
+        phrases: ["need to pray", "want to pray", "pray about it", "prayer"],
+        terms: ["pray", "prayer"]
+      },
+      {
+        key: "need-to-talk-to-family",
+        label: "Need To Talk To Family",
+        rebuttalIds: {
+          early: 110,
+          late: 205
+        },
+        resultQueries: {
+          early: "talk to family",
+          late: "talk to family"
+        },
+        phrases: ["talk to family", "talk to my family", "ask family", "need to ask my family"],
+        matcher: "family-talk"
+      },
+      {
+        key: "not-sure",
+        label: "Not Sure",
+        rebuttalIds: {
+          early: 114,
+          late: 213
+        },
+        resultQueries: {
+          early: "not sure",
+          late: "not sure"
+        },
+        phrases: ["not sure", "unsure", "do not know", "don t know", "dont know", "not certain"]
+      },
+      {
+        key: "employer-coverage",
+        label: "Employer Coverage",
+        rebuttalIds: {
+          early: 102,
+          late: 209
+        },
+        resultQueries: {
+          early: "through work already",
+          late: "employer coverage"
+        },
+        phrases: ["through work", "through my job", "job coverage", "work coverage", "employer coverage", "employee benefits"],
+        terms: ["employer", "benefits", "job"]
+      },
+      {
+        key: "term-policy",
+        label: "Term Policy",
+        rebuttalIds: {
+          early: 112,
+          late: 210
+        },
+        resultQueries: {
+          early: "term policy",
+          late: "term policy"
+        },
+        phrases: ["term policy", "term life", "term insurance"],
+        terms: ["term"]
+      }
+    ];
+    const objectionTriggerDefinitionMap = Object.fromEntries(
+      objectionTriggerDefinitions.map((definition) => [definition.key, definition])
+    );
 
     function createEmptyBranchSelections() {
       return {
@@ -1078,7 +1266,6 @@ const firstSectionDisplayNumber = 1;
     function createFreshSession() {
       return {
         currentSectionId: scriptSections[0]?.id ?? 1,
-        discoveryMode: "performance",
         notes: "",
         outcome: "",
         clientName: "",
@@ -1175,8 +1362,6 @@ const firstSectionDisplayNumber = 1;
 
         return {
           currentSectionId,
-          discoveryMode:
-            parsed.discoveryMode === "guided" ? "guided" : "performance",
           notes: String(parsed.notes ?? parsedDiscovery.familyContextNotes ?? ""),
           outcome: String(parsed.outcome ?? ""),
           clientName: String(parsed.clientName ?? ""),
@@ -1270,7 +1455,6 @@ const firstSectionDisplayNumber = 1;
         SESSION_STORAGE_KEY,
         JSON.stringify({
           currentSectionId: currentSection.id,
-          discoveryMode: sessionState.discoveryMode,
           notes: familyContextNotesInput?.value ?? sessionState.discovery.familyContextNotes ?? "",
           outcome: sessionState.outcome,
           clientName: clientNameInput?.value ?? "",
@@ -1506,10 +1690,6 @@ const firstSectionDisplayNumber = 1;
       return index === -1 ? String(section?.id ?? "") : String(index + 1);
     }
 
-    function getDiscoveryMode() {
-      return sessionState.discoveryMode === "guided" ? "guided" : "performance";
-    }
-
     let timerSeconds = 0;
     let timerInterval = null;
 
@@ -1518,8 +1698,6 @@ const firstSectionDisplayNumber = 1;
     const sectionsDrawer = document.getElementById("sections-drawer");
     const sectionsBackdrop = document.getElementById("sections-backdrop");
     const toggleSectionsButton = document.getElementById("toggle-sections-button");
-    const favoriteRebuttalButtons = document.querySelectorAll(".favorite-rebuttal-button");
-
     const clientNameInput = document.getElementById("clientName");
     const clientStateInput = document.getElementById("clientState");
     const beneficiaryNameInput = document.getElementById("beneficiaryName");
@@ -1546,9 +1724,6 @@ const firstSectionDisplayNumber = 1;
     const referencePersonReadout = document.getElementById("reference-person-readout");
     const referenceWhyReadout = document.getElementById("reference-why-readout");
     const quietDuringDiscoveryPanels = document.querySelectorAll("[data-quiet-during-discovery]");
-    const discoveryFocusShell = document.getElementById("discovery-focus-shell");
-    const discoveryModeButtons = document.querySelectorAll("[data-discovery-mode]");
-    const guidedCopyNodes = document.querySelectorAll("[data-guided-copy]");
     const discoveryInlineNotesShell = document.getElementById("discovery-inline-notes-shell");
     const discoveryInlineNotesLabel = document.getElementById("discovery-inline-notes-label");
     const discoveryInlineNotesInput = document.getElementById("discovery-inline-notes-input");
@@ -1657,9 +1832,13 @@ const firstSectionDisplayNumber = 1;
     const objectionsPanel = document.getElementById("objections-panel");
 
     const objectionSearch = document.getElementById("objection-search");
+    const favoriteRebuttalsContainer = document.getElementById("favorite-rebuttals");
     const objectionResults = document.getElementById("objection-results");
     const selectedRebuttalTitle = document.getElementById("selected-rebuttal-title");
     const selectedRebuttalBody = document.getElementById("selected-rebuttal-body");
+    const selectedRebuttalFollowUp = document.getElementById("selected-rebuttal-follow-up");
+    const objectionTriggerButtons = document.querySelectorAll(".objection-trigger-button");
+    const objectionSuggestionBadge = document.getElementById("objection-suggestion-badge");
 
     const settingsModal = document.getElementById("settings-modal");
     const openSettingsButton = document.getElementById("open-settings-button");
@@ -1670,6 +1849,7 @@ const firstSectionDisplayNumber = 1;
     const settingsAdvisorNpn = document.getElementById("settings-advisor-npn");
     const settingsSalesGoal = document.getElementById("settings-sales-goal");
     const settingsApGoal = document.getElementById("settings-ap-goal");
+    const PRICE_PRESENTATION_SECTION_ID = 20;
 
     function configureCockpitLayout() {
       if (hudColumn && scriptPanel && scriptPanel.parentElement !== hudColumn) {
@@ -1697,13 +1877,70 @@ const firstSectionDisplayNumber = 1;
       }
     }
 
+    function isAtOrAfterPricePresentation(section = currentSection) {
+      return Number(section?.id ?? 0) >= PRICE_PRESENTATION_SECTION_ID;
+    }
+
+    function getObjectionStageGroup(section = currentSection) {
+      return isAtOrAfterPricePresentation(section) ? "late" : "early";
+    }
+
+    function isRebuttalRelevantForSection(rebuttal, section = currentSection) {
+      if (!rebuttal) return false;
+
+      const sectionId = Number(section?.id ?? 0);
+
+      if (rebuttal.stageGroup !== getObjectionStageGroup(section)) {
+        return false;
+      }
+
+      if (Array.isArray(rebuttal.sectionIds) && rebuttal.sectionIds.length) {
+        return rebuttal.sectionIds.includes(sectionId);
+      }
+
+      if (Array.isArray(rebuttal.sectionRange) && rebuttal.sectionRange.length === 2) {
+        return sectionId >= rebuttal.sectionRange[0] && sectionId <= rebuttal.sectionRange[1];
+      }
+
+      return true;
+    }
+
+    function getRelevantRebuttals(section = currentSection) {
+      return rebuttals.filter((item) => isRebuttalRelevantForSection(item, section));
+    }
+
+    function getRelevantFavoriteRebuttals(section = currentSection) {
+      return getRelevantRebuttals(section).filter((item) => item.favorite);
+    }
+
+    function updatePromptPanelPlacement(section = currentSection) {
+      if (!secondaryRail || !promptPanel) {
+        return;
+      }
+
+      const afterPricing = isAtOrAfterPricePresentation(section);
+
+      promptPanel.classList.toggle("prompt-panel-secondary", afterPricing);
+
+      if (afterPricing) {
+        if (promptPanel.parentElement !== secondaryRail || promptPanel !== secondaryRail.lastElementChild) {
+          secondaryRail.appendChild(promptPanel);
+        }
+        return;
+      }
+
+      if (promptPanel.parentElement !== secondaryRail || promptPanel !== secondaryRail.firstElementChild) {
+        secondaryRail.prepend(promptPanel);
+      }
+    }
+
     function shouldDockObjectionsPanel(section = currentSection) {
       return Boolean(
         section?.id === 20 &&
           getBranchSelection("productOutcome") !== "no-option" &&
           objectionsPanel &&
           pricingObjectionsPanelHost &&
-          toolkitColumn
+          secondaryRail
       );
     }
 
@@ -1716,15 +1953,33 @@ const firstSectionDisplayNumber = 1;
     }
 
     function updateObjectionsPlacement(section = currentSection) {
-      if (!objectionsPanel || !toolkitColumn || !pricingObjectionsPanelHost) {
+      if (!objectionsPanel || !secondaryRail || !pricingObjectionsPanelHost) {
         return;
       }
 
       const dockInPricing = shouldDockObjectionsPanel(section);
-      const targetParent = dockInPricing ? pricingObjectionsPanelHost : toolkitColumn;
+      const targetParent = dockInPricing ? pricingObjectionsPanelHost : secondaryRail;
 
       if (objectionsPanel.parentElement !== targetParent) {
         targetParent.appendChild(objectionsPanel);
+      }
+
+      if (!dockInPricing) {
+        const afterPricing = isAtOrAfterPricePresentation(section);
+
+        if (afterPricing) {
+          if (promptPanel?.parentElement === secondaryRail) {
+            secondaryRail.insertBefore(objectionsPanel, promptPanel);
+          } else if (secondaryRail.firstElementChild !== objectionsPanel) {
+            secondaryRail.prepend(objectionsPanel);
+          }
+        } else if (promptPanel?.parentElement === secondaryRail) {
+          if (promptPanel.nextElementSibling !== objectionsPanel) {
+            promptPanel.insertAdjacentElement("afterend", objectionsPanel);
+          }
+        } else if (secondaryRail.firstElementChild !== objectionsPanel) {
+          secondaryRail.prepend(objectionsPanel);
+        }
       }
 
       objectionsPanel.classList.toggle("objections-panel-docked", dockInPricing);
@@ -1748,6 +2003,7 @@ const firstSectionDisplayNumber = 1;
     }
 
     configureCockpitLayout();
+    updatePromptPanelPlacement();
     updateObjectionsPlacement();
     updateToolkitVisibility();
 
@@ -1805,7 +2061,10 @@ const firstSectionDisplayNumber = 1;
     if (beneficiaryPhoneInput) beneficiaryPhoneInput.value = sessionState.beneficiaryPhone;
     setImpactCardSelectionUI(sessionState.discovery.primaryConcern);
 
-    let activeRebuttalId = 1;
+    let activeRebuttalId = 101;
+    let activeObjectionTriggerKey = "";
+    let suggestedObjectionTriggerKey = "";
+    let latestObjectionNoteSignal = "";
     let pendingBranchHighlight = null;
     let toolkitHighlightTimeout = null;
 
@@ -1833,7 +2092,7 @@ const firstSectionDisplayNumber = 1;
     }
 
     function emphasizeToolkit(transient = false) {
-      if (!toolkitColumn || isObjectionsDockedInPricing()) return;
+      if (!toolkitColumn || objectionsPanel?.parentElement !== toolkitColumn) return;
 
       toolkitColumn.classList.add("toolkit-column-active");
 
@@ -1864,6 +2123,143 @@ const firstSectionDisplayNumber = 1;
       const minutes = Math.floor(totalSeconds / 60);
       const seconds = totalSeconds % 60;
       return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    }
+
+    function normalizeObjectionSignalText(value) {
+      return String(value || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function tokenSetFromText(value) {
+      return new Set(normalizeObjectionSignalText(value).split(" ").filter(Boolean));
+    }
+
+    function tokenSetHasAny(tokenSet, values) {
+      return values.some((value) => tokenSet.has(value));
+    }
+
+    function getObjectionTriggerMatcherScore(definition, tokenSet) {
+      if (definition.matcher === "spouse-talk") {
+        return tokenSetHasAny(tokenSet, TALK_SIGNAL_WORDS) && tokenSetHasAny(tokenSet, SPOUSE_SIGNAL_WORDS) ? 3 : 0;
+      }
+
+      if (definition.matcher === "family-talk") {
+        return tokenSetHasAny(tokenSet, TALK_SIGNAL_WORDS) && tokenSetHasAny(tokenSet, FAMILY_SIGNAL_WORDS) ? 3 : 0;
+      }
+
+      return 0;
+    }
+
+    function findMatchingObjectionTrigger(text, source = "notes") {
+      const normalizedText = normalizeObjectionSignalText(text);
+      if (!normalizedText) return null;
+
+      const tokenSet = tokenSetFromText(normalizedText);
+      const threshold = source === "search" ? 1 : 3;
+      const currentStageGroup = getObjectionStageGroup();
+      let bestMatch = null;
+
+      objectionTriggerDefinitions.forEach((definition) => {
+        if (!definition.rebuttalIds?.[currentStageGroup]) {
+          return;
+        }
+
+        let score = 0;
+
+        (definition.phrases || []).forEach((phrase) => {
+          if (normalizedText.includes(phrase)) {
+            score += 3;
+          }
+        });
+
+        (definition.terms || []).forEach((term) => {
+          if (tokenSet.has(term)) {
+            score += 1;
+          }
+        });
+
+        score += getObjectionTriggerMatcherScore(definition, tokenSet);
+
+        if (!bestMatch || score > bestMatch.score) {
+          bestMatch = {
+            definition,
+            score
+          };
+        }
+      });
+
+      if (!bestMatch || bestMatch.score < threshold) {
+        return null;
+      }
+
+      return bestMatch.definition;
+    }
+
+    function updateObjectionTriggerUI() {
+      objectionTriggerButtons.forEach((button) => {
+        if (!(button instanceof HTMLElement)) return;
+
+        const triggerKey = button.dataset.triggerKey || "";
+        const isActive = triggerKey === activeObjectionTriggerKey;
+        const isSuggested = triggerKey === suggestedObjectionTriggerKey && !isActive;
+
+        button.classList.toggle("objection-trigger-button-active", isActive);
+        button.classList.toggle("objection-trigger-button-suggested", isSuggested);
+        button.setAttribute("aria-pressed", String(isActive));
+      });
+
+      if (!objectionSuggestionBadge) {
+        return;
+      }
+
+      if (!suggestedObjectionTriggerKey) {
+        objectionSuggestionBadge.classList.add("hidden");
+        return;
+      }
+
+      const definition = objectionTriggerDefinitionMap[suggestedObjectionTriggerKey];
+
+      if (!definition) {
+        objectionSuggestionBadge.classList.add("hidden");
+        return;
+      }
+
+      objectionSuggestionBadge.textContent = `Suggested: ${definition.label}`;
+      objectionSuggestionBadge.classList.remove("hidden");
+    }
+
+    function refreshObjectionTriggerSuggestion() {
+      const searchText = objectionSearch?.value.trim() || "";
+      const match = findMatchingObjectionTrigger(
+        searchText || latestObjectionNoteSignal,
+        searchText ? "search" : "notes"
+      );
+
+      suggestedObjectionTriggerKey = match?.key || "";
+      updateObjectionTriggerUI();
+    }
+
+    function applyObjectionTrigger(triggerKey) {
+      const definition = objectionTriggerDefinitionMap[triggerKey];
+      const currentStageGroup = getObjectionStageGroup();
+      const rebuttalId = definition?.rebuttalIds?.[currentStageGroup];
+      const resultQuery = definition?.resultQueries?.[currentStageGroup] || "";
+
+      if (!definition || !rebuttalId) return;
+
+      activeObjectionTriggerKey = triggerKey;
+      showObjectionsPanel(false);
+
+      if (objectionSearch) {
+        objectionSearch.value = "";
+      }
+
+      filterRebuttals(resultQuery);
+      selectRebuttal(rebuttalId);
+      refreshObjectionTriggerSuggestion();
     }
 
     function updateTimerDisplay() {
@@ -2028,10 +2424,11 @@ const firstSectionDisplayNumber = 1;
       const primaryConcern = getPrimaryConcern();
       const hasWhy = primaryConcern && primaryConcern !== "those first expenses";
       const showDiscoveryIntake = isDiscoverySection(section) && !hasWhy;
-      const showQuickNotes = section.id !== 20;
+      const showQuickNotes = true;
 
       advisorCapturePanel?.classList.toggle("hidden", !showDiscoveryIntake);
       promptPanel?.classList.toggle("hidden", !showQuickNotes);
+      updatePromptPanelPlacement(section);
 
       if (referenceStepReadout) {
         referenceStepReadout.textContent = `Section ${getSectionDisplayNumber(section)}`;
@@ -2074,15 +2471,6 @@ const firstSectionDisplayNumber = 1;
       return section?.phase === "discovery";
     }
 
-    function getPrimaryPacingCue(section) {
-      const selectedOption = getSelectedBranchOption(section);
-      return (
-        selectedOption?.promptNotes?.[0] ||
-        section.prompt?.notes?.[0] ||
-        "Keep this conversational."
-      );
-    }
-
     function getDiscoveryNotesConfig(section) {
       return section.workspace?.notes || null;
     }
@@ -2117,35 +2505,8 @@ const firstSectionDisplayNumber = 1;
       discoveryInlineNotesInput.value = sessionState.discovery?.[notesConfig.key] || "";
     }
 
-    function updateDiscoveryModeButtons() {
-      const mode = getDiscoveryMode();
-
-      discoveryModeButtons.forEach((button) => {
-        if (!(button instanceof HTMLElement)) return;
-
-        const isActive = button.dataset.discoveryMode === mode;
-        button.classList.toggle("discovery-mode-button-active", isActive);
-        button.classList.toggle("discovery-mode-button-idle", !isActive);
-        button.setAttribute("aria-pressed", String(isActive));
-      });
-    }
-
-    function setDiscoveryMode(mode) {
-      if (mode !== "performance" && mode !== "guided") return;
-      if (getDiscoveryMode() === mode) {
-        updateDiscoveryModeButtons();
-        return;
-      }
-
-      sessionState.discoveryMode = mode;
-      renderSection(currentSection);
-      saveSession();
-    }
-
     function updateDiscoveryFocusCard(section) {
       const discoveryActive = isDiscoverySection(section);
-      const performanceMode = getDiscoveryMode() === "performance";
-      const guidedMode = getDiscoveryMode() === "guided";
       const paintPictureSection = section.highlightStyle === "paint-picture";
 
       workflowGrid?.classList.toggle("workflow-grid-discovery", discoveryActive);
@@ -2157,34 +2518,6 @@ const firstSectionDisplayNumber = 1;
         panel.classList.toggle("panel-quiet", discoveryActive);
       });
 
-      guidedCopyNodes.forEach((node) => {
-        if (!(node instanceof HTMLElement)) return;
-        node.classList.toggle("hidden", discoveryActive && !guidedMode);
-      });
-
-      promptPanel?.classList.toggle("panel-quiet-soft", discoveryActive && performanceMode);
-      discoveryFocusShell?.classList.toggle(
-        "discovery-focus-paint-picture",
-        discoveryActive && paintPictureSection
-      );
-      discoveryFocusShell?.classList.toggle(
-        "discovery-focus-performance",
-        discoveryActive && performanceMode
-      );
-      updateDiscoveryModeButtons();
-
-      if (!discoveryFocusShell) {
-        updateDiscoveryInlineNotes(section);
-        return;
-      }
-
-      if (!discoveryActive) {
-        discoveryFocusShell.classList.add("hidden");
-        updateDiscoveryInlineNotes(section);
-        return;
-      }
-
-      discoveryFocusShell.classList.remove("hidden");
       updateDiscoveryInlineNotes(section);
     }
 
@@ -2655,16 +2988,8 @@ const firstSectionDisplayNumber = 1;
       renderSection(currentSection);
     }
 
-    function getScriptLinesForMode(item, section) {
-      const performanceMode =
-        Boolean(section?.modeSensitive || isDiscoverySection(section)) &&
-        getDiscoveryMode() === "performance";
-      const preferredLines =
-        performanceMode && Array.isArray(item?.performanceScript)
-          ? item.performanceScript
-          : item?.script || [];
-
-      return preferredLines;
+    function getScriptLines(item) {
+      return Array.isArray(item?.script) ? item.script : [];
     }
 
     function getRenderableScriptBlocks(section) {
@@ -2677,11 +3002,11 @@ const firstSectionDisplayNumber = 1;
       if (!replaceBase) {
         blocks.push({
           type: "base",
-          lines: getScriptLinesForMode(section, section).map((line) => applyTokens(line, tokens))
+          lines: getScriptLines(section).map((line) => applyTokens(line, tokens))
         });
       }
 
-      const selectedOptionLines = getScriptLinesForMode(selectedOption, section);
+      const selectedOptionLines = getScriptLines(selectedOption);
       const selectedOptionLevels = Array.isArray(selectedOption?.levels)
         ? selectedOption.levels
             .map((level) => ({
@@ -2762,7 +3087,7 @@ const firstSectionDisplayNumber = 1;
       branchToolbarCurrent.textContent = `Current: ${selectedOption.label}`;
     }
 
-    function renderGuidedSupportPanel(section) {
+    function renderSupportPanel(section) {
       if (
         !branchPanel ||
         !branchPanelTitle ||
@@ -2774,7 +3099,6 @@ const firstSectionDisplayNumber = 1;
         return;
       }
 
-      const guidedMode = getDiscoveryMode() === "guided";
       const discoveryActive = isDiscoverySection(section);
       const branch = getBranchConfig(section);
       const selectedOption = getSelectedBranchOption(section);
@@ -2815,7 +3139,7 @@ const firstSectionDisplayNumber = 1;
         });
       }
 
-      const showPanel = discoveryActive && guidedMode && (section.prompt?.goal || supportGroups.length);
+      const showPanel = discoveryActive && (section.prompt?.goal || supportGroups.length);
 
       branchPanel.classList.toggle("hidden", !showPanel);
 
@@ -2827,7 +3151,7 @@ const firstSectionDisplayNumber = 1;
         return;
       }
 
-      branchPanelTitle.textContent = "Guided Support";
+      branchPanelTitle.textContent = "Call Support";
       branchPanelText.textContent =
         section.prompt?.goal || "Use the support notes below to guide the conversation.";
       branchButtonGroup.innerHTML = "";
@@ -2921,14 +3245,10 @@ const firstSectionDisplayNumber = 1;
           });
 
           if (Array.isArray(block.levels) && block.levels.length) {
-            const levelsOpen =
-              Boolean(section?.modeSensitive || isDiscoverySection(section)) &&
-              getDiscoveryMode() === "guided";
-
             block.levels.forEach((level) => {
               const details = document.createElement("details");
               details.className = "close-response-level";
-              details.open = levelsOpen;
+              details.open = true;
 
               const summary = document.createElement("summary");
               summary.textContent = level.label;
@@ -2968,7 +3288,7 @@ const firstSectionDisplayNumber = 1;
       });
 
       renderBranchPanel(section);
-      renderGuidedSupportPanel(section);
+      renderSupportPanel(section);
       updateAdvisorCockpit(section);
       updateReferencePanel(section);
       updateDiscoveryFocusCard(section);
@@ -2981,6 +3301,14 @@ const firstSectionDisplayNumber = 1;
           behavior: "smooth"
         });
       }
+      if (
+        objectionSearch &&
+        getObjectionStageGroup({ id: previousSectionId }) !== getObjectionStageGroup(section)
+      ) {
+        objectionSearch.value = "";
+      }
+      refreshRebuttalCollections();
+      refreshObjectionTriggerSuggestion();
       selectRebuttal(activeRebuttalId);
       updateProgress();
       keepActiveSidebarItemVisible();
@@ -3012,9 +3340,15 @@ const firstSectionDisplayNumber = 1;
     }
 
     function clearCallSession() {
-      const discoveryMode = getDiscoveryMode();
       sessionState = createFreshSession();
-      sessionState.discoveryMode = discoveryMode;
+      activeRebuttalId = 101;
+      activeObjectionTriggerKey = "";
+      suggestedObjectionTriggerKey = "";
+      latestObjectionNoteSignal = "";
+      if (objectionSearch) {
+        objectionSearch.value = "";
+      }
+      updateObjectionTriggerUI();
 
       if (clientNameInput) clientNameInput.value = "";
       if (clientStateInput) clientStateInput.value = "";
@@ -3134,6 +3468,31 @@ const firstSectionDisplayNumber = 1;
       updateOutcomeDisplay();
     }
 
+    function renderFavoriteRebuttals(items) {
+      if (!favoriteRebuttalsContainer) return;
+
+      favoriteRebuttalsContainer.innerHTML = "";
+
+      if (!items.length) {
+        const empty = document.createElement("div");
+        empty.className = "rounded-lg border border-gray-800 bg-gray-950 px-3 py-2 text-xs text-gray-400";
+        empty.textContent = "No favorites for this stage.";
+        favoriteRebuttalsContainer.appendChild(empty);
+        return;
+      }
+
+      items.forEach((item) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className =
+          "favorite-rebuttal-button rounded-full border border-gray-700 bg-gray-950 px-3 py-1 text-xs text-gray-200 hover:bg-gray-800";
+        button.dataset.rebuttalId = String(item.id);
+        button.textContent = item.label;
+        button.addEventListener("click", () => selectRebuttal(item.id));
+        favoriteRebuttalsContainer.appendChild(button);
+      });
+    }
+
     function renderRebuttalList(items) {
       if (!objectionResults) return;
 
@@ -3156,7 +3515,7 @@ const firstSectionDisplayNumber = 1;
 
         const title = document.createElement("div");
         title.className = "font-semibold";
-        title.textContent = item.title;
+        title.textContent = item.label;
 
         const category = document.createElement("div");
         category.className = "mt-1 text-xs text-gray-400";
@@ -3171,21 +3530,39 @@ const firstSectionDisplayNumber = 1;
       });
     }
 
+    function refreshRebuttalCollections() {
+      renderFavoriteRebuttals(getRelevantFavoriteRebuttals());
+
+      const normalizedQuery = objectionSearch?.value.trim() || "";
+      if (!normalizedQuery) {
+        renderRebuttalList(getRelevantRebuttals().slice(0, 10));
+        return;
+      }
+
+      filterRebuttals(normalizedQuery);
+    }
+
     function selectRebuttal(rebuttalId) {
-      const rebuttal = rebuttals.find((item) => item.id === Number(rebuttalId));
+      const relevantRebuttals = getRelevantRebuttals();
+      const rebuttal =
+        relevantRebuttals.find((item) => item.id === Number(rebuttalId)) || relevantRebuttals[0];
       if (!rebuttal) return;
 
-      activeRebuttalId = Number(rebuttalId);
-      const response = applyTokens(rebuttal.response, getTokens());
+      activeRebuttalId = rebuttal.id;
+      const response = applyTokens(rebuttal.rebuttal, getTokens());
+      const followUpLine = applyTokens(rebuttal.followUpLine, getTokens());
 
       if (selectedRebuttalTitle) {
-        selectedRebuttalTitle.textContent = rebuttal.title;
+        selectedRebuttalTitle.textContent = rebuttal.label;
       }
 
       if (selectedRebuttalBody) {
         selectedRebuttalBody.textContent = response;
       }
 
+      if (selectedRebuttalFollowUp) {
+        selectedRebuttalFollowUp.textContent = followUpLine;
+      }
     }
 
     function openObjectionsWithRebuttal(rebuttalId) {
@@ -3199,6 +3576,8 @@ const firstSectionDisplayNumber = 1;
 
       objectionsPanel.classList.remove("hidden");
       updateObjectionsPlacement(currentSection);
+      refreshRebuttalCollections();
+      selectRebuttal(activeRebuttalId);
       emphasizeToolkit();
       updateToolkitVisibility();
       objectionsPanel.scrollIntoView({
@@ -3222,14 +3601,15 @@ const firstSectionDisplayNumber = 1;
 
     function filterRebuttals(query) {
       const normalized = query.trim().toLowerCase();
+      const relevantRebuttals = getRelevantRebuttals();
 
       if (!normalized) {
-        renderRebuttalList(rebuttals.slice(0, 10));
+        renderRebuttalList(relevantRebuttals.slice(0, 10));
         return;
       }
 
-      const results = rebuttals.filter((item) => {
-        const haystack = [item.title, item.category, item.response, ...(item.keywords || [])]
+      const results = relevantRebuttals.filter((item) => {
+        const haystack = [item.label, item.category, item.rebuttal, item.followUpLine, ...(item.keywords || [])]
           .join(" ")
           .toLowerCase();
 
@@ -3281,25 +3661,28 @@ const firstSectionDisplayNumber = 1;
       });
     });
 
-    favoriteRebuttalButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        selectRebuttal(button.dataset.rebuttalId);
-      });
-    });
-
-    discoveryModeButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        if (!(button instanceof HTMLElement)) return;
-        setDiscoveryMode(button.dataset.discoveryMode || "performance");
-      });
-    });
-
     toggleSectionsButton?.addEventListener("click", () => {
       toggleSectionsDrawer();
     });
 
     sectionsBackdrop?.addEventListener("click", () => {
       hideSectionsDrawer();
+    });
+
+    [
+      familyContextNotesInput,
+      lossExperienceNotesInput,
+      familyResponsibilityNotesInput,
+      currentSupportNotesInput,
+      protectionPriorityNotesInput,
+      discoveryInlineNotesInput
+    ].forEach((input) => {
+      input?.addEventListener("input", () => {
+        latestObjectionNoteSignal = input.value;
+        if (!objectionSearch?.value.trim()) {
+          refreshObjectionTriggerSuggestion();
+        }
+      });
     });
 
     [clientNameInput, clientStateInput, draftDateInput].forEach((input) => {
@@ -3522,6 +3905,14 @@ const firstSectionDisplayNumber = 1;
 
     objectionSearch?.addEventListener("input", () => {
       filterRebuttals(objectionSearch.value);
+      refreshObjectionTriggerSuggestion();
+    });
+
+    objectionTriggerButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (!(button instanceof HTMLElement)) return;
+        applyObjectionTrigger(button.dataset.triggerKey || "");
+      });
     });
 
     toggleShortcutsButton?.addEventListener("click", () => {
@@ -3605,8 +3996,20 @@ const firstSectionDisplayNumber = 1;
     updateTimerDisplay();
     updateMetrics();
     updateOutcomeDisplay();
-    renderRebuttalList(rebuttals.slice(0, 10));
-    selectRebuttal(1);
+    refreshRebuttalCollections();
+    selectRebuttal(activeRebuttalId);
+    latestObjectionNoteSignal =
+      [
+        discoveryInlineNotesInput?.value,
+        protectionPriorityNotesInput?.value,
+        currentSupportNotesInput?.value,
+        familyResponsibilityNotesInput?.value,
+        lossExperienceNotesInput?.value,
+        familyContextNotesInput?.value
+      ]
+        .map((value) => String(value || "").trim())
+        .find(Boolean) || "";
+    refreshObjectionTriggerSuggestion();
     renderSection(currentSection);
   </script>
 </Layout>
