@@ -2810,10 +2810,12 @@ const firstSectionDisplayNumber = 1;
         (match, key) => tokens[String(key).trim()] ?? match
       );
 
-      return withBracketTokens.replace(
-        /\{\{\s*client_name\s*\}\}/gi,
-        tokens.ClientName || "Client Name"
-      );
+      return withBracketTokens
+        .replace(/\{\{\s*client_name\s*\}\}/gi, tokens.ClientName || "Client Name")
+        .replace(
+          /\{\{\s*responsible_person\s*\}\}/gi,
+          tokens["Beneficiary Name"] || tokens.BeneficiaryName || "Beneficiary Name"
+        );
     }
 
     function applyContextualScriptPlaceholders(text, tokens, context = {}, counters = {}) {

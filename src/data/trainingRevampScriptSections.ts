@@ -233,6 +233,32 @@ function createLockedVerbatimBlock(
   };
 }
 
+function createObjectionScript(
+  acknowledge: ScriptLine,
+  clarify: ScriptLine,
+  reframe: ScriptLine | ScriptLine[],
+  advance: ScriptLine
+): ScriptLine[] {
+  return [acknowledge, clarify, ...(Array.isArray(reframe) ? reframe : [reframe]), advance];
+}
+
+function createDelayAdvanceLines(extraReframe: ScriptLine[] = []): ScriptLine[] {
+  return [
+    "What changes by waiting?",
+    ...extraReframe,
+    "We've already done the hard part.",
+    "Your approval is already here.",
+    "Nothing we talked about changes tomorrow.",
+    "If there is no coverage in place today, there is still no coverage in place tomorrow.",
+    "The same risk is still there, and the same burden still lands on {{responsible_person}} if nothing changes.",
+    "So is there a real reason to wait, or does it make more sense to take care of it now while everything is in place?"
+  ];
+}
+
+function createDelayObjectionScript(extraReframe: ScriptLine[] = []): ScriptLine[] {
+  return ["I understand.", "What part are you wanting to think through?", ...createDelayAdvanceLines(extraReframe)];
+}
+
 function createPriceComparisonOptions(): PriceComparisonOption[] {
   return [
     {
@@ -281,16 +307,16 @@ function createPostSaleRehashBlocks(): ScriptBlockDefinition[] {
     {
       variant: "primary",
       lines: [
-        "Before we hang up, let me tighten this up so everything is clean.",
-        "Your monthly payment is [X].",
-        "The policy number is [X].",
-        "The beneficiary on file is [Beneficiary Name].",
-        "Keep this confirmation where the family can find it, and if anything changes on your contact side, update the carrier right away."
+        "Before we wrap up, let me make sure you have the key details in front of you.",
+        "Your monthly premium is [Premium], and your draft date is the [DraftDate] of each month.",
+        "Your [PolicyLabel] number is [PolicyNumber].",
+        "If you ever need me directly, my name is [AdvisorName] and my number is [AdvisorPhone].",
+        "Keep that with your policy information so it is easy to find if you or your family ever need it."
       ]
     },
     createQuickInsertBlock("Next-Step Reminder", [
-      "This should feel organized and complete.",
-      "Do not reopen the sale here. Reconfirm the protection and leave them clear."
+      "If anything changes on your contact or banking side, let us know right away so the policy stays on track.",
+      "Do you have any questions before we wrap things up?"
     ])
   ];
 }
@@ -308,17 +334,21 @@ function createGovernmentFreeBlocks(): ScriptBlockDefinition[] {
   return [
     {
       variant: "primary",
-      lines: [
+      lines: createObjectionScript(
         "I understand why you'd think that... a lot of people I talk to say the same thing at first.",
-        "What this actually is, is a program that helps you see what you qualify for based on your situation.",
-        "So let's take a look at what you have in place right now.",
-        "What life insurance company is currently protecting your family?"
-      ]
+        "Is that because you thought this was free, or because you thought the government would already cover it?",
+        [
+          "What this actually is, is a program that helps you see what you qualify for based on your situation.",
+          "The real point is making sure {{responsible_person}} is not the one left trying to figure this out under pressure if nothing changes."
+        ],
+        "So which direction makes more sense, do we take a look at what you can qualify for, or do we leave things the way they are?"
+      )
     },
     createQuickInsertBlock("If They Push", [
       "I wish it was that simple.",
       "If it were free, everyone would already have it taken care of.",
-      "What we're doing is finding the most affordable way to make sure your family is protected."
+      "What we're doing is finding the most affordable way to make sure your family is protected.",
+      "So do we keep going and see what is actually available, or do we stop here?"
     ])
   ];
 }
@@ -475,8 +505,7 @@ const rawScriptSections: ScriptSection[] = [
       "Before we get started, this call may be recorded for quality and training purposes.",
       "Now, [ClientName], I'm licensed to help families with final expense protection, and my job here is simple.",
       "I'm going to figure out what you already have in place, what you actually need, and if we can qualify you today, I'll walk you through the best option clearly.",
-      "You're in good hands, so let's start here.",
-      "What life insurance company is currently protecting your family?"
+      "You're in good hands, so let's start here."
     ],
     focus: {
       reminder: "Sound certain from the first sentence.",
@@ -496,7 +525,7 @@ const rawScriptSections: ScriptSection[] = [
     title: "Discovery Engine",
     phase: "discovery",
     qaRequired: false,
-    script: ["Do you have any life insurance in place right now?"],
+    script: ["Alright…", "What life insurance company is currently protecting your family?"],
     focus: {
       reminder: "Use toddler curiosity here.",
       visualCue: "Short questions. Let them talk."
@@ -783,13 +812,33 @@ const rawScriptSections: ScriptSection[] = [
     title: "Funeral Reality + Who Pays",
     phase: "discovery",
     qaRequired: false,
-    script: [
-      "Have you thought about how you'd want things handled when that time comes?",
-      "Would you want burial, cremation, or are you not sure yet?",
-      "Who would be the person making those arrangements for you?",
-      "And when the funeral home needs payment, where is that money coming from?",
-      "Would that be easy for them, or would that put pressure on them?",
-      "If nothing changes from where things are right now, what do you think happens?"
+    scriptBlocks: [
+      {
+        variant: "primary",
+        lines: [
+          "Have you ever really thought about what you'd want things to look like when that time comes?",
+          "Would you want burial or cremation?"
+        ]
+      },
+      createQuickInsertBlock("If Burial", [
+        "Would that be open casket or closed?",
+        "Would you want a full service, family there, flowers, people speaking?"
+      ]),
+      createQuickInsertBlock("If Cremation", [
+        "Would you still want some kind of service or gathering with family?",
+        "Something where people come together, maybe say a few words, celebrate your life?"
+      ]),
+      {
+        variant: "primary",
+        lines: [
+          "Who do you think would be the one getting up and speaking for you?",
+          "And who would be the one handling all of those arrangements?",
+          "When all of that comes together, and the funeral home needs to be paid…",
+          "Where does that money come from?",
+          "Would that be something they could handle easily, or would that put pressure on them?",
+          "And if nothing changes from where things are right now, what do you think that situation looks like for them?"
+        ]
+      }
     ],
     workspace: {
       title: "Funeral Reality + Who Pays",
@@ -820,9 +869,18 @@ const rawScriptSections: ScriptSection[] = [
     phase: "discovery",
     qaRequired: false,
     script: [
-      "Based on what you told me about [Beneficiary Name] being the one who would have to handle this, they would be carrying that pressure in the middle of everything else.",
-      "That is usually the part families feel the hardest.",
-      "What matters most to you about making sure they are not left in that position?"
+      "So earlier you mentioned {{responsible_person}} would be the one handling everything...",
+      "That's a lot to put on someone in the middle of everything else going on.",
+      "What matters most to you about making sure they're not left in that position?"
+    ],
+    levels: [
+      {
+        label: "Optional Follow-Up",
+        collapsed: true,
+        lines: [
+          "Is it more the financial side, or just not wanting them to have to figure everything out on their own?"
+        ]
+      }
     ],
     focus: {
       reminder: "This is now a summary and consequence lock, not another discovery lap.",
@@ -856,10 +914,21 @@ const rawScriptSections: ScriptSection[] = [
     phase: "discovery",
     qaRequired: false,
     script: [
-      "Say it to me straight.",
-      "Why is it important to have this handled instead of leaving [Beneficiary Name] trying to sort it out in the moment?",
-      "What is the main thing you do not want them dealing with?",
-      "Good. That is the reason we are fixing it."
+      "So earlier you mentioned {{responsible_person}} would be the one handling everything…",
+      "Help me understand… what would that actually look like for them in that moment?",
+      "(pause)",
+      "Would that be something they could handle easily… or would that put pressure on them?",
+      "(pause)",
+      "And that’s really the part we’re trying to avoid here, right?"
+    ],
+    levels: [
+      {
+        label: "Optional Follow-Up",
+        collapsed: true,
+        lines: [
+          "Because right now, if nothing changes, they’re the one that has to figure that out in real time."
+        ]
+      }
     ],
     workspace: {
       title: "Client's Why",
@@ -890,10 +959,15 @@ const rawScriptSections: ScriptSection[] = [
     phase: "discovery",
     qaRequired: false,
     script: [
-      "Based on what you told me about [Beneficiary Name] being the one who would have to handle this, that's why we're checking what you qualify for before we talk about options.",
-      "Alright [ClientName], based on everything we just talked through, what I want to do now is see exactly what you qualify for.",
-      "This part is quick. I'll get some basic information from you so the system can pull up your approval.",
-      "This is the same process every client goes through so we can lock in accurate options for you."
+      "Alright {{client_name}}, let’s take a look at what you qualify for.",
+      "I’m going to grab a few quick details from you so we can get your approval pulled up."
+    ],
+    levels: [
+      {
+        label: "Optional Follow-Up",
+        collapsed: true,
+        lines: ["This part is quick."]
+      }
     ],
     workspace: {
       title: "Approval Bridge",
@@ -958,31 +1032,40 @@ const rawScriptSections: ScriptSection[] = [
           value: "uneasy",
           label: "Uneasy",
           description: "Use this when they are generally uncomfortable giving the SSN.",
-          script: [
+          script: createObjectionScript(
             "Totally fair.",
-            "This is how the system verifies identity and makes sure I am matching you with the right approval instead of guessing.",
-            "Once that is done, I can show you exactly what you qualify for."
-          ]
+            "Is it that you do not like giving it over the phone, or do you just want to know why it matters first?",
+            "The reason it matters is that this is what lets the system verify you and pull up a real approval, so we can actually see what can be put in place for {{responsible_person}} instead of leaving this half-finished.",
+            "So do we move forward with the verification, or do we stop here without a real approval?"
+          )
         },
         {
           value: "security",
           label: "Security",
           description: "Use this when they ask whether it is safe.",
-          script: [
-            "Totally fair.",
-            "It stays inside the identity and approval process only.",
-            "The point is to make sure the system is tying the approval to the right person so I can show you real options instead of estimates."
-          ]
+          script: createObjectionScript(
+            "That is a fair question.",
+            "Are you asking because you want to know how it is used, or because you are not comfortable giving it over the phone?",
+            [
+              "It stays inside the identity and approval process only.",
+              "The point is to make sure I am showing you real options instead of guesses, so the pressure you described does not just stay sitting on {{responsible_person}}."
+            ],
+            "So do we verify it and see what you are actually approved for, or do we hold off here?"
+          )
         },
         {
           value: "why-needed",
           label: "Why Needed",
           description: "Use this when they directly ask why the SSN is required.",
-          script: [
-            "Totally fair. Let me explain why we need it.",
-            "This is how the system verifies identity and makes sure we're matching you with the right plan. It's not optional if we want a real approval.",
-            "Once that's done, I'll show you exactly what you qualify for."
-          ]
+          script: createObjectionScript(
+            "Totally fair. Let me explain it clearly.",
+            "Do you want to know why the system asks for it, or are you deciding whether you want to give it at all?",
+            [
+              "It is how identity gets verified and how the approval gets tied to the right person.",
+              "Without it, I cannot show you a real result, and that keeps the whole problem exactly where it is."
+            ],
+            "So do we get the approval pulled up, or do we stop before we see what is actually available?"
+          )
         }
       ]
     },
@@ -998,59 +1081,57 @@ const rawScriptSections: ScriptSection[] = [
     id: 13,
     title: "Application / Approval Flow: Medical Questions",
     phase: "discovery",
-    qaRequired: true,
-    scriptBlocks: [
+    qaRequired: false,
+    script: [
+      "Alright {{client_name}}, I’m going to go through a few quick health questions with you.",
+      "Just answer them honestly, and I’ll take care of the rest."
+    ],
+    levels: [
       {
-        variant: "primary",
-        lines: [
-          "Now I'm going to run the approval questions exactly the way the system asks them.",
-          "Answer them plainly, and I'll handle the rest."
-        ]
-      },
-      createVerbatimBlock("Verbatim Disclosure", [
-        "[PASTE EXACT GIACT / MEDICAL / CARRIER DISCLOSURE WORDING HERE]"
-      ])
+        label: "Optional Follow-Up",
+        collapsed: true,
+        lines: ["Some are yes or no, some may need a quick explanation."]
+      }
     ],
     prompt: {
-      goal: "Move through the approval questions cleanly and in compliance.",
+      goal: "Set up the health questions in a way that feels simple and controlled.",
       notes: [
-        "Read verbatim language exactly when it applies.",
-        "Do not paraphrase compliance text.",
-        "Keep the tone steady and professional."
+        "Keep it conversational.",
+        "Do not make this sound formal or mechanical.",
+        "Move straight into the questions once they are ready."
       ]
     }
   },
   {
     id: 14,
-    title: "Application / Approval Flow: iApp / Approval Path",
+    title: "Medical Review / Pre-Approval Framing",
     phase: "discovery",
     qaRequired: false,
-    script: [
-      "Perfect. That gives me what I need to lock in the approval path.",
-      "Now I'm going to match that information to the route that actually fits instead of guessing."
-    ],
+    script: ["Alright {{client_name}}, I appreciate you being upfront with me on all of that."],
     branchControl: {
       stateKey: "medicalReview",
       label: "Medical Review",
       helpText: "Use the branch that best matches how the health answers landed.",
-      replaceBaseOnSelect: true,
+      replaceBaseOnSelect: false,
       options: [
         {
           value: "no-history",
-          label: "No History",
+          label: "Clean Answers",
           description: "Use this when the client clears the medical path cleanly.",
           script: [
-            "Perfect. That keeps the approval path clean.",
-            "Give me a second while I lock in what the system is allowing."
+            "Everything you gave me lines up well so far.",
+            "Now let's see what the system comes back with for you."
           ]
         },
         {
           value: "medical-history",
-          label: "Medical History",
+          label: "Medical Flags",
           description: "Use this when the client has history that affects the route.",
           script: [
-            "Thank you. That is exactly what I needed.",
-            "Now I can match you to the route that actually fits instead of forcing the wrong one."
+            "What that means is the system may limit which options are available to you.",
+            "We'll still see what comes back...",
+            "...but we want to focus on what you can actually get approved for, not just what looks best on paper.",
+            "Because the goal here is making sure you don't walk away without anything in place."
           ]
         },
         {
@@ -1058,17 +1139,20 @@ const rawScriptSections: ScriptSection[] = [
           label: "Needs Review",
           description: "Use this when the answers need a closer route check.",
           script: [
-            "Some of that needs a closer look.",
-            "Let me tighten it up so I can see the most accurate route the system will allow."
+            "What that means is the system may limit which options are available to you.",
+            "We'll still see what comes back...",
+            "...but we want to focus on what you can actually get approved for, not just what looks best on paper.",
+            "Because the goal here is making sure you don't walk away without anything in place."
           ]
         }
       ]
     },
     prompt: {
-      goal: "Turn the health answers into a clear approval path.",
+      goal: "Frame the health review in a calm, controlled way before the approval result.",
       notes: [
-        "Sound like the expert here.",
-        "No product talk yet. Just route control."
+        "Keep it calm and slightly serious.",
+        "Do not over-explain the process.",
+        "Stay focused on what they can actually get approved for."
       ]
     }
   },
@@ -1401,84 +1485,148 @@ const rawScriptSections: ScriptSection[] = [
       {
         variant: "primary",
         lines: [
-          "If they pause here, do not defend the price immediately.",
-          "Ask what the real hesitation is, then work the actual objection."
+          "Usually when someone hesitates at this point, it is one of three things: the monthly amount, the timing, or there is someone else they feel like they need to talk to.",
+          "Which one is it for you?"
         ]
-      },
-      createQuickInsertBlock("Re-Center", [
-        "Usually if someone hesitates here, it is either the monthly side, the timing, or another person in the decision.",
-        "Which one is it for you?"
-      ])
+      }
     ],
     branchControl: {
       stateKey: "closeResponseFlow",
       label: "Close Branch",
       helpText: "Pick the objection that actually showed up after presentation.",
-      replaceBaseOnSelect: true,
+      replaceBaseOnSelect: false,
       options: [
         {
-          value: "too-expensive",
-          label: "Too Expensive",
-          description: "Use this when monthly price is the main pushback.",
-          script: [
-            "I understand.",
-            "Is it truly out of reach, or is it more than you expected?",
-            "Because those are two different problems, and I only want to solve the real one."
+          value: "monthly-side",
+          label: "Monthly Side",
+          description: "Use this when the hesitation is mainly about the monthly amount.",
+          scriptBlocks: [
+            {
+              variant: "primary",
+              lines: [
+                "Okay, that makes sense.",
+                "When you say it is the monthly amount, are we talking about it being completely out of reach, or just higher than you expected?"
+              ],
+              levels: [
+                {
+                  label: "If Higher Than Expected",
+                  collapsed: true,
+                  lines: [
+                    "That is fair. Most people do not wake up planning to add another bill today.",
+                    "But based on what you told me earlier, the real question is whether leaving this on {{responsible_person}} would cost them a lot more later.",
+                    "So would it make more sense to keep the full protection, or adjust it down to something that fits better and still protects them?"
+                  ]
+                },
+                {
+                  label: "If Completely Out Of Reach",
+                  collapsed: true,
+                  lines: [
+                    "Got it. Then I do not want to force something that does not fit.",
+                    "Let's bring this down to the smallest plan that still gives your family something to work with.",
+                    "Would you rather start with a smaller safety-net amount than leave them with nothing at all?"
+                  ]
+                },
+                {
+                  label: "If Still Hesitant",
+                  collapsed: true,
+                  lines: [
+                    "I am not here to force you into anything.",
+                    "But based on what you told me, doing nothing keeps the whole problem exactly where it is.",
+                    "So do we want to adjust the amount, or do we want to leave it unresolved?"
+                  ]
+                }
+              ]
+            }
           ]
         },
         {
-          value: "need-to-think",
-          label: "Need To Think",
-          description: "Use this when they want to step back instead of moving forward.",
-          script: [
-            "Of course.",
-            "Usually when someone says that, it is either the amount, the timing, or they still are not fully convinced.",
-            "Which one is actually going on for you?"
+          value: "timing",
+          label: "Timing",
+          description: "Use this when the hesitation is really about timing.",
+          scriptBlocks: [
+            {
+              variant: "primary",
+              lines: [
+                "I understand.",
+                "What part are you wanting to think through?"
+              ],
+              levels: [
+                {
+                  label: "If Check Schedule",
+                  collapsed: true,
+                  lines: [
+                    "If the only moving piece is your check schedule, we can line the draft up around that.",
+                    ...createDelayAdvanceLines([
+                      "Waiting does not change the need. It only changes the day on the calendar."
+                    ])
+                  ]
+                },
+                {
+                  label: "If Not Expecting Decision",
+                  collapsed: true,
+                  lines: [
+                    "A lot of people were not expecting to handle it today.",
+                    ...createDelayAdvanceLines([
+                      "But the reason to handle it while we are here is that everything is already lined up."
+                    ])
+                  ]
+                },
+                {
+                  label: "If Still Hesitant",
+                  collapsed: true,
+                  lines: createDelayAdvanceLines()
+                }
+              ]
+            }
           ]
         },
         {
-          value: "need-family",
-          label: "Need Family",
-          description: "Use this when they want to talk to children, spouse, or another family member first.",
-          script: [
-            "I understand.",
-            "When families need to talk it through, it is usually because they want to make sure the payment feels right or the reason feels strong enough.",
-            "Which part do you want them helping you decide?"
+          value: "another-person",
+          label: "Another Person",
+          description: "Use this when they feel like they need to talk to someone else first.",
+          scriptBlocks: [
+            {
+              variant: "primary",
+              lines: [
+                "I understand.",
+                "What part are you wanting to think through?"
+              ],
+              levels: [
+                {
+                  label: "If They Are Helping Pay",
+                  collapsed: true,
+                  lines: [
+                    "If they are part of the payment side, we can make sure the amount is realistic right now.",
+                    ...createDelayAdvanceLines([
+                      "If we already know the amount fits, waiting does not solve anything new."
+                    ])
+                  ]
+                },
+                {
+                  label: "If They Are The Person Being Protected",
+                  collapsed: true,
+                  lines: [
+                    "If they are the person you are trying to protect, waiting just leaves the same burden sitting on them later.",
+                    ...createDelayAdvanceLines()
+                  ]
+                },
+                {
+                  label: "If Still Hesitant",
+                  collapsed: true,
+                  lines: createDelayAdvanceLines()
+                }
+              ]
+            }
           ]
-        },
-        {
-          value: "already-have-coverage",
-          label: "Already Have Coverage",
-          description: "Use this when they fall back to what they already have in place.",
-          script: [
-            "That is fair.",
-            "The real question is whether what you already have would handle the exact burden we talked through today or just part of it.",
-            "Do you feel confident it already solves that?"
-          ]
-        },
-        {
-          value: "family-handles-it",
-          label: "Family Will Handle It",
-          description: "Use this when they say the family would step in anyway.",
-          script: [
-            "I believe they would.",
-            "The question is whether they should have to, or whether it is handled ahead of time so they are not carrying that pressure while grieving."
-          ]
-        },
-        {
-          value: "government-free",
-          label: "Free / Government",
-          description: "Use this when they circle back to a free or government-program assumption.",
-          scriptBlocks: createGovernmentFreeBlocks()
         }
       ]
     },
     prompt: {
-      goal: "Handle hesitation calmly and get to the real objection fast.",
+      goal: "Diagnose the hesitation fast, then move into a follow-up close that keeps momentum.",
       notes: [
-        "Do not get robotic.",
-        "Acknowledge, clarify, then reframe.",
-        "Stay human and authoritative."
+        "Keep the tone calm and direct.",
+        "Do not repeat the whole pain builder.",
+        "If the price is the issue, either adjust the amount or close the gap."
       ]
     }
   },
@@ -1572,8 +1720,10 @@ const rawScriptSections: ScriptSection[] = [
     title: "Objections / Rehash Library",
     qaRequired: false,
     script: [
-      "Acknowledge first.",
-      "Then go back to the real burden they already admitted."
+      "Acknowledge it.",
+      "Clarify what is actually underneath it.",
+      "Tie it back to the pressure they already named.",
+      "Then move them to a decision."
     ],
     branchControl: {
       stateKey: "disagreementBranch",
@@ -1582,48 +1732,158 @@ const rawScriptSections: ScriptSection[] = [
       replaceBaseOnSelect: true,
       options: [
         {
+          value: "price",
+          label: "Price",
+          description: "Use this when the monthly amount is the main objection.",
+          script: createObjectionScript(
+            "I understand.",
+            "When you say price, is it completely out of reach, or just more than you expected?",
+            [
+              "Those are two different decisions.",
+              "If it is a fit issue, we can adjust the amount. If we do nothing, the pressure you described still lands on {{responsible_person}} later."
+            ],
+            "So which direction makes more sense, do we adjust it or leave it?"
+          )
+        },
+        {
+          value: "need-to-think",
+          label: "Think About It",
+          description: "Use this when they say they need time instead of making a decision.",
+          script: createDelayObjectionScript([
+            "Usually when someone says they need to think, the real issue is already there underneath it."
+          ])
+        },
+        {
+          value: "sleep-on-it",
+          label: "Sleep On It",
+          description: "Use this when they want to wait overnight before deciding.",
+          script: createDelayObjectionScript([
+            "If you sleep on it tonight and wake up tomorrow, the situation itself is still the same."
+          ])
+        },
+        {
+          value: "call-back",
+          label: "Call Back",
+          description: "Use this when they want you to circle back later instead of deciding now.",
+          script: createDelayObjectionScript([
+            "If I call you back later, the need is still the need and there is still no coverage in place until you decide."
+          ])
+        },
+        {
+          value: "talk-to-family",
+          label: "Need To Talk To Someone",
+          description: "Use this when they want to speak with someone else before moving ahead.",
+          script: createDelayObjectionScript([
+            "If they are truly part of the payment decision, we can keep the amount realistic right now.",
+            "If they are the person you are trying to protect, waiting only leaves the same burden sitting on them later."
+          ])
+        },
+        {
+          value: "has-policy",
+          label: "Already Covered",
+          description: "Use this when they fall back to existing coverage as the answer.",
+          script: createObjectionScript(
+            "That is good.",
+            "Are you sure what you already have would fully handle the pressure we talked about, or are you hoping it does?",
+            [
+              "I am not trying to replace something that already solves it.",
+              "I am trying to make sure {{responsible_person}} is not the one who finds out too late that there was a gap."
+            ],
+            "So do we leave it as it is, or do we put something in place that actually closes the gap?"
+          )
+        },
+        {
+          value: "timing",
+          label: "Timing",
+          description: "Use this when the issue is the date, the draft timing, or the pace of the decision.",
+          script: createDelayObjectionScript([
+            "If the only issue is the timing of the draft, we can line that up.",
+            "But waiting does not remove the need."
+          ])
+        },
+        {
+          value: "not-sure",
+          label: "Not Sure",
+          description: "Use this when they feel uncertain but cannot name the reason cleanly.",
+          script: createObjectionScript(
+            "I get that.",
+            "What part are you not sure about, the amount, the timing, or whether this is really something you need to handle?",
+            [
+              "From everything you told me, the pressure does not disappear just because the answer feels unclear in the moment.",
+              "If nothing changes, {{responsible_person}} is still the one left to deal with it."
+            ],
+            "So which direction makes more sense, do we adjust it and handle it, or do we leave it unresolved?"
+          )
+        },
+        {
           value: "i-dont-care",
           label: "I Don't Care What Happens To Me",
           description: "Use this when they act like the outcome does not matter to them personally.",
-          script: [
+          script: createObjectionScript(
             "I hear you.",
-            "This really is not about what happens to you in the moment.",
-            "It is about what happens to the people left dealing with it after you are gone."
-          ]
+            "When you say that, do you mean you are not worried about yourself, or that you are not sure it matters either way?",
+            [
+              "That is exactly why this is not really about you in the moment.",
+              "It is about whether {{responsible_person}} ends up carrying the pressure and the cost when nothing is in place."
+            ],
+            "So do we protect them now, or do we leave them to figure it out later?"
+          )
         },
         {
           value: "sell-my-stuff",
           label: "Sell My Stuff",
           description: "Use this when they say the family can just sell assets.",
-          script: [
-            "They probably could.",
-            "The question is whether you want them trying to sell things under pressure and on someone else's timeline, or whether you want the money already in place when it is needed."
-          ]
+          script: createObjectionScript(
+            "That could happen.",
+            "Are you saying that because you think it would fully cover the problem, or because it feels easier than making a decision today?",
+            [
+              "Assets can be sold, but that still leaves {{responsible_person}} trying to do it under pressure and on someone else's timeline.",
+              "That is the part you said you wanted to avoid."
+            ],
+            "So do we put something in place now, or do we leave them to sort it out that way later?"
+          )
         },
         {
           value: "family-handles",
           label: "Family Will Handle It",
           description: "Use this when they go back to the family stepping in.",
-          script: [
-            "Most families will step up if they have to.",
-            "The better question is whether they should have to carry that burden at all if you can handle it ahead of time."
-          ]
-        },
-        {
-          value: "has-policy",
-          label: "Already Have Coverage",
-          description: "Use this when they fall back to another policy as the answer.",
-          script: [
-            "That is good.",
-            "I am not against what you already have.",
-            "I just want to know whether it really covers the exact problem you said you do not want the family dealing with."
-          ]
+          script: createObjectionScript(
+            "I believe they would step up.",
+            "Do you mean they could technically manage it, or that you are comfortable making it their responsibility?",
+            [
+              "Those are not the same thing.",
+              "Just because {{responsible_person}} would do it does not mean they should have to carry that pressure while everything else is going on."
+            ],
+            "So do we handle it now, or do we leave it on them later?"
+          )
         },
         {
           value: "government-free",
           label: "Government / Free Program",
           description: "Use this when they believe another benefit already solves the issue.",
-          scriptBlocks: createGovernmentFreeBlocks()
+          script: createObjectionScript(
+            "I understand why you'd think that.",
+            "Is that because you thought this was something free, or because you thought the government would already cover it?",
+            [
+              "What we are actually doing is finding the most affordable way to make sure {{responsible_person}} is not the one stuck figuring this out under pressure.",
+              "If this were already handled for free, you would not still be looking at it today."
+            ],
+            "So which direction makes more sense, do we see what you can actually qualify for, or do we leave things the way they are?"
+          )
+        },
+        {
+          value: "ssn-hesitation",
+          label: "SSN Hesitation",
+          description: "Use this when the social security number becomes the roadblock.",
+          script: createObjectionScript(
+            "That is fair.",
+            "Is the hesitation that you do not like giving it over the phone, or that you are not sure why it is needed?",
+            [
+              "It is what lets the system verify identity and pull a real approval.",
+              "Without it, we stop short and the same problem stays sitting on {{responsible_person}}."
+            ],
+            "So do we finish the verification and see what is available, or do we stop here?"
+          )
         }
       ]
     },
