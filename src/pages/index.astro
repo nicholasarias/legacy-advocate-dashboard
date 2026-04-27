@@ -1664,9 +1664,18 @@ const firstSectionDisplayNumber = 1;
 
       if (productOutcome === "eternal-legacy") {
         return {
-          label: "Eternal Legacy",
+          label: "Monitor Eternal Legacy",
           carrierName: "Monitor Life / Foresters Financial",
           policyLabel: "certificate",
+          customerExperiencePhone: "1-866-699-9099"
+        };
+      }
+
+      if (productOutcome === "american-general") {
+        return {
+          label: "American General - Guaranteed Issue Whole Life",
+          carrierName: "American General Life Insurance Company",
+          policyLabel: "policy",
           customerExperiencePhone: "1-866-699-9099"
         };
       }
@@ -2904,7 +2913,8 @@ const firstSectionDisplayNumber = 1;
       if (
         productOutcome === "easy-life" ||
         productOutcome === "emc-graded" ||
-        productOutcome === "eternal-legacy"
+        productOutcome === "eternal-legacy" ||
+        productOutcome === "american-general"
       ) {
         return 16;
       }

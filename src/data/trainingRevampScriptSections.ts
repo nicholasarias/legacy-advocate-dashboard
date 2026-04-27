@@ -8,8 +8,12 @@ const productOutcomeChoices = {
     description: "Use this when EMC works, but the graded route is the correct fit."
   },
   "eternal-legacy": {
-    label: "Eternal Legacy",
-    description: "Use this when EMC is out but Eternal Legacy is still available."
+    label: "Monitor Eternal Legacy",
+    description: "Use this when EMC is out but Monitor Eternal Legacy is still available."
+  },
+  "american-general": {
+    label: "American General - Guaranteed Issue Whole Life",
+    description: "Use this when stronger approvals are not available but guaranteed issue is still on the table."
   },
   "no-option": {
     label: "No Option",
@@ -399,6 +403,64 @@ function createEternalLegacyDisclosureBlocks(): ScriptBlockDefinition[] {
         "So either way you will be better protected from day one with this plan, which is great right?"
       ]
     )
+  ];
+}
+
+const routeDisclosureTransitionLine =
+  "Now I’m going to read through the required coverage details exactly, so everything is clear before we move forward.";
+
+function createEmcEasyLifeRouteScript(): ScriptLine[] {
+  return [
+    "Okay {{client_name}}, based on how this came back, this is the route I was hoping to see for you.",
+    "The plan we're looking at is EMC Easy Life.",
+    "This fits because you cleared the stronger approval path, so we're not dealing with a wait on the natural death benefit.",
+    "That matters because it gives your family real day-one protection instead of leaving them in a spot where they still have to figure everything out on their own.",
+    "You still get the simple side of it too. No medical exams, no needles, and no extra running around. We just keep the file clean and move it the right way.",
+    "So this is a solid approval, and it gives us a clean way to protect the people you told me you care about most.",
+    routeDisclosureTransitionLine
+  ];
+}
+
+function createEmcGradedRouteScript(): ScriptLine[] {
+  return [
+    "Okay {{client_name}}, based on how this came back, I do have an approval path for you.",
+    "The plan we're looking at is EMC Graded.",
+    "This fits because the stronger day-one route is not the one the system gave us, but we still have a real way to put coverage in place today.",
+    "The important thing to understand is that accidental death is covered at the full amount from day 1, and the natural cause benefit steps into the full amount after the graded period.",
+    "So even though it is not the strongest approval on the board, it is still a real step forward from leaving your family with nothing set aside.",
+    "That is why I still want to walk it through carefully, because it gives us a path to protect them instead of leaving this unresolved.",
+    routeDisclosureTransitionLine
+  ];
+}
+
+function createMonitorEternalLegacyRouteScript(): ScriptLine[] {
+  return [
+    "Okay {{client_name}}, based on how this came back, EMC is not the route the system is giving us.",
+    "But I do still have another option, and I do not want you walking away thinking that means we are out of road.",
+    "The plan we're looking at is Monitor Eternal Legacy, underwritten by Monitor Life Insurance Company of New York.",
+    "This fits because it gives you a guaranteed acceptance path when the stronger EMC approvals are not the ones available.",
+    "What you need to understand is that this is a membership-backed group term route, so I want to walk you through it carefully and make sure you hear the coverage details exactly the way they have to be read.",
+    "The reason I still like having this path is simple: it gives your family something real to work with instead of leaving them to handle everything from zero.",
+    routeDisclosureTransitionLine
+  ];
+}
+
+function createAmericanGeneralRouteScript(): ScriptLine[] {
+  return [
+    "Okay {{client_name}}, based on how this came back, I think I still have one option remaining.",
+    "This is not the plan I would lead with if we had other approvals available, but it does keep you from walking away with nothing in place.",
+    "The plan I recommend is Guaranteed Issue Whole Life Insurance by American General Life Insurance Company.",
+    "This is guaranteed acceptance, so there are no additional medical exams or tests required.",
+    "The big thing here is that your rates will never go up, and the coverage will never expire, no matter what happens to your health or how long you have the policy.",
+    "And even better, premiums only need to be paid until age 90. After that, the policy is fully paid up, and you would not need to pay any more premiums.",
+    "Now, I want to be clear about the part that matters most.",
+    "This plan has a deferred coverage period. That means if you pass away from natural causes during the first 2 years, all premiums are refunded to your family with an additional 10% paid back as well.",
+    "But from 2 years and a day, you are fully insured.",
+    "And from day 1, if you pass away from an accident, the coverage pays out at the full coverage amount.",
+    "So even though it is not perfect, you are still better protected from day 1 than you are right now.",
+    "And the best part, {{client_name}}, is that when a claim is made, the money goes directly to your family tax-free.",
+    "So the question now is simple: do we want to leave things the way they are, or do we want to at least get something in place so your family is not starting from zero?",
+    routeDisclosureTransitionLine
   ];
 }
 
@@ -1023,22 +1085,16 @@ const rawScriptSections: ScriptSection[] = [
       helpText: "Pick the approval route before you move into QA, value, and presentation.",
       options: [
         createProductOutcomeOption("easy-life", {
-          script: [
-            "Good. I have the route.",
-            "Now I'm going to go over the policy details that come with this approval."
-          ]
+          script: createEmcEasyLifeRouteScript()
         }),
         createProductOutcomeOption("emc-graded", {
-          script: [
-            "Good. I have the route.",
-            "Now I'm going to go over the policy details that come with this approval."
-          ]
+          script: createEmcGradedRouteScript()
         }),
         createProductOutcomeOption("eternal-legacy", {
-          script: [
-            "Good. I have the route.",
-            "Now I'm going to go over the policy details that come with this approval."
-          ]
+          script: createMonitorEternalLegacyRouteScript()
+        }),
+        createProductOutcomeOption("american-general", {
+          script: createAmericanGeneralRouteScript()
         }),
         createProductOutcomeOption("no-option", {
           script: [
@@ -1103,6 +1159,19 @@ const rawScriptSections: ScriptSection[] = [
               ]
             },
             ...createEternalLegacyDisclosureBlocks(),
+            createQuickInsertBlock("After QA", [
+              "Based on everything we just covered, is there anything there that would stop you from moving forward if everything else makes sense?"
+            ])
+          ]
+        }),
+        createProductOutcomeOption("american-general", {
+          scriptBlocks: [
+            {
+              variant: "primary",
+              lines: [
+                "Now [ClientName], I'm going to go over a few important details with you. This is standard for every policy, and I want to make sure everything is clear so there are no surprises later."
+              ]
+            },
             ...createAmericanGeneralDisclosureBlocks(),
             createQuickInsertBlock("After QA", [
               "Based on everything we just covered, is there anything there that would stop you from moving forward if everything else makes sense?"
@@ -1160,6 +1229,14 @@ const rawScriptSections: ScriptSection[] = [
             "This is about reducing the burden, protecting their peace of mind, and making sure the plan actually shows up when it is needed."
           ]
         }),
+        createProductOutcomeOption("american-general", {
+          script: [
+            "What this does is make sure that when that time comes, your family does not walk into that moment with nothing in place.",
+            "Even on a guaranteed issue route, the premium is fixed, the coverage does not expire as long as it is paid, and there is no medical exam standing in the way.",
+            "On this plan, accidental death pays at the full amount from day 1, and that alone is still a better position than leaving the whole burden sitting on the family.",
+            "More than anything, this gives them something real to work with instead of starting from zero and hoping they can figure it out later."
+          ]
+        }),
         createProductOutcomeOption("no-option", {
           script: ["There is no product value build on a no-option path because there is no plan to present today."]
         })
@@ -1199,6 +1276,13 @@ const rawScriptSections: ScriptSection[] = [
           ]
         }),
         createProductOutcomeOption("eternal-legacy", {
+          script: [
+            "Good news, [ClientName]...",
+            "You are approved.",
+            "Now let me walk you through what that looks like for you."
+          ]
+        }),
+        createProductOutcomeOption("american-general", {
           script: [
             "Good news, [ClientName]...",
             "You are approved.",
@@ -1249,6 +1333,13 @@ const rawScriptSections: ScriptSection[] = [
             "Then you tell me which one makes the most sense for you."
           ]
         }),
+        createProductOutcomeOption("american-general", {
+          script: [
+            "Good. Now I am going to show you the three ways families usually set this up.",
+            "One is Full Protection, one is Balanced Protection, and one is Safety Net.",
+            "Then you tell me which one makes the most sense for you."
+          ]
+        }),
         createProductOutcomeOption("no-option", {
           script: createNoOptionWrapUpScript()
         })
@@ -1281,6 +1372,10 @@ const rawScriptSections: ScriptSection[] = [
           script: createPresentationScript()
         }),
         createProductOutcomeOption("eternal-legacy", {
+          comparisonOptions: createPriceComparisonOptions(),
+          script: createPresentationScript()
+        }),
+        createProductOutcomeOption("american-general", {
           comparisonOptions: createPriceComparisonOptions(),
           script: createPresentationScript()
         }),
@@ -1415,6 +1510,12 @@ const rawScriptSections: ScriptSection[] = [
             "Now I am going to tighten up the beneficiary, draft date, and remaining setup details so everything is complete."
           ]
         }),
+        createProductOutcomeOption("american-general", {
+          script: [
+            "Good. Let's lock it in.",
+            "Now I am going to tighten up the beneficiary, draft date, and remaining setup details so everything is complete."
+          ]
+        }),
         createProductOutcomeOption("no-option", {
           script: ["There is no enrollment setup on a no-option path."]
         })
@@ -1445,6 +1546,9 @@ const rawScriptSections: ScriptSection[] = [
           scriptBlocks: createPostSaleRehashBlocks()
         }),
         createProductOutcomeOption("eternal-legacy", {
+          scriptBlocks: createPostSaleRehashBlocks()
+        }),
+        createProductOutcomeOption("american-general", {
           scriptBlocks: createPostSaleRehashBlocks()
         }),
         createProductOutcomeOption("no-option", {
