@@ -29,7 +29,7 @@ const section = scriptSections[0];
       </h3>
 
       <div class="space-y-5 text-lg leading-8 text-gray-100">
-        {section.script.map((line) => (
+        {(section.script ?? []).map((line) => (
           <p>{line}</p>
         ))}
       </div>
@@ -43,7 +43,7 @@ const section = scriptSections[0];
       <div class="space-y-3">
         <div>
           <p class="text-xs uppercase tracking-wide text-gray-500">Goal</p>
-          <p class="mt-1 text-sm text-gray-200">{section.prompt.goal}</p>
+          <p class="mt-1 text-sm text-gray-200">{section.prompt?.goal ?? "No goal configured."}</p>
         </div>
       </div>
     </div>
